@@ -1,5 +1,5 @@
 # Watergame_2017
-This is the repository for Team 1923, the name will be changed once the game is revealed.
+FIRST Team 1923's official repository for the 2017 game, TBD
 
 # Resources
 WPILib Documentation:
