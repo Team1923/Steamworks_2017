@@ -1,5 +1,5 @@
-# Watergame_2017
-FIRST Team 1923's official repository for the 2017 game, TBD
+# Steamworks_2017
+FIRST Team 1923's official repository for the 2017 game Steamworks
 
 # Resources
 WPILib Documentation:
