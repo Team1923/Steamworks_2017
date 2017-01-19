@@ -19,3 +19,8 @@ https://www.tutorialspoint.com/java/java_documentation.htm
 
 Learn Git:
 GUI (Recommended for beginners): https://www.git-tower.com/learn/git/ebook/en/desktop-gui/introduction#start or Command Line (Advanced): https://www.git-tower.com/learn/git/ebook/en/command-line/introduction
+
+General FRC Stuff:
+FRC Blog: http://www.firstinspires.org/robotics/frc/blog/
+Q&A: https://frc-qa.firstinspires.org/
+Resource Lib:http://www.firstinspires.org/resource-library?flagged=All&combine=&field_content_type_value%5B0%5D=first_robotics_competition&field_resource_library_tags_tid=171&sort_by=created_1
