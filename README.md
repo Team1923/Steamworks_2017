@@ -12,3 +12,10 @@ Select "CTRE Toolsuite Installer"
 Learn UML Class Diagrams:
 https://en.wikipedia.org/wiki/Class_diagram
 https://www.ibm.com/developerworks/rational/library/769.html?ca=drs-
+
+Learn Javadoc:
+https://en.wikipedia.org/wiki/Javadoc
+https://www.tutorialspoint.com/java/java_documentation.htm
+
+Learn Git:
+GUI (Recommended for beginners): https://www.git-tower.com/learn/git/ebook/en/desktop-gui/introduction#start or Command Line (Advanced): https://www.git-tower.com/learn/git/ebook/en/command-line/introduction
