@@ -1,5 +1,5 @@
-// This is Tim Magoun's repository.
-package org.usfirst.frc.team123.robot;
+
+package org.usfirst.frc.team1923.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team123.robot.commands.ExampleCommand;
-import org.usfirst.frc.team123.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team1923.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1923.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
