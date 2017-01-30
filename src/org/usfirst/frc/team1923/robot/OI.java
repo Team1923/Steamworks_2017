@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.ExampleCommand;
-
-import edu.wpi.first.wpilibj.buttons.Button;
+import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.utils.PS4Controller;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -36,4 +35,18 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+
+	public PS4Controller driver, op;
+
+	public OI() {
+
+		// Creates two ps4 controllers
+		driver = new PS4Controller(RobotMap.DRIVER_CONTROLLER_PORT);
+		op = new PS4Controller(RobotMap.OP_CONTROLLER_PORT);
+
+		// Maps drivetrain shifting buttons the controllers
+		driver.lb.whenPressed(new EmptyCommand());
+		driver.rb.whenPressed(new EmptyCommand());
+	}
+
 }

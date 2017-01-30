@@ -10,9 +10,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * Link to original: https://github.com/owatonnarobotics/XboxController
  * Modified by: Aravind 
  * Date: 2016-01-15
+ * Modified by: Tim
+ * Date: 2017-01-28
+ * Changed to PS4 Controller
  */
 
-public class XboxController extends Joystick {
+public class PS4Controller extends Joystick {
 
 	/* Default Values */
 	private static final double DEFAULT_TRIGGER_DEADZONE = 0.01; // Jiggle room
@@ -28,62 +31,68 @@ public class XboxController extends Joystick {
 																	// pressed
 
 	/* Button Mappings */
-	private static final int A_BUTTON_ID = 1;
-	private static final int B_BUTTON_ID = 2;
-	private static final int X_BUTTON_ID = 3;
-	private static final int Y_BUTTON_ID = 4;
-	private static final int LB_BUTTON_ID = 5;
-	private static final int RB_BUTTON_ID = 6;
-	private static final int BACK_BUTTON_ID = 7;
-	private static final int START_BUTTON_ID = 8;
+	private static final int SQUARE_BUTTON_ID = 1;
+	private static final int TRIANGLE_BUTTON_ID = 2;
+	private static final int CIRCLE_BUTTON_ID = 3;
+	private static final int CROSS_BUTTON_ID = 4;
+	private static final int LB_BUTTON_ID = 5; // Also called L1
+	private static final int RB_BUTTON_ID = 6; // Also called R1
+	private static final int SHARE_BUTTON_ID = 7;
+	private static final int OPTIONS_BUTTON_ID = 8;
 	private static final int LEFT_CLICK_ID = 9;
 	private static final int RIGHT_CLICK_ID = 10;
 
 	/* Axis Mappings */
-	private static final int LEFT_TRIGGER_AXIS_ID = 2;
-	private static final int RIGHT_TRIGGER_AXIS_ID = 3;
+	private static final int LEFT_TRIGGER_AXIS_ID = 2; // Also called L2
+	private static final int RIGHT_TRIGGER_AXIS_ID = 3; // Also called R2
+
+	private static final int LEFT_STICK_X_AXIS_ID = 4;
+	private static final int LEFT_STICK_Y_AXIS_ID = 5;
+	private static final int RIGHT_STICK_X_AXIS_ID = 6;
+	private static final int RIGHT_STICK_Y_AXIS_ID = 7;
 
 	/* Instance Values */
 	private final int port;
-	private final Joystick controller;
+	private final Joystick stick;
 
 	public final Trigger lt;
 	public final Trigger rt;
 	public final DirectionalPad dPad;
-	public final Button a;
-	public final Button b;
-	public final Button x;
-	public final Button y;
+	public final Button square;
+	public final Button triangle;
+	public final Button circle;
+	public final Button cross;
 	public final Button lb;
 	public final Button rb;
-	public final Button back;
-	public final Button start;
+	public final Button share;
+	public final Button options;
 	public final Button rightClick;
 	public final Button leftClick;
 
 	/*
 	 * @param: port
 	 */
-	public XboxController(final int port) {
+	public PS4Controller(final int port) {
 		super(port); // Extends Joystick...
 
 		/* Initialize */
 		this.port = port;
-		this.controller = new Joystick(this.port); // Joystick referenced by
-													// everything
-		this.dPad = new DirectionalPad(this.controller);
-		this.lt = new Trigger(this.controller, HAND.LEFT);
-		this.rt = new Trigger(this.controller, HAND.RIGHT);
-		this.a = new JoystickButton(this.controller, A_BUTTON_ID);
-		this.b = new JoystickButton(this.controller, B_BUTTON_ID);
-		this.x = new JoystickButton(this.controller, X_BUTTON_ID);
-		this.y = new JoystickButton(this.controller, Y_BUTTON_ID);
-		this.lb = new JoystickButton(this.controller, LB_BUTTON_ID);
-		this.rb = new JoystickButton(this.controller, RB_BUTTON_ID);
-		this.back = new JoystickButton(this.controller, BACK_BUTTON_ID);
-		this.start = new JoystickButton(this.controller, START_BUTTON_ID);
-		this.rightClick = new JoystickButton(this.controller, RIGHT_CLICK_ID);
-		this.leftClick = new JoystickButton(this.controller, LEFT_CLICK_ID);
+		this.stick = new Joystick(this.port); // Joystick referenced by
+												// everything
+
+		this.dPad = new DirectionalPad(this.stick);
+		this.lt = new Trigger(this.stick, HAND.LEFT);
+		this.rt = new Trigger(this.stick, HAND.RIGHT);
+		this.square = new JoystickButton(this.stick, SQUARE_BUTTON_ID);
+		this.triangle = new JoystickButton(this.stick, TRIANGLE_BUTTON_ID);
+		this.circle = new JoystickButton(this.stick, CIRCLE_BUTTON_ID);
+		this.cross = new JoystickButton(this.stick, CROSS_BUTTON_ID);
+		this.lb = new JoystickButton(this.stick, LB_BUTTON_ID);
+		this.rb = new JoystickButton(this.stick, RB_BUTTON_ID);
+		this.share = new JoystickButton(this.stick, SHARE_BUTTON_ID);
+		this.options = new JoystickButton(this.stick, OPTIONS_BUTTON_ID);
+		this.rightClick = new JoystickButton(this.stick, RIGHT_CLICK_ID);
+		this.leftClick = new JoystickButton(this.stick, LEFT_CLICK_ID);
 	}
 
 	/**
@@ -362,7 +371,47 @@ public class XboxController extends Joystick {
 	 * @return The Joystick of this XboxController
 	 */
 	public Joystick getJoystick() {
-		return controller;
+		return stick;
+	}
+
+	/**
+	 * Adjusted y values based on deadzone
+	 * 
+	 * @return the adjusted y value
+	 */
+	public double getLeftY() {
+		double val = this.getRawAxis(LEFT_STICK_Y_AXIS_ID);
+		return Math.abs(val) > DEFAULT_TRIGGER_DEADZONE ? val : 0;
+	}
+
+	/**
+	 * Adjusted y values based on deadzone
+	 * 
+	 * @return the adjusted y value
+	 */
+	public double getRightY() {
+		double val = this.getRawAxis(RIGHT_STICK_Y_AXIS_ID);
+		return Math.abs(val) > DEFAULT_TRIGGER_DEADZONE ? val : 0;
+	}
+
+	/**
+	 * Adjusted x values based on deadzone
+	 * 
+	 * @return the adjusted x value
+	 */
+	public double getLeftX() {
+		double val = this.getRawAxis(LEFT_STICK_X_AXIS_ID);
+		return Math.abs(val) > DEFAULT_TRIGGER_DEADZONE ? val : 0;
+	}
+
+	/**
+	 * Adjusted x values based on deadzone
+	 * 
+	 * @return the adjusted x value
+	 */
+	public double getRightX() {
+		double val = this.getRawAxis(RIGHT_STICK_X_AXIS_ID);
+		return Math.abs(val) > DEFAULT_TRIGGER_DEADZONE ? val : 0;
 	}
 
 	/* Set Methods */
@@ -378,9 +427,9 @@ public class XboxController extends Joystick {
 		final float amount = new Float(intensity);
 
 		if (hand == HAND.LEFT) {
-			controller.setRumble(RumbleType.kLeftRumble, amount);
+			stick.setRumble(RumbleType.kLeftRumble, amount);
 		} else {
-			controller.setRumble(RumbleType.kRightRumble, amount);
+			stick.setRumble(RumbleType.kRightRumble, amount);
 		}
 	}
 
@@ -393,83 +442,7 @@ public class XboxController extends Joystick {
 	public void setRumble(double intensity) {
 		final float amount = new Float(intensity);
 
-		controller.setRumble(RumbleType.kLeftRumble, amount);
-		controller.setRumble(RumbleType.kRightRumble, amount);
+		stick.setRumble(RumbleType.kLeftRumble, amount);
+		stick.setRumble(RumbleType.kRightRumble, amount);
 	}
 }
-
-// Old Implementation below
-
-// package org.usfirst.frc.team1923.robot.utils;
-//
-// import edu.wpi.first.wpilibj.*;
-//
-// public class XboxController extends Joystick {
-//
-// public XboxController(int port) {
-// super(port);
-// // TODO Auto-generated constructor stub
-// }
-//
-// public boolean getButton(XboxController.Button input) {
-// return this.getRawButton(input.value);
-// }
-//
-// public double DPad() {
-// return this.getRawAxis(6);
-// }
-//
-// public double getRightTrigger(){
-// return this.getRawAxis(3) ;
-// }
-// public double getLeftTrigger(){
-// return this.getRawAxis(2);
-// }
-//
-// public int getSharpTriggerDiff(){
-// double temp = getRightTrigger() - getLeftTrigger();
-//
-// if (temp > .1 ) {
-// return 1;
-// } else if (temp < -.1) {
-// return -1;
-// } else {
-// return 0;
-// }
-// }
-//
-// public static class Button {
-//
-// public final int value;
-// public static final int kA_val = 1;
-// public static final int kB_val = 2;
-// public static final int kX_val = 3;
-// public static final int kY_val = 4;
-// public static final int kLB_val = 5;
-// public static final int kRB_val = 6;
-// public static final int kStart_val = 8;
-// public static final int kBack_val = 7;
-// public static final int kLeftClick_val = 9;
-// public static final int kRightClick_val = 10;
-// public static final int kLT_val = 11;
-// public static final int kRT_val = 12;
-// public static final Button A = new Button(kA_val);
-// public static final Button B = new Button(kB_val);
-// public static final Button X = new Button(kX_val);
-// public static final Button Y = new Button(kY_val);
-// public static final Button LB = new Button(kLB_val);
-// public static final Button RB = new Button(kRB_val);
-// public static final Button LT = new Button(kLT_val);
-// public static final Button RT = new Button(kRT_val);
-// public static final Button Start = new Button(kStart_val);
-// public static final Button Back = new Button(kBack_val);
-// public static final Button LeftClick = new Button(kLeftClick_val);
-// public static final Button RightClick = new Button(kRightClick_val);
-//
-// private Button(int value) { // Value inputed is equal to value in Button
-// // class
-// this.value = value;
-// }
-//
-// }
-// }

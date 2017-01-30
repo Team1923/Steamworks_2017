@@ -1,15 +1,15 @@
 
 package org.usfirst.frc.team1923.robot;
 
+import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team1923.robot.commands.ExampleCommand;
-import org.usfirst.frc.team1923.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,7 +20,8 @@ import org.usfirst.frc.team1923.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	// Declare one instance of each subsystem and OI.
+	public static DrivetrainSubsystem drive;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -32,8 +33,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		// Initialize all the subsystems and OI.
+		drive = new DrivetrainSubsystem();
 		oi = new OI();
-		chooser.addDefault("Default Auto", new ExampleCommand());
+		chooser.addDefault("Default Auto", new EmptyCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 	}
