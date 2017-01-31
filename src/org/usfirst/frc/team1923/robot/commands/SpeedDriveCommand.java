@@ -1,34 +1,27 @@
 package org.usfirst.frc.team1923.robot.commands;
 
 import org.usfirst.frc.team1923.robot.Robot;
-import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * This command directly feeds the raw values on the joysticks to the motor
- * without PID
+ *
  */
-public class RawDriveCommand extends Command {
+public class SpeedDriveCommand extends Command {
 
-	public RawDriveCommand() {
+	public SpeedDriveCommand() {
+		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drive);
-	}
-
-	public RawDriveCommand(ProfileCurve p) {
-		requires(Robot.drive);
-		Robot.drive.dprofile.setProfile(p);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.drive.disablePID();// Disables the PID system to gain full control
-									// without correction
+		Robot.drive.setSpeed(0, 0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drive.set(Robot.drive.dprofile.scale(Robot.oi.driver.getLeftY()),
+		Robot.drive.setSpeed(Robot.drive.dprofile.scale(Robot.oi.driver.getLeftY()),
 				Robot.drive.dprofile.scale(Robot.oi.driver.getRightY()));
 	}
 
@@ -39,12 +32,10 @@ public class RawDriveCommand extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drive.set(0, 0); // Stops the robot
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		end();
 	}
 }

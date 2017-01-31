@@ -2,6 +2,8 @@ package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.RawDriveCommand;
+import org.usfirst.frc.team1923.robot.utils.DriveProfile;
+import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
@@ -26,6 +28,8 @@ public class DrivetrainSubsystem extends Subsystem {
 	// The 0th element will always be the master Talon, the subsequent ones will
 	// follow
 	private CANTalon[] leftTalons, rightTalons;
+	
+	public static DriveProfile dprofile = new DriveProfile(ProfileCurve.QUAD);
 
 	public DrivetrainSubsystem() {
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
@@ -61,6 +65,12 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].changeControlMode(c);
 	}
 
+	/**
+	 * Configures the PID values of the two master talons
+	 * 
+	 * Sets the nominal and peak output voltages and sets the sensor and output
+	 * reversal flags
+	 */
 	private void configPID() {
 
 		leftTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
