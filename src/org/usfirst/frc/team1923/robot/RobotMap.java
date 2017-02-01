@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1923.robot;
 
+import org.usfirst.frc.team1923.robot.utils.DriveProfile;
+import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -8,6 +11,9 @@ package org.usfirst.frc.team1923.robot;
  */
 public class RobotMap {
 
+	//Driver Stuff:
+	public static final ProfileCurve DRIVER_PROFILE = ProfileCurve.LINEAR;
+	
 	// OI port numbers
 	public static final int DRIVER_CONTROLLER_PORT = 0;
 	public static final int OP_CONTROLLER_PORT = 1;

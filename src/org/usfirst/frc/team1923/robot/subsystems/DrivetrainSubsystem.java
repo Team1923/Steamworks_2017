@@ -28,10 +28,13 @@ public class DrivetrainSubsystem extends Subsystem {
 	// The 0th element will always be the master Talon, the subsequent ones will
 	// follow
 	private CANTalon[] leftTalons, rightTalons;
-	
-	public static DriveProfile dprofile = new DriveProfile(ProfileCurve.QUAD);
+
+	public DriveProfile dprofile = new DriveProfile(RobotMap.DRIVER_PROFILE);
 
 	public DrivetrainSubsystem() {
+		leftTalons = new CANTalon[RobotMap.LEFT_DRIVE_PORTS.length];
+		rightTalons = new CANTalon[RobotMap.RIGHT_DRIVE_PORTS.length];
+
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
 		}
@@ -122,7 +125,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	 * Disables the closed-loop system and allows direct power setting
 	 */
 	public void disablePID() {
-		setMasterToMode(TalonControlMode.Disabled);
+		setMasterToMode(TalonControlMode.PercentVbus);
 	}
 
 	/**
