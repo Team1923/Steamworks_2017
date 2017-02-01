@@ -26,3 +26,5 @@ FRC Blog: http://www.firstinspires.org/robotics/frc/blog/
 Q&A: https://frc-qa.firstinspires.org/
 
 Resource Lib:http://www.firstinspires.org/resource-library?flagged=All&combine=&field_content_type_value%5B0%5D=first_robotics_competition&field_resource_library_tags_tid=171&sort_by=created_1
+
+TALON Software Documentation: https://content.vexrobotics.com/vexpro/pdf/Talon-SRX-Software-Reference-Manual-03302016.pdf
