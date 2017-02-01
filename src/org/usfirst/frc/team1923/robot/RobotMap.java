@@ -13,9 +13,9 @@ public class RobotMap {
 	public static final int OP_CONTROLLER_PORT = 1;
 
 	// Drive motor numbers
-	public static final int[] LEFT_DRIVE_PORTS = { 2, 3, 4 }; // Master Talon
+	public static final int[] LEFT_DRIVE_PORTS = { 7, 8, 9 }; // Master Talon
 																// first
-	public static final int[] RIGHT_DRIVE_PORTS = { 7, 8, 9 };
+	public static final int[] RIGHT_DRIVE_PORTS = { 2, 3, 4 };
 
 	// Talons that have the SRX Mag Enc installed (masters);
 	public static final int LEFT_ENCODER_PORT = 7;
@@ -36,9 +36,6 @@ public class RobotMap {
 	// Drop down omniwheel piston ports
 	public static final int OMNI_FORWARD_PORT = 0;
 	public static final int OMNI_BACKWARD_PORT = 1;
-
-	// PCM Module number
-	public static final int PCM_MODULE_NUM = 11; // Or 13? Or 12?
 
 	/*
 	 * 2 controllers 6 drive talons 2 climb talons 1 shift piston 1 drop piston

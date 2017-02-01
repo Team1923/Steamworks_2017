@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
-import org.usfirst.frc.team1923.robot.commands.ShiftGearCommand;
 import org.usfirst.frc.team1923.robot.utils.PS4Controller;
 
 /**
@@ -46,8 +45,8 @@ public class OI {
 		op = new PS4Controller(RobotMap.OP_CONTROLLER_PORT);
 
 		// Maps drivetrain shifting buttons the controllers
-		driver.lb.whenPressed(new ShiftGearCommand(true));
-		driver.rb.whenPressed(new ShiftGearCommand(false));
+		driver.lb.whenPressed(new EmptyCommand());
+		driver.rb.whenPressed(new EmptyCommand());
 	}
 
 }
