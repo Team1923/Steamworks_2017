@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class PS4Controller extends Joystick {
 
 	/* Default Values */
-	private static final double DEFAULT_TRIGGER_DEADZONE = 1; // Jiggle room
+	private static final double DEFAULT_TRIGGER_DEADZONE = 0.05; // Jiggle room
 																	// for the
 																	// triggers
 	private static final double DEFAULT_TRIGGER_SENSITIVITY = 0.6; // If the
