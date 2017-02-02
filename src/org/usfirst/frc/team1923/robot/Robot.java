@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	// Declare one instance of each subsystem and OI.
-	public static DrivetrainSubsystem drive;
+	public static DrivetrainSubsystem driveSubSys;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		// Initialize all the subsystems and OI.
-		drive = new DrivetrainSubsystem();
+		driveSubSys = new DrivetrainSubsystem();
 		oi = new OI();
 		chooser.addDefault("Default Auto", new EmptyCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
