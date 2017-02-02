@@ -3,6 +3,8 @@ package org.usfirst.frc.team1923.robot.commands;
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -12,24 +14,22 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RawDriveCommand extends Command {
 
 	public RawDriveCommand() {
-		requires(Robot.drive);
+		requires(Robot.driveSubSys);
 	}
 
 	public RawDriveCommand(ProfileCurve p) {
-		requires(Robot.drive);
-		Robot.drive.dprofile.setProfile(p);
+		requires(Robot.driveSubSys);
+		Robot.driveSubSys.dprofile.setProfile(p);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.drive.disablePID();// Disables the PID system to gain full control
-									// without correction
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drive.set(Robot.drive.dprofile.scale(Robot.oi.driver.getLeftY()),
-				Robot.drive.dprofile.scale(Robot.oi.driver.getRightY()));
+		Robot.driveSubSys.drive(Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getLeftY()),
+				Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getRightY()), TalonControlMode.PercentVbus);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -39,7 +39,7 @@ public class RawDriveCommand extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drive.set(0, 0); // Stops the robot
+		Robot.driveSubSys.set(0, 0); // Stops the robot
 	}
 
 	// Called when another command which requires one or more of the same
