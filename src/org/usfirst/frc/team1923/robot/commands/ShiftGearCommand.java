@@ -16,7 +16,6 @@ public class ShiftGearCommand extends InstantCommand {
 	}
 
 	public ShiftGearCommand(boolean up) {
-		System.out.println("Shift!" + up);
 		this.up = up;
 	}
 

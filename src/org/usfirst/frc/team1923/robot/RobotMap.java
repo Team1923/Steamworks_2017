@@ -31,19 +31,19 @@ public class RobotMap {
 	public static final int RIGHT_CLIMB_PORT = 1;
 
 	// Gear box shifting pistons ports on the PCM
-	public static final int SHIFT_FORWARD_PORT = 4;
-	public static final int SHIFT_BACKWARD_PORT = 5;
+	public static final int SHIFT_FORWARD_PORT = 2;
+	public static final int SHIFT_BACKWARD_PORT = 3;
 
 	// Mechanism actuator piston ports
-	public static final int MECH_FORWARD_PORT = 0;
-	public static final int MECH_BACKWARD_PORT = 1;
+	public static final int MECH_FORWARD_PORT = 4;
+	public static final int MECH_BACKWARD_PORT = 5;
 
 	// Drop down omniwheel piston ports
 	public static final int OMNI_FORWARD_PORT = 0;
 	public static final int OMNI_BACKWARD_PORT = 1;
 
 	// PCM Module number
-	public static final int PCM_MODULE_NUM = 11;
+	public static final int PCM_MODULE_NUM = 12;
 
 	/*
 	 * 2 controllers 6 drive talons 2 climb talons 1 shift piston 1 drop piston
