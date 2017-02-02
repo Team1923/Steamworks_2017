@@ -3,12 +3,13 @@ package org.usfirst.frc.team1923.robot.subsystems;
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.RawDriveCommand;
 import org.usfirst.frc.team1923.robot.utils.DriveProfile;
-import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,22 +17,29 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	public static final double P_CONSTANT = 0; // TODO: Fill in these values
-	public static final double I_CONSTANT = 0;
-	public static final double D_CONSTANT = 0;
-	public static final double F_CONSTANT = 0;
-	public static final boolean LEFT_REVERSED = false; // Reverse the sensor or
+	private static final double P_CONSTANT = 0; // TODO: Fill in these values
+	private static final double I_CONSTANT = 0;
+	private static final double D_CONSTANT = 0;
+	private static final double F_CONSTANT = 0;
+	private static final boolean LEFT_REVERSED = false; // Reverse the sensor or
 														// the motor or both?
-	public static final boolean RIGHT_REVERSED = false;
+	private static final boolean RIGHT_REVERSED = false;
+	private static final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will
 	// follow
 	private CANTalon[] leftTalons, rightTalons;
-	
-	public static DriveProfile dprofile = new DriveProfile(ProfileCurve.QUAD);
+
+	private DoubleSolenoid shifter;
+	private DoubleSolenoid shiftOmnis;
+
+	public DriveProfile dprofile = new DriveProfile(RobotMap.DRIVER_PROFILE);
 
 	public DrivetrainSubsystem() {
+		leftTalons = new CANTalon[RobotMap.LEFT_DRIVE_PORTS.length];
+		rightTalons = new CANTalon[RobotMap.RIGHT_DRIVE_PORTS.length];
+
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
 		}
@@ -40,9 +48,12 @@ public class DrivetrainSubsystem extends Subsystem {
 			rightTalons[i] = new CANTalon(RobotMap.RIGHT_DRIVE_PORTS[i]);
 		}
 
+		shifter = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.SHIFT_FORWARD_PORT,
+				RobotMap.SHIFT_BACKWARD_PORT);
+		shiftOmnis = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.OMNI_FORWARD_PORT, RobotMap.OMNI_BACKWARD_PORT);
 		setToFollow();
 		configPID();
-		setSpeed(0, 0);
+		drive(0, 0, TalonControlMode.PercentVbus);
 	}
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -59,6 +70,13 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[2].set(rightTalons[0].getDeviceID());
 	}
 
+	/**
+	 * Sets the two master talons to a certain mode
+	 * 
+	 * @param c
+	 *            TalonControlMode to be used
+	 * 
+	 */
 	private void setMasterToMode(TalonControlMode c) {
 		// Speed, Position, Percent VBus etc.
 		leftTalons[0].changeControlMode(c);
@@ -121,46 +139,25 @@ public class DrivetrainSubsystem extends Subsystem {
 	/**
 	 * Disables the closed-loop system and allows direct power setting
 	 */
-	public void disablePID() {
+	public void disable() {
 		setMasterToMode(TalonControlMode.Disabled);
 	}
 
 	/**
-	 * Sets percentage power with rawdrive behavior
+	 * Sets talon powers with a specific mode
 	 * 
 	 * @param left
 	 *            Left power
 	 * @param right
 	 *            Right power
+	 * @param m
+	 *            TalonControlMode to be used
 	 */
-	public void setPower(double left, double right) {
-		if (leftTalons[0].getControlMode() != TalonControlMode.PercentVbus) {
-			setMasterToMode(TalonControlMode.PercentVbus);
+	public void drive(double left, double right, TalonControlMode m) {
+		if (leftTalons[0].getControlMode() != m) {
+			setMasterToMode(m);
 		}
-
-		leftTalons[0].set(left);
-		rightTalons[0].set(right);
-	}
-
-	/**
-	 * Sets a constant speed for wheels
-	 * 
-	 * This is more controllable than the percent power mode because it doesn't
-	 * get effected by battery voltage drops as severely as the percent power
-	 * mode. However max motor performance will drop with lower voltages.
-	 * 
-	 * @param left
-	 *            Left speed
-	 * @param right
-	 *            Right speed
-	 */
-	public void setSpeed(double left, double right) {
-		if (leftTalons[0].getControlMode() != TalonControlMode.Speed) {
-			setMasterToMode(TalonControlMode.Speed);
-		}
-
-		leftTalons[0].set(left);
-		rightTalons[0].set(right);
+		set(left, right);
 	}
 
 	/**
@@ -174,26 +171,37 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].setPosition(0);
 	}
 
-	/**
-	 * Sets the target encoder values of the robot
-	 * 
-	 * @param leftTarget
-	 *            Left wheel encoder target
-	 * @param rightTarget
-	 *            Right wheel encoder target
-	 */
-	public void setPosition(double leftTarget, double rightTarget) {
-		if (leftTalons[0].getControlMode() != TalonControlMode.Position) {
-			setMasterToMode(TalonControlMode.Position);
-		}
-
-		leftTalons[0].set(leftTarget);
-		rightTalons[0].set(rightTarget);
-	}
-
 	public void initDefaultCommand() {
 		setDefaultCommand(new RawDriveCommand()); // Temp set to raw drive,
 													// could change to speed
 													// later on for more control
 	}
+
+	public void shiftUp() {
+		shifter.set(Value.kForward);
+	}
+
+	public void shiftDown() {
+		if (safeToShift()) {
+			shifter.set(Value.kReverse);
+		}
+	}
+	
+	public void shiftUpOmnis(){
+		this.shiftOmnis.set(Value.kForward);
+	}
+	
+	public void shiftDownOmnis(){
+		this.shiftOmnis.set(Value.kReverse);
+	}
+
+	private boolean safeToShift() {
+		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
+				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+	}
+
+	public void stop() {
+		drive(0, 0, TalonControlMode.PercentVbus);
+	}
+
 }
