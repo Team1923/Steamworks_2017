@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1923.robot.commands;
+package org.usfirst.frc.team1923.robot.commands.driveCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
 
@@ -19,9 +19,9 @@ public class ShiftOmnisCommand extends InstantCommand {
 	// Called once when the command executes
 	protected void initialize() {
 		if (up) {
-			Robot.driveSubSys.shiftUp();
+			Robot.driveSubSys.shiftUpOmnis();
 		} else {
-			Robot.driveSubSys.shiftDown();
+			Robot.driveSubSys.shiftDownOmnis();
 		}
 	}
 }
