@@ -27,8 +27,8 @@ public class RobotMap {
 	public static final int RIGHT_ENCODER_PORT = 2;
 
 	// Climb motor numbers
-	public static final int LEFT_CLIMB_PORT = 0;
-	public static final int RIGHT_CLIMB_PORT = 1;
+	public static final int LEFT_CLIMB_PORT = 6;
+	public static final int RIGHT_CLIMB_PORT = 7;
 
 	// Gear box shifting pistons ports on the PCM
 	public static final int SHIFT_FORWARD_PORT = 2;
@@ -44,7 +44,7 @@ public class RobotMap {
 
 	// PCM Module number
 	public static final int PCM_MODULE_NUM = 12;
-
+	
 	/*
 	 * 2 controllers 6 drive talons 2 climb talons 1 shift piston 1 drop piston
 	 * 1 gear piston TO BE DETERMINED: Ultrasonic? Button? Camera?

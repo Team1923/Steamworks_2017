@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.usfirst.frc.team1923.robot.RobotMap;
-import org.usfirst.frc.team1923.robot.commands.RawDriveCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.RawDriveCommand;
 import org.usfirst.frc.team1923.robot.utils.DriveProfile;
 
 import com.ctre.CANTalon;
@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	private static final double P_CONSTANT = 0; // TODO: Fill in these values
-	private static final double I_CONSTANT = 0;
-	private static final double D_CONSTANT = 0;
-	private static final double F_CONSTANT = 0;
-	private static final boolean LEFT_REVERSED = false; // Reverse the sensor or
-														// the motor or both?
-	private static final boolean RIGHT_REVERSED = false;
-	private static final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
+	private final double P_CONSTANT = 0; // TODO: Fill in these values
+	private final double I_CONSTANT = 0;
+	private final double D_CONSTANT = 0;
+	private final double F_CONSTANT = 0;
+	private final boolean LEFT_REVERSED = false; // Reverse the sensor or
+													// the motor or both?
+	private final boolean RIGHT_REVERSED = false;
+	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will

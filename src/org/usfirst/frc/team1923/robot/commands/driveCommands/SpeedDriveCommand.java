@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1923.robot.commands;
+package org.usfirst.frc.team1923.robot.commands.driveCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
 import com.ctre.CANTalon.TalonControlMode;
