@@ -9,6 +9,8 @@ Talon Library:
 http://www.ctr-electronics.com/control-system/hro.html#product_tabs_technical_resources
 Select "CTRE Toolsuite Installer"
 
+Place CTRLib.jar in C:/Users/your_user_name/wpilib/user/java/lib
+
 Learn UML Class Diagrams:
 https://en.wikipedia.org/wiki/Class_diagram
 https://www.ibm.com/developerworks/rational/library/769.html?ca=drs-
