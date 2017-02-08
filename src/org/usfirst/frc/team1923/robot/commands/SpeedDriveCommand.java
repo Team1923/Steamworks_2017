@@ -16,12 +16,12 @@ public class SpeedDriveCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.driveSubSystem.setSpeed(0, 0);
+		Robot.driveSubSystem.set(0, 0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.driveSubSystem.setSpeed(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
+		Robot.driveSubSystem.set(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
 				Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getRightY()));
 	}
 

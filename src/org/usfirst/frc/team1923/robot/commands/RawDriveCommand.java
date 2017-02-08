@@ -17,7 +17,7 @@ public class RawDriveCommand extends Command {
 
 	public RawDriveCommand(ProfileCurve p) {
 		requires(Robot.driveSubSystem);
-		Robot.drive.dprofile.setProfile(p);
+		Robot.driveSubSystem.dprofile.setProfile(p);
 	}
 
 	// Called just before this Command runs the first time
@@ -27,7 +27,7 @@ public class RawDriveCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drive.set(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
+		Robot.driveSubSystem.set(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
 				Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getRightY()));
 	}
 
