@@ -11,18 +11,18 @@ public class SpeedDriveCommand extends Command {
 
 	public SpeedDriveCommand() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drive);
+		requires(Robot.driveSubSystem);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.drive.setSpeed(0, 0);
+		Robot.driveSubSystem.setSpeed(0, 0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drive.setSpeed(Robot.drive.dprofile.scale(Robot.oi.driver.getLeftY()),
-				Robot.drive.dprofile.scale(Robot.oi.driver.getRightY()));
+		Robot.driveSubSystem.setSpeed(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
+				Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getRightY()));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

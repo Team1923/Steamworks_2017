@@ -12,24 +12,23 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RawDriveCommand extends Command {
 
 	public RawDriveCommand() {
-		requires(Robot.drive);
+		requires(Robot.driveSubSystem);
 	}
 
 	public RawDriveCommand(ProfileCurve p) {
-		requires(Robot.drive);
+		requires(Robot.driveSubSystem);
 		Robot.drive.dprofile.setProfile(p);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.drive.disablePID();// Disables the PID system to gain full control
-									// without correction
+		Robot.driveSubSystem.disable();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drive.set(Robot.drive.dprofile.scale(Robot.oi.driver.getLeftY()),
-				Robot.drive.dprofile.scale(Robot.oi.driver.getRightY()));
+		Robot.drive.set(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
+				Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getRightY()));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -39,7 +38,7 @@ public class RawDriveCommand extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.drive.set(0, 0); // Stops the robot
+		Robot.driveSubSystem.set(0, 0); // Stops the robot
 	}
 
 	// Called when another command which requires one or more of the same
