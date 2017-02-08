@@ -12,11 +12,14 @@ public class ControllerRumbleCommand extends Command {
 
 	public String hand;
 	public double intensity;
+	public double timeOut;
 
-	public ControllerRumbleCommand() {
+	public ControllerRumbleCommand(double time) {
 		super();
 		hand = "both";
 		intensity = 0.3;
+		timeOut = time;
+		setTimeout(time);
 	}
 
 	/**
@@ -51,7 +54,7 @@ public class ControllerRumbleCommand extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		//TODO does setRumble() give it a pulse or it never stops until we tell it to?
-		return false;
+		return isTimedOut();
 	}
 
 	// Called once after isFinished returns true

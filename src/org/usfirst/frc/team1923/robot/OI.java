@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1923.robot;
 
+import org.usfirst.frc.team1923.robot.commands.ControllerRumbleCommand;
 import org.usfirst.frc.team1923.robot.commands.ShiftGearCommand;
 import org.usfirst.frc.team1923.robot.commands.ShiftOmnisCommand;
 import org.usfirst.frc.team1923.robot.utils.PS4Controller;
@@ -50,6 +51,8 @@ public class OI {
 		driver.rb.whenPressed(new ShiftGearCommand(false));
 		driver.rt.whenPressed(new ShiftOmnisCommand(true));
 		driver.rt.whenPressed(new ShiftOmnisCommand(false));
+		
+		driver.triangle.whenPressed(new ControllerRumbleCommand(0.3));
 	}
 
 }
