@@ -52,7 +52,7 @@ public class OI {
 		driver.rt.whenPressed(new ShiftOmnisCommand(true));
 		driver.rt.whenPressed(new ShiftOmnisCommand(false));
 		
-		driver.triangle.whenPressed(new ControllerRumbleCommand(0.3));
+		driver.triangle.whenPressed(new ControllerRumbleCommand());
 	}
 
 }

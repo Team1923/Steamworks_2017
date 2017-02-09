@@ -14,10 +14,14 @@ public class ControllerRumbleCommand extends Command {
 	public double intensity;
 	public double timeOut;
 
-	public ControllerRumbleCommand(double time) {
+	public ControllerRumbleCommand(){
+		this(0.9, 0.8);
+	}
+	
+	public ControllerRumbleCommand(double intensity, double time) {
 		super();
 		hand = "both";
-		intensity = 0.3;
+		this.intensity = intensity;
 		timeOut = time;
 		setTimeout(time);
 	}
