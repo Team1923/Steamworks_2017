@@ -49,7 +49,7 @@ public class OI {
 		// Maps drivetrain shifting buttons the controllers
 		driver.lb.whenPressed(new ShiftGearCommand(true));
 		driver.rb.whenPressed(new ShiftGearCommand(false));
-		driver.rt.whenPressed(new ShiftOmnisCommand(true));
+		driver.lt.whenPressed(new ShiftOmnisCommand(true));
 		driver.rt.whenPressed(new ShiftOmnisCommand(false));
 		
 		driver.triangle.whenPressed(new ControllerRumbleCommand());
