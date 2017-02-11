@@ -32,23 +32,23 @@ public class PS4Controller extends Joystick {
 
 	/* Button Mappings */
 	private static final int SQUARE_BUTTON_ID = 1;
-	private static final int TRIANGLE_BUTTON_ID = 2;
+	private static final int TRIANGLE_BUTTON_ID = 4;
 	private static final int CIRCLE_BUTTON_ID = 3;
-	private static final int CROSS_BUTTON_ID = 4;
+	private static final int CROSS_BUTTON_ID = 2;
 	private static final int LB_BUTTON_ID = 5; // Also called L1
 	private static final int RB_BUTTON_ID = 6; // Also called R1
-	private static final int SHARE_BUTTON_ID = 7;
-	private static final int OPTIONS_BUTTON_ID = 8;
-	private static final int LEFT_CLICK_ID = 9;
-	private static final int RIGHT_CLICK_ID = 10;
+	private static final int SHARE_BUTTON_ID = 9;
+	private static final int OPTIONS_BUTTON_ID = 10;
+	private static final int LEFT_CLICK_ID = 11;
+	private static final int RIGHT_CLICK_ID = 12;
 
 	/* Axis Mappings */
-	private static final int LEFT_TRIGGER_AXIS_ID = 2; // Also called L2
-	private static final int RIGHT_TRIGGER_AXIS_ID = 3; // Also called R2
+	private static final int LEFT_TRIGGER_AXIS_ID = 3; // Also called L2
+	private static final int RIGHT_TRIGGER_AXIS_ID = 4; // Also called R2
 
 	private static final int LEFT_STICK_X_AXIS_ID = 0;
 	private static final int LEFT_STICK_Y_AXIS_ID = 1;
-	private static final int RIGHT_STICK_X_AXIS_ID = 4;
+	private static final int RIGHT_STICK_X_AXIS_ID = 2;
 	private static final int RIGHT_STICK_Y_AXIS_ID = 5;
 
 	/* Instance Values */
