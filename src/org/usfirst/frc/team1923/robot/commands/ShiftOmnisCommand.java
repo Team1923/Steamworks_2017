@@ -19,9 +19,9 @@ public class ShiftOmnisCommand extends InstantCommand {
 	// Called once when the command executes
 	protected void initialize() {
 		if (up) {
-			Robot.driveSubSystem.shiftUp();
+			Robot.driveSubSystem.shiftUpOmnis();
 		} else {
-			Robot.driveSubSystem.shiftDown();
+			Robot.driveSubSystem.shiftDownOmnis();
 		}
 	}
 }
