@@ -36,9 +36,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		// Initialize all the subsystems and OI.
+
+		oi = new OI();
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
-		oi = new OI();
+
 		chooser.addDefault("Default Auto", new EmptyCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
