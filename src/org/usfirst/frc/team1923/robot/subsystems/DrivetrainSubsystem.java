@@ -180,21 +180,27 @@ public class DrivetrainSubsystem extends Subsystem {
 	}
 
 	public void shiftUp() {
-		shifter.set(Value.kForward);
+		if (shifter.get() != Value.kForward) {
+			shifter.set(Value.kForward);
+		}
 	}
 
 	public void shiftDown() {
-		if (safeToShift()) {
+		if (safeToShift() && shifter.get() != Value.kReverse) {
 			shifter.set(Value.kReverse);
 		}
 	}
 
 	public void shiftUpOmnis() {
-		this.shiftOmnis.set(Value.kForward);
+		if (shiftOmnis.get() != Value.kForward) {
+			this.shiftOmnis.set(Value.kForward);
+		}
 	}
 
 	public void shiftDownOmnis() {
-		this.shiftOmnis.set(Value.kReverse);
+		if (shiftOmnis.get() != Value.kReverse) {
+			this.shiftOmnis.set(Value.kReverse);
+		}
 	}
 
 	private boolean safeToShift() {
