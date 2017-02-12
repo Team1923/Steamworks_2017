@@ -10,7 +10,13 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
 public class OverCurrentTrigger extends Trigger {
 
 	public boolean get() {
-		return Robot.climbSubSys.getMaxCurrent() > Robot.climbSubSys.OVER_CURRENT_RATIO
-				* Robot.climbSubSys.getVoltage();
+		if (Robot.climbSubSys != null) {
+			double maxCurrent = Robot.climbSubSys.getMaxCurrent();
+			double targetCurrent = Robot.climbSubSys.OVER_CURRENT_RATIO * Robot.climbSubSys.getVoltage();
+
+			return maxCurrent > targetCurrent;
+		} else {
+			return false;
+		}
 	}
 }

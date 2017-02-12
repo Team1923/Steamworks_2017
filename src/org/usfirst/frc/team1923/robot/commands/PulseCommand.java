@@ -28,9 +28,9 @@ public class PulseCommand extends CommandGroup {
 		// arm.
 
 		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
-		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver, 0));
-		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
-		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver, 0));
-		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
+//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver, 0));
+//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
+//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver, 0));
+//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
 	}
 }
