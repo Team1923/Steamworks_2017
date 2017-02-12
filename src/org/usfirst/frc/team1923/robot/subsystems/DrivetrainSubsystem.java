@@ -10,7 +10,10 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Class that houses the motors and shifters
@@ -34,11 +37,16 @@ public class DrivetrainSubsystem extends Subsystem {
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
 
+	public Ultrasonic frontSonar;
+
 	public DriveProfile dprofile = new DriveProfile(RobotMap.DRIVER_PROFILE);
 
 	public DrivetrainSubsystem() {
 		leftTalons = new CANTalon[RobotMap.LEFT_DRIVE_PORTS.length];
 		rightTalons = new CANTalon[RobotMap.RIGHT_DRIVE_PORTS.length];
+
+		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
+		frontSonar.setAutomaticMode(true);
 
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
