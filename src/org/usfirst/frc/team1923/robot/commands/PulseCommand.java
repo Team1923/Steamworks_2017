@@ -27,10 +27,10 @@ public class PulseCommand extends CommandGroup {
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
 
-		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
-//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver, 0));
-//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
-//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver, 0));
-//		addSequential(new ControllerRumbleCommand(0.5, Robot.oi.driver));
+		addSequential(new ControllerRumbleCommand(0.5));
+//		addSequential(new ControllerRumbleCommand(0.5, 0));
+//		addSequential(new ControllerRumbleCommand(0.5));
+//		addSequential(new ControllerRumbleCommand(0.5, 0));
+//		addSequential(new ControllerRumbleCommand(0.5));
 	}
 }

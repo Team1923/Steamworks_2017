@@ -6,6 +6,7 @@ import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This command directly feeds the raw values on the joysticks to the motor
@@ -30,6 +31,7 @@ public class RawDriveCommand extends Command {
 	protected void execute() {
 		Robot.driveSubSys.drive(Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getLeftY()),
 				Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getRightY()), TalonControlMode.PercentVbus);
+		SmartDashboard.putNumber("Distance (in): ", Robot.driveSubSys.frontSonar.getRangeInches());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
