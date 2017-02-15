@@ -55,13 +55,12 @@ public class OI {
 		// driver.lb.whenPressed(new ShiftGearCommand(true));
 		// driver.rb.whenPressed(new ShiftGearCommand(false));
 
-		driver.lb.whenPressed(new SlideCommand(true));
-		driver.rb.whenPressed(new SlideCommand(false));
+		driver.lb.whenPressed(new ShiftGearCommand(true));
+		driver.rb.whenPressed(new ShiftGearCommand(false));
 
 		driver.lt.whenPressed(new ShiftOmnisCommand(true));
 		driver.rt.whenPressed(new ShiftOmnisCommand(false));
 
-		driver.circle.whenPressed(new ControllerRumbleCommand(1));
 	}
 
 }

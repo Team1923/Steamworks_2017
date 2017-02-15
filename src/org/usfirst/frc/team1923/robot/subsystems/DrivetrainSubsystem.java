@@ -123,7 +123,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].setI(I_CONSTANT);
 		rightTalons[0].setD(D_CONSTANT);
 
-		setMasterToMode(TalonControlMode.Speed);
+		setMasterToMode(TalonControlMode.PercentVbus);
 		leftTalons[0].set(0.0);
 		leftTalons[0].reverseOutput(LEFT_REVERSED);
 
@@ -164,7 +164,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	 *            TalonControlMode to be used
 	 */
 	public void drive(double left, double right, TalonControlMode m) {
-		if (leftTalons[0].getControlMode() != m) {
+		if (leftTalons[0].getControlMode() != m || rightTalons[0].getControlMode() != m) {
 			setMasterToMode(m);
 		}
 		set(left, right);

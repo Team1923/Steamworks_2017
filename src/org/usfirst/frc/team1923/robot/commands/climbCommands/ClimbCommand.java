@@ -25,7 +25,7 @@ public class ClimbCommand extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Robot.climbSubSys.overCurrent.get(); // Ends if over currents
+		return true;			//TODO: Figure out overcurrent situation
 	}
 
 	// Called once after isFinished returns true

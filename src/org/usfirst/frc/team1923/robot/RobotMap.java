@@ -18,13 +18,13 @@ public class RobotMap {
 	public static final int OP_CONTROLLER_PORT = 1;
 
 	// Drive motor numbers
-	public static final int[] LEFT_DRIVE_PORTS = { 2, 3, 4 }; // Master Talon
+	public static final int[] LEFT_DRIVE_PORTS = { 8, 40, 41 }; // Master Talon
 																// first
-	public static final int[] RIGHT_DRIVE_PORTS = { 7, 8, 9 };
+	public static final int[] RIGHT_DRIVE_PORTS = { 1, 2, 3 };
 
 	// Talons that have the SRX Mag Enc installed (masters);
-	public static final int LEFT_ENCODER_PORT = 7;
-	public static final int RIGHT_ENCODER_PORT = 2;
+	public static final int LEFT_ENCODER_PORT = 8;
+	public static final int RIGHT_ENCODER_PORT = 1;
 
 	// Climb motor numbers
 	public static final int LEFT_CLIMB_PORT = 6;
@@ -54,8 +54,10 @@ public class RobotMap {
 	 * 1 gear piston TO BE DETERMINED: Ultrasonic? Button? Camera?
 	 */
 
-	// Ultrasonic Sensor DIO ports		
+	// Ultrasonic Sensor DIO ports
 	public static final int FRONT_SONAR_PING_PORT = 0;
-	public static final int FRONT_SONAR_ECHO_PORT = 1; 	//UNITS declared in constructor in drive subsystem
-	
+	public static final int FRONT_SONAR_ECHO_PORT = 1; // UNITS declared in
+														// constructor in drive
+														// subsystem
+
 }

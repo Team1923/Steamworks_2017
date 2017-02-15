@@ -1,14 +1,12 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.usfirst.frc.team1923.robot.RobotMap;
-import org.usfirst.frc.team1923.robot.triggers.OverCurrentTrigger;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -23,7 +21,6 @@ public class ClimberSubsystem extends Subsystem {
 	public final double CLIMB_POWER = 0.8;
 	// TODO: Find motor direction
 	private CANTalon leftClimb, rightClimb;
-	public Trigger overCurrent;
 	private DoubleSolenoid slider;
 
 	/**
@@ -48,12 +45,9 @@ public class ClimberSubsystem extends Subsystem {
 
 		leftClimb.setPID(P_CONSTANT, I_CONSTANT, D_CONSTANT);
 
-		overCurrent = new OverCurrentTrigger();
-		overCurrent.cancelWhenActive(this.getCurrentCommand()); // Cancels the
-																// climbing
-																// action when
-																// trigger
-																// reached
+		// action when
+		// trigger
+		// reached
 	}
 
 	public void set(double power) {
