@@ -34,6 +34,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	// follow
 	private CANTalon[] leftTalons, rightTalons;
 
+	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
 
 	public Ultrasonic frontSonar;
@@ -55,6 +56,8 @@ public class DrivetrainSubsystem extends Subsystem {
 			rightTalons[i] = new CANTalon(RobotMap.RIGHT_DRIVE_PORTS[i]);
 		}
 
+		shifter = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.SHIFT_FORWARD_PORT,
+				RobotMap.SHIFT_BACKWARD_PORT);
 		shiftOmnis = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.OMNI_FORWARD_PORT,
 				RobotMap.OMNI_BACKWARD_PORT);
 
@@ -184,17 +187,17 @@ public class DrivetrainSubsystem extends Subsystem {
 													// later on for more control
 	}
 
-//	public void shiftUp() {
-//		if (shifter.get() != Value.kForward) {
-//			shifter.set(Value.kForward);
-//		}
-//	}
-//
-//	public void shiftDown() {
-//		if (safeToShift() && shifter.get() != Value.kReverse) {
-//			shifter.set(Value.kReverse);
-//		}
-//	}
+	public void shiftUp() {
+		if (shifter.get() != Value.kForward) {
+			shifter.set(Value.kForward);
+		}
+	}
+
+	public void shiftDown() {
+		if (safeToShift() && shifter.get() != Value.kReverse) {
+			shifter.set(Value.kReverse);
+		}
+	}
 
 	public void shiftUpOmnis() {
 		if (shiftOmnis.get() != Value.kForward) {

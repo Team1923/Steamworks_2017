@@ -18,7 +18,7 @@ public class RobotMap {
 	public static final int OP_CONTROLLER_PORT = 1;
 
 	// Drive motor numbers
-	public static final int[] LEFT_DRIVE_PORTS = { 8, 7, 6 }; // Master Talon
+	public static final int[] LEFT_DRIVE_PORTS = { 8, 40, 41 }; // Master Talon
 																// first
 	public static final int[] RIGHT_DRIVE_PORTS = { 1, 2, 3 };
 
@@ -27,16 +27,16 @@ public class RobotMap {
 	public static final int RIGHT_ENCODER_PORT = 1;
 
 	// Climb motor numbers
-	public static final int LEFT_CLIMB_PORT = 8;
-	public static final int RIGHT_CLIMB_PORT = 9;
+	public static final int LEFT_CLIMB_PORT = 6;
+	public static final int RIGHT_CLIMB_PORT = 7;
 
 	// Climber slider port numbers
 	public static final int SLIDE_FORWARD_PORT = 6;
 	public static final int SLIDE_BACKWARD_PORT = 7;
 
 	// Gear box shifting pistons ports on the PCM
-//	public static final int SHIFT_FORWARD_PORT = 6;
-//	public static final int SHIFT_BACKWARD_PORT = 8;
+	public static final int SHIFT_FORWARD_PORT = 2;
+	public static final int SHIFT_BACKWARD_PORT = 3;
 
 	// Mechanism actuator piston ports
 	public static final int MECH_FORWARD_PORT = 4;
@@ -58,6 +58,6 @@ public class RobotMap {
 	public static final int FRONT_SONAR_PING_PORT = 0;
 	public static final int FRONT_SONAR_ECHO_PORT = 1; // UNITS declared in
 														// constructor in drive
-														// subsyste
+														// subsystem
 
 }
