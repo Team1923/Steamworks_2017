@@ -1,10 +1,5 @@
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.ControllerRumbleCommand;
-import org.usfirst.frc.team1923.robot.commands.PulseCommand;
-import org.usfirst.frc.team1923.robot.commands.climbCommands.SlideCommand;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.ShiftGearCommand;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.ShiftOmnisCommand;
 import org.usfirst.frc.team1923.robot.utils.PS4Controller;
 
 /**
@@ -50,16 +45,6 @@ public class OI {
 		driver.rt.setTriggerSensitivity(0.5);
 
 		op = new PS4Controller(RobotMap.OP_CONTROLLER_PORT);
-
-		// Maps drivetrain shifting buttons the controllers
-		// driver.lb.whenPressed(new ShiftGearCommand(true));
-		// driver.rb.whenPressed(new ShiftGearCommand(false));
-
-		driver.lb.whenPressed(new ShiftGearCommand(true));
-		driver.rb.whenPressed(new ShiftGearCommand(false));
-
-		driver.lt.whenPressed(new ShiftOmnisCommand(true));
-		driver.rt.whenPressed(new ShiftOmnisCommand(false));
 
 	}
 
