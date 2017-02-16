@@ -9,7 +9,7 @@ public class DriveTimeCommand extends Command{
 	private double speed;
 	
 	public DriveTimeCommand(double speed, double timeOut){
-		requires(Robot.driveSubSystem);
+		requires(Robot.driveSubSys);
 		setTimeout(timeOut);
 		this.speed = speed;
 	}
@@ -19,7 +19,7 @@ public class DriveTimeCommand extends Command{
 	}
 
 	protected void execute() {
-		Robot.driveSubSystem.set(speed, speed);
+		Robot.driveSubSys.set(speed, speed);
 	}
 
 	protected boolean isFinished() {
@@ -27,7 +27,7 @@ public class DriveTimeCommand extends Command{
 	}
 
 	protected void end() {
-		Robot.driveSubSystem.stop();
+		Robot.driveSubSys.stop();
 	}
 
 	protected void interrupted() {

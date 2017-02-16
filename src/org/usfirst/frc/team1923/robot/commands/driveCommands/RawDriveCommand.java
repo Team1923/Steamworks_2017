@@ -1,9 +1,12 @@
-package org.usfirst.frc.team1923.robot.commands;
+package org.usfirst.frc.team1923.robot.commands.driveCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This command directly feeds the raw values on the joysticks to the motor
@@ -12,23 +15,23 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RawDriveCommand extends Command {
 
 	public RawDriveCommand() {
-		requires(Robot.driveSubSystem);
+		requires(Robot.driveSubSys);
 	}
 
 	public RawDriveCommand(ProfileCurve p) {
-		requires(Robot.driveSubSystem);
-		Robot.driveSubSystem.dprofile.setProfile(p);
+		requires(Robot.driveSubSys);
+		Robot.driveSubSys.dprofile.setProfile(p);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.driveSubSystem.disable();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.driveSubSystem.set(Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getLeftY()),
-				Robot.driveSubSystem.dprofile.scale(Robot.oi.driver.getRightY()));
+		Robot.driveSubSys.drive(Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getLeftY()),
+				Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getRightY()), TalonControlMode.PercentVbus);
+//		SmartDashboard.putNumber("Distance (in): ", Robot.driveSubSys.frontSonar.getRangeInches());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -38,7 +41,7 @@ public class RawDriveCommand extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.driveSubSystem.set(0, 0); // Stops the robot
+		Robot.driveSubSys.set(0, 0); // Stops the robot
 	}
 
 	// Called when another command which requires one or more of the same
