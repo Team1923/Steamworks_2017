@@ -31,7 +31,8 @@ public class RawDriveCommand extends Command {
 	protected void execute() {
 		Robot.driveSubSys.drive(Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getLeftY()),
 				Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getRightY()), TalonControlMode.PercentVbus);
-//		SmartDashboard.putNumber("Distance (in): ", Robot.driveSubSys.frontSonar.getRangeInches());
+		// SmartDashboard.putNumber("Distance (in): ",
+		// Robot.driveSubSys.frontSonar.getRangeInches());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -41,7 +42,7 @@ public class RawDriveCommand extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.driveSubSys.set(0, 0); // Stops the robot
+		Robot.driveSubSys.stop(); // Stops the robot
 	}
 
 	// Called when another command which requires one or more of the same

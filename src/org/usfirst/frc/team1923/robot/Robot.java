@@ -39,10 +39,10 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		// Initialize all the subsystems and OI.
 
-		oi = new OI();
+		gearSubSys = new GearSubsystem();
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
-		gearSubSys = new GearSubsystem();
+		oi = new OI();
 
 		chooser.addDefault("Default Auto", new EmptyCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());

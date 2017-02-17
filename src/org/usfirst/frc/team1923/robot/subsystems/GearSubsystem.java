@@ -21,15 +21,18 @@ public class GearSubsystem extends Subsystem {
 	public GearSubsystem() {
 		slider = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.SLIDE_FORWARD_PORT, RobotMap.SLIDE_BACKWARD_PORT);
 		gear = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.MECH_FORWARD_PORT, RobotMap.MECH_BACKWARD_PORT);
+
 		slider.set(Value.kReverse);
+		slideIsShifted = false;
+
 		gear.set(Value.kForward);
+		gearIsShifted = true;
 	}
 
 	public void initDefaultCommand() {
 	}
 
 	public void slideShift() {
-		slideIsShifted = (slider.get() == Value.kForward);
 		if (slideIsShifted)
 			slider.set(Value.kReverse);
 		else
@@ -52,7 +55,6 @@ public class GearSubsystem extends Subsystem {
 	}
 
 	public void gearShift() {
-		gearIsShifted = (Robot.gearSubSys.gear.get() == Value.kForward);
 		if (gearIsShifted)
 			Robot.gearSubSys.gear.set(Value.kReverse);
 		else

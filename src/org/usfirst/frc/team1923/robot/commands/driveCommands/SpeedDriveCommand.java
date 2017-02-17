@@ -34,7 +34,7 @@ public class SpeedDriveCommand extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.driveSubSys.set(0, 0);
+		Robot.driveSubSys.stop();
 	}
 
 	// Called when another command which requires one or more of the same

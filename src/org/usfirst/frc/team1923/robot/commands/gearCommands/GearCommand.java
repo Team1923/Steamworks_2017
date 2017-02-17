@@ -10,11 +10,12 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 public class GearCommand extends InstantCommand {
 
 	private boolean open;
+	private boolean toggle;
 
 	public GearCommand() {
 		super();
 		requires(Robot.gearSubSys);
-		this.open = !Robot.gearSubSys.gearIsShifted;
+		toggle = true;
 	}
 
 	public GearCommand(boolean open) {
@@ -25,7 +26,9 @@ public class GearCommand extends InstantCommand {
 
 	// Called once when the command executes
 	protected void initialize() {
-		if (open) {
+		if (toggle) {
+			Robot.gearSubSys.gearShift();
+		} else if (open) {
 			Robot.gearSubSys.gearOpen();
 		} else {
 			Robot.gearSubSys.gearClose();
