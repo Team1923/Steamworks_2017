@@ -18,7 +18,7 @@ public class RobotMap {
 	public static final int OP_CONTROLLER_PORT = 1;
 
 	// Drive motor numbers
-	public static final int[] LEFT_DRIVE_PORTS = { 8, 40, 41 }; // Master Talon
+	public static final int[] LEFT_DRIVE_PORTS = { 8, 7, 6 }; // Master Talon
 																// first
 	public static final int[] RIGHT_DRIVE_PORTS = { 1, 2, 3 };
 
@@ -27,8 +27,8 @@ public class RobotMap {
 	public static final int RIGHT_ENCODER_PORT = 1;
 
 	// Climb motor numbers
-	public static final int LEFT_CLIMB_PORT = 6;
-	public static final int RIGHT_CLIMB_PORT = 7;
+	public static final int LEFT_CLIMB_PORT = 4;
+	public static final int RIGHT_CLIMB_PORT = 5;
 
 	// Climber slider port numbers
 	public static final int SLIDE_FORWARD_PORT = 6;
