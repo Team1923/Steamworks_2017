@@ -2,10 +2,12 @@
 package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
 
+import org.usfirst.frc.team1923.robot.OI;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -29,7 +31,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser<Command> chooser = new SendableChooser<Command>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -45,8 +47,10 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		chooser.addDefault("Default Auto", new EmptyCommand());
+		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData("Turn Auto", chooser);
 	}
 
 	/**
