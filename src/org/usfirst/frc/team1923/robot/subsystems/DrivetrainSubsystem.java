@@ -29,9 +29,6 @@ public class DrivetrainSubsystem extends Subsystem {
 													// the motor or both?
 	private final boolean RIGHT_REVERSED = true;
 	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
-	private final int TURN_RADIUS = 16; // TODO:  //Test & play with this value
-	private final double WHEEL_DIAMETER = 4; //TODO
-	private final double INCHES_PER_TICK = (WHEEL_DIAMETER * Math.PI) / 360;
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will
@@ -148,7 +145,6 @@ public class DrivetrainSubsystem extends Subsystem {
 	 * @param right
 	 *            Right power
 	 */
-
 	private void set(double left, double right) {
 		leftTalons[0].set(left);
 		rightTalons[0].set(right);
@@ -221,16 +217,15 @@ public class DrivetrainSubsystem extends Subsystem {
 		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
 				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
 	}
-	
-	public void turnTime(double power)
-	{	
+
+	public void turnTime(double power) {
 		leftTalons[0].changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		rightTalons[0].changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		
+
 		leftTalons[0].set(power);
 		rightTalons[0].set(-power);
 	}
-	
+
 	public void stop() {
 		drive(0, 0, TalonControlMode.PercentVbus);
 	}
