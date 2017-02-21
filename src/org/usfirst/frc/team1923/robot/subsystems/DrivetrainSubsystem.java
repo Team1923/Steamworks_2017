@@ -20,15 +20,30 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	private static final double DEFAULT_ERROR_MARGIN = 100;
-	private final double P_CONSTANT = 0; // TODO: Fill in these values
+	private final double P_CONSTANT = 0.1; // TODO: Fill in these values
 	private final double I_CONSTANT = 0;
 	private final double D_CONSTANT = 0;
 	private final double F_CONSTANT = 0;
-	private final boolean LEFT_REVERSED = false; // Reverse the sensor or
-													// the motor or both?
-	private final boolean RIGHT_REVERSED = true;
+	private final boolean LEFT_REVERSED = true; // Reverse the sensor or
+												// the motor or both?
+	private final boolean RIGHT_REVERSED = false;
 	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
+
+	// TODO: Change wheel diameter and wheelbase width
+	private final double WHEEL_DIAMETER = 4;
+	private final double DRIVE_RATIO = 34 / 50.0;
+	// Every turn of the encoder equals DRIVE_RATIO turns of the wheel
+	public final double DISTANCE_TO_ROTATION_DENOMINATOR = (Math.PI * WHEEL_DIAMETER * DRIVE_RATIO);
+	// Multiply the intended distance in inches with this multiplier to find the
+	// rotational target value e.g. target for 5 inches is
+	// 5/DISTANCE_TO_ROTATION_MULTIPLIER
+	private final double DRIVE_BASE_WIDTH = 30; // Middle of wheels measurement
+												// in inches
+	public final double DEGREE_TO_ROTATION_DENOMINATOR = 360
+			/ (Math.PI * DRIVE_BASE_WIDTH / DISTANCE_TO_ROTATION_DENOMINATOR);
+	// Multiply the intended degree turn to this to find the encoder targets for
+	// the motors
+	// e.g. target for 60 deg is 60/DEGREE_TO_ROTATION_MULTIPLIER
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will
@@ -64,8 +79,6 @@ public class DrivetrainSubsystem extends Subsystem {
 
 		setToFollow();
 		configPID();
-		drive(0, 0, TalonControlMode.PercentVbus);
-
 	}
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -104,12 +117,15 @@ public class DrivetrainSubsystem extends Subsystem {
 	private void configPID() {
 
 		leftTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		leftTalons[0].reverseSensor(false); // Set to true if reverse rotation
+		leftTalons[0].reverseSensor(LEFT_REVERSED); // Set to true if reverse
+													// rotation
 		leftTalons[0].configNominalOutputVoltage(0, 0);
 		leftTalons[0].configPeakOutputVoltage(12, -12);
+		// TODO: Config higher if necessary
 
 		rightTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		rightTalons[0].reverseSensor(false); // Set to true if reverse rotation
+		rightTalons[0].reverseSensor(RIGHT_REVERSED); // Set to true if reverse
+														// rotation
 		rightTalons[0].configNominalOutputVoltage(0, 0);
 		rightTalons[0].configPeakOutputVoltage(12, -12);
 
@@ -127,11 +143,11 @@ public class DrivetrainSubsystem extends Subsystem {
 
 		setMasterToMode(TalonControlMode.PercentVbus);
 		leftTalons[0].set(0.0);
-		// leftTalons[0].reverseOutput(LEFT_REVERSED);
+		leftTalons[0].reverseOutput(LEFT_REVERSED);
 		leftTalons[0].setInverted(LEFT_REVERSED);
 
 		rightTalons[0].set(0.0);
-		// rightTalons[0].reverseOutput(RIGHT_REVERSED);
+		rightTalons[0].reverseOutput(RIGHT_REVERSED);
 		rightTalons[0].setInverted(RIGHT_REVERSED);
 	}
 
@@ -185,11 +201,27 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].setPosition(0);
 	}
 
+	public double getLeftPosition() {
+		return leftTalons[0].getPosition();
+	}
+
+	public double getRightPosition() {
+		return rightTalons[0].getPosition();
+	}
+
+	public double getLeftSpeed() {
+		return leftTalons[0].getSpeed();
+	}
+
+	public double getRightSpeed() {
+		return rightTalons[0].getSpeed();
+	}
+
 	public void initDefaultCommand() {
 		setDefaultCommand(new RawDriveCommand());
 	}
 
-	public void shiftUp() {
+	public void shiftUp() { // TODO: Find if these orientations are correct
 		if (shifter.get() != Value.kForward) {
 			shifter.set(Value.kForward);
 		}

@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
@@ -48,10 +49,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		chooser.addDefault("Default Auto", new EmptyCommand());
-		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
+		chooser.addObject("Drive 2 inches", new DriveDistanceCommand(2, 2));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
-		SmartDashboard.putData("Turn Auto", chooser);
 	}
 
 	/**
@@ -92,7 +92,6 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		new GearSetHomeCommand().start();
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -102,6 +101,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+
+		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
+		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
+
 		Scheduler.getInstance().run();
 	}
 
@@ -113,7 +116,8 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		new GearSetHomeCommand().start();
+		// new GearSetHomeCommand().start();
+		// TODO: Uncomment for COMPETITION!!!
 	}
 
 	/**
@@ -121,6 +125,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+
+		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
+		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
+
 		Scheduler.getInstance().run();
 	}
 
