@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	private final double P_CONSTANT = 0.1; // TODO: Fill in these values
+	private final double P_CONSTANT = 0.15; // TODO: Fill in these values
 	private final double I_CONSTANT = 0;
 	private final double D_CONSTANT = 0;
 	private final double F_CONSTANT = 0;
@@ -29,21 +29,21 @@ public class DrivetrainSubsystem extends Subsystem {
 	private final boolean RIGHT_REVERSED = false;
 	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
 
-	// TODO: Change wheel diameter and wheelbase width
+	// TODO: Change wheel diameter and drive base width
 	private final double WHEEL_DIAMETER = 4;
 	private final double DRIVE_RATIO = 34 / 50.0;
 	// Every turn of the encoder equals DRIVE_RATIO turns of the wheel
-	public final double DISTANCE_TO_ROTATION_DENOMINATOR = (Math.PI * WHEEL_DIAMETER * DRIVE_RATIO);
+	public final double DISTANCE_TO_ROTATION_DENOMINATOR = Math.PI * WHEEL_DIAMETER * DRIVE_RATIO;
 	// Multiply the intended distance in inches with this multiplier to find the
 	// rotational target value e.g. target for 5 inches is
 	// 5/DISTANCE_TO_ROTATION_MULTIPLIER
-	private final double DRIVE_BASE_WIDTH = 30; // Middle of wheels measurement
+	private final double DRIVE_BASE_WIDTH = 22.5; // Middle of wheels measurement
 												// in inches
-	public final double DEGREE_TO_ROTATION_DENOMINATOR = 360
-			/ (Math.PI * DRIVE_BASE_WIDTH / DISTANCE_TO_ROTATION_DENOMINATOR);
+	public final double DEGREE_TO_ROTATION_DENOMINATOR = 360 / (Math.PI * DRIVE_BASE_WIDTH / DISTANCE_TO_ROTATION_DENOMINATOR);
 	// Multiply the intended degree turn to this to find the encoder targets for
 	// the motors
 	// e.g. target for 60 deg is 60/DEGREE_TO_ROTATION_MULTIPLIER
+	
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will
@@ -260,6 +260,10 @@ public class DrivetrainSubsystem extends Subsystem {
 
 	public void stop() {
 		drive(0, 0, TalonControlMode.PercentVbus);
+	}
+	
+	public double angleToDistance( double angle ) {
+		return angle * Math.PI * DRIVE_BASE_WIDTH /360;
 	}
 
 }

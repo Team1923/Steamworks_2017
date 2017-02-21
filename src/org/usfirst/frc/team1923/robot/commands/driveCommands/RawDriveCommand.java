@@ -31,6 +31,10 @@ public class RawDriveCommand extends Command {
 	protected void execute() {
 		Robot.driveSubSys.drive(Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getLeftY()),
 				Robot.driveSubSys.dprofile.scale(Robot.oi.driver.getRightY()), TalonControlMode.PercentVbus);
+		// SmartDashboard.putNumber("L Enc pos",
+		// Robot.driveSubSys.getLeftPosition());
+		// SmartDashboard.putNumber("R Enc pos",
+		// Robot.driveSubSys.getRightPosition());
 		// SmartDashboard.putNumber("Distance (in): ",
 		// Robot.driveSubSys.frontSonar.getRangeInches());
 	}

@@ -32,8 +32,8 @@ public class DriveDistanceCommand extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		Robot.driveSubSys.resetPosition();
-		double left_target = left * Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
-		double right_target = right * Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
+		double left_target = left / Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
+		double right_target = right / Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
 
 		// double left_target = left;
 		// double right_target = right;
@@ -46,6 +46,7 @@ public class DriveDistanceCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
