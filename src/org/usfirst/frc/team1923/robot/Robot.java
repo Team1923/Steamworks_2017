@@ -2,8 +2,13 @@
 package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
+import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
+import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
 
+import org.usfirst.frc.team1923.robot.OI;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,11 +26,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	// Declare one instance of each subsystem and OI.
-	public static DrivetrainSubsystem drive;
+	public static DrivetrainSubsystem driveSubSys;
+	public static ClimberSubsystem climbSubSys;
+	public static GearSubsystem gearSubSys;
 	public static OI oi;
 
 	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	SendableChooser<Command> chooser = new SendableChooser<Command>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -34,11 +41,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		// Initialize all the subsystems and OI.
-		drive = new DrivetrainSubsystem();
+
+		gearSubSys = new GearSubsystem();
+		driveSubSys = new DrivetrainSubsystem();
+		climbSubSys = new ClimberSubsystem();
 		oi = new OI();
+
 		chooser.addDefault("Default Auto", new EmptyCommand());
+		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData("Turn Auto", chooser);
 	}
 
 	/**
@@ -79,6 +92,7 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
+		new GearSetHomeCommand().start();
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -99,6 +113,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		new GearSetHomeCommand().start();
 	}
 
 	/**

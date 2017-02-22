@@ -1,6 +1,10 @@
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.ShiftCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.ShiftOmniCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.SlideCommand;
 import org.usfirst.frc.team1923.robot.utils.PS4Controller;
 
 /**
@@ -42,11 +46,20 @@ public class OI {
 
 		// Creates two ps4 controllers
 		driver = new PS4Controller(RobotMap.DRIVER_CONTROLLER_PORT);
+		driver.lt.setTriggerSensitivity(0.5);
+		driver.rt.setTriggerSensitivity(0.5);
+
 		op = new PS4Controller(RobotMap.OP_CONTROLLER_PORT);
 
-		// Maps drivetrain shifting buttons the controllers
-		driver.lb.whenPressed(new EmptyCommand());
-		driver.rb.whenPressed(new EmptyCommand());
+		driver.lb.whenActive(new ShiftCommand(true));
+		driver.rb.whenActive(new ShiftCommand(false));
+
+		driver.lt.whenActive(new ShiftOmniCommand(true));
+		driver.rt.whenActive(new ShiftOmniCommand(false));
+
+		driver.square.whenActive(new SlideCommand());
+		driver.triangle.whenActive(new GearCommand());
+		driver.circle.whenActive(new GearSetHomeCommand());
 	}
 
 }
