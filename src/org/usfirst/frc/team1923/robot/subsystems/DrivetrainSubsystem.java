@@ -173,6 +173,10 @@ public class DrivetrainSubsystem extends Subsystem {
 		}
 		set(left, right);
 	}
+	
+	public void auto(double pow, double turn) {
+		set(pow+turn, pow-turn);
+	}
 
 	/**
 	 * Resets current position of the encoders.

@@ -7,13 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class VisionCommand extends Command {
+public class VisionAlignCommand extends Command {
 
-	public double power,angle;
+	public double power,turn;
 	
-    public VisionCommand() {
+    public VisionAlignCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.visionSubSys);
     }
 
     // Called just before this Command runs the first time
@@ -23,22 +24,24 @@ public class VisionCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.angle==-2){
+    	//TODO: Change power value to account for distance
+    	//TODO: Take into account values from ultrasonic sensors
+    	if(Robot.visionSubSys.turn==Integer.MIN_VALUE){
     		power=0;
-    		angle=0;
+    		turn=0;
     	}
     	else{
     		power=0.2;
-    		angle=Robot.angle;
+    		turn=Robot.visionSubSys.turn;
     	}
     	
-    	System.out.println("Power: " + power + " Angle: " +  angle);
-    	Robot.driveSubSys.auto(power, angle);
+    	System.out.println("Power: " + power + " Turn: " +  turn);
+    	Robot.driveSubSys.auto(power, turn);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return false; //TODO: return true when perfectly aligned
     }
 
     // Called once after isFinished returns true

@@ -4,9 +4,8 @@ package org.usfirst.frc.team1923.robot;
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
-import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
-import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
-import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAuton;
+import org.usfirst.frc.team1923.robot.subsystems.*;
 
 import org.usfirst.frc.team1923.robot.OI;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -29,6 +28,7 @@ public class Robot extends IterativeRobot {
 	public static DrivetrainSubsystem driveSubSys;
 	public static ClimberSubsystem climbSubSys;
 	public static GearSubsystem gearSubSys;
+	public static VisionSubsystem visionSubSys;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -45,10 +45,12 @@ public class Robot extends IterativeRobot {
 		gearSubSys = new GearSubsystem();
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
+		
 		oi = new OI();
 
 		chooser.addDefault("Default Auto", new EmptyCommand());
 		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
+		chooser.addObject("Vision Auton" , new VisionAuton());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData("Turn Auto", chooser);
