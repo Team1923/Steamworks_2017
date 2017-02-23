@@ -2,6 +2,8 @@ package org.usfirst.frc.team1923.robot.commands.visionCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
 
+import com.sun.webkit.Timer;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class VisionAlignCommand extends Command {
 
 	public double power,turn;
+	private Timer time;
 	
     public VisionAlignCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -19,7 +22,7 @@ public class VisionAlignCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	time = Timer.getTimer();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,8 +38,15 @@ public class VisionAlignCommand extends Command {
     		turn=Robot.visionSubSys.turn;
     	}
     	
+    	//Testing
     	System.out.println("Power: " + power + " Turn: " +  turn);
+    	
     	Robot.driveSubSys.auto(power, turn);
+    	try {
+			time.wait(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
 
     // Make this return true when this Command no longer needs to run execute()

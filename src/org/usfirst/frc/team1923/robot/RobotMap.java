@@ -62,7 +62,7 @@ public class RobotMap {
 	
 	//Vision Subsystem Constants
 	
-	public static final String CAMERA_IP="";
+	public static final String CAMERA_IP="http://axis-camera";
 	
 	public static final String NEWTORK_TABLE_ADDRESS="GRIP/table";
 	public static final int IMG_WIDTH=640;

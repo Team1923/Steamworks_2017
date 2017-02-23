@@ -7,6 +7,8 @@ import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAlignCommand
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
+import edu.wpi.cscore.CvSource;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
@@ -26,8 +28,14 @@ public class VisionSubsystem extends Subsystem {
 	 * Initializes CameraServer and NetworkTables
 	 */
 	public VisionSubsystem() {
+		//TODO: Implement Bounding Rectangle
+		//TODO: IMplement Controller Vibration when Match time is getting low
 		//Start Camera Server
-		
+		CameraServer.getInstance().addAxisCamera(RobotMap.CAMERA_IP);
+		//Testing Drawing Bounding Rectangle Around Peg
+		/*
+		CvSource output = CameraServer.getInstance().putVideo("Annotated", 320, 240);
+		*/
 		//TODO: Account for difference in areas of tape to change turn value
 		//TODO: Add ultrasonic sensors
 		def = new double[0];
@@ -52,6 +60,9 @@ public class VisionSubsystem extends Subsystem {
 			turn=-1;
 		else if(turn>1)
 			turn=1;						//TODO: Use PID to got to turn value and use an angle instead of turn (Using IMU)
+		
+		//Testing
+		System.out.println("Center X " + centerx);
 	}
 	
 
