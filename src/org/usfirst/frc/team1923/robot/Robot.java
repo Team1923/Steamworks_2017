@@ -50,8 +50,8 @@ public class Robot extends IterativeRobot {
 		climbSubSys = new ClimberSubsystem();
 		oi = new OI();
 
-		chooser.addDefault("Default Auto", new DriveDistanceCommand(15,15));
-		chooser.addObject("Drive 5 inches", new DriveDistanceCommand(5, 5));
+		chooser.addDefault("Default Auto", new EmptyCommand());
+		chooser.addObject("Drive 15 inches", new DriveDistanceCommand(15,15));
 
 //		if (driverStation.getAlliance().equals(Alliance.Blue)) {
 //			// TODO: Add blue autons
@@ -60,9 +60,16 @@ public class Robot extends IterativeRobot {
 //		} else {
 //			// TODO: Add all autons
 //		}
+		
+		SmartDashboard.putNumber("P Value", 0.08);
+		SmartDashboard.putNumber("I Value", 0);
+		SmartDashboard.putNumber("D Value", 0);
+		SmartDashboard.putNumber("F Value", 0.01);
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("auto mode", chooser);
+		
+		
 	}
 
 	/**
@@ -139,7 +146,11 @@ public class Robot extends IterativeRobot {
 
 		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
 		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
-
+		double p = SmartDashboard.getNumber("P Value", 0);
+		double i = SmartDashboard.getNumber("I Value", 0);
+		double d = SmartDashboard.getNumber("D Value", 0);
+		double f = SmartDashboard.getNumber("F Value", 0);
+		driveSubSys.setPID(p, i, d, f);
 		Scheduler.getInstance().run();
 	}
 
