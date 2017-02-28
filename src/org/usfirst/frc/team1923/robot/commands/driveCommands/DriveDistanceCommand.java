@@ -23,6 +23,8 @@ public class DriveDistanceCommand extends Command {
 	 * @param right
 	 *            Distance traveled by right wheel in inches
 	 */
+	private double left_target, right_target;
+
 	public DriveDistanceCommand(double left, double right) {
 		requires(Robot.driveSubSys);
 		this.left = left;
@@ -32,11 +34,8 @@ public class DriveDistanceCommand extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		Robot.driveSubSys.resetPosition();
-		double left_target = left * Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
-		double right_target = right * Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
-
-		// double left_target = left;
-		// double right_target = right;
+		left_target = left / Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
+		right_target = right / Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
 
 		SmartDashboard.putNumber("Left Target", left_target);
 		SmartDashboard.putNumber("Right target", right_target);
@@ -46,16 +45,21 @@ public class DriveDistanceCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		// SmartDashboard.putString("Test", "WOW!!");
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		System.out.println(Robot.driveSubSys.getLeftError() + " " + Robot.driveSubSys.getRightError());
+		return (Robot.driveSubSys.getLeftTarget() != 0 || Robot.driveSubSys.getRightTarget() != 0) && (Math.abs(Robot.driveSubSys.getLeftError()) < 800)
+				&& (Math.abs(Robot.driveSubSys.getRightError()) < 800);
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.driveSubSys.stop();
+		System.out.println("END END END");
+		// Robot.driveSubSys.disable();
+		Robot.driveSubSys.drive(0, 0, TalonControlMode.PercentVbus);
 	}
 
 	// Called when another command which requires one or more of the same

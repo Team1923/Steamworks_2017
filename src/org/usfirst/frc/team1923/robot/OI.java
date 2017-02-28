@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1923.robot;
 
+import org.usfirst.frc.team1923.robot.commands.driveCommands.DumbEncoderTurn;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.ResetEncoderCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.ShiftCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.ShiftOmniCommand;
@@ -62,6 +63,8 @@ public class OI {
 		driver.triangle.whenActive(new GearCommand());
 		driver.circle.whenActive(new GearSetHomeCommand());
 		driver.cross.whenActive(new ResetEncoderCommand());
+		
+		driver.dPad.down.whenActive(new DumbEncoderTurn(90));
 	}
 
 }

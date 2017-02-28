@@ -3,13 +3,14 @@ package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
-import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
 
 import org.usfirst.frc.team1923.robot.OI;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,6 +35,7 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<Command>();
+	DriverStation driverStation = DriverStation.getInstance();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -49,9 +51,25 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		chooser.addDefault("Default Auto", new EmptyCommand());
-		chooser.addObject("Drive 2 inches", new DriveDistanceCommand(2, 2));
+		chooser.addObject("Drive 15 inches", new DriveDistanceCommand(15,15));
+
+//		if (driverStation.getAlliance().equals(Alliance.Blue)) {
+//			// TODO: Add blue autons
+//		} else if (driverStation.getAlliance().equals(Alliance.Red)) {
+//			// TODO: Add red autons
+//		} else {
+//			// TODO: Add all autons
+//		}
+		
+		SmartDashboard.putNumber("P Value", 0.08);
+		SmartDashboard.putNumber("I Value", 0);
+		SmartDashboard.putNumber("D Value", 0);
+		SmartDashboard.putNumber("F Value", 0.01);
+
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putData("auto mode", chooser);
+		
+		
 	}
 
 	/**
@@ -128,7 +146,11 @@ public class Robot extends IterativeRobot {
 
 		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
 		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
-
+		double p = SmartDashboard.getNumber("P Value", 0);
+		double i = SmartDashboard.getNumber("I Value", 0);
+		double d = SmartDashboard.getNumber("D Value", 0);
+		double f = SmartDashboard.getNumber("F Value", 0);
+		driveSubSys.setPID(p, i, d, f);
 		Scheduler.getInstance().run();
 	}
 
