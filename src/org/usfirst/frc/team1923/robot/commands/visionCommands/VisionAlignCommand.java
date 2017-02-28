@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.visionCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
 
 import com.sun.webkit.Timer;
 
@@ -29,6 +30,7 @@ public class VisionAlignCommand extends Command {
     protected void execute() {
     	//TODO: Change power value to account for distance
     	//TODO: Take into account values from ultrasonic sensors
+    	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
     	if(Robot.visionSubSys.turn==Integer.MIN_VALUE){
     		power=0;
     		turn=0;
@@ -56,6 +58,7 @@ public class VisionAlignCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	//new GearCommand(true);
     }
 
     // Called when another command which requires one or more of the same

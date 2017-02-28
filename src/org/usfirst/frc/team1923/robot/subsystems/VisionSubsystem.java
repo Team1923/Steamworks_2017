@@ -3,9 +3,7 @@ package org.usfirst.frc.team1923.robot.subsystems;
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.climbCommands.ClimbCommand;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAlignCommand;
-
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionProcessing;
 
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -59,7 +57,7 @@ public class VisionSubsystem extends Subsystem {
 		if(turn<-1)
 			turn=-1;
 		else if(turn>1)
-			turn=1;						//TODO: Use PID to got to turn value and use an angle instead of turn (Using IMU)
+			turn=1;						//TODO: Use PID to get to turn value and use an angle instead of turn (Using IMU)
 		
 		//Testing
 		System.out.println("Center X " + centerx);
@@ -67,6 +65,6 @@ public class VisionSubsystem extends Subsystem {
 	
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new VisionAlignCommand());
+		setDefaultCommand(new VisionProcessing());
 	}
 }

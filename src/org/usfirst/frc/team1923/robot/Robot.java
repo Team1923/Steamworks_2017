@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 		
 		oi = new OI();
 
-		chooser.addDefault("Default Auto", new EmptyCommand());
+		chooser.addDefault("Do Nothing Auto", new DoNothing());
 		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
 		chooser.addObject("Vision Auton" , new VisionAuton());
 		// chooser.addObject("My Auto", new MyAutoCommand());

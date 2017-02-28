@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1923.robot.commands.visionCommands;
 
+import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -25,6 +28,8 @@ public class VisionAuton extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new VisionAlignCommand());  //Aligns Gear
+    	//addSequential(new GearCommand(true));
+    	//addSequential(new DriveTimeCommand(-0.5,1)); 
     	
     	//TODO: Add Gear Drop and drive past line
     }
