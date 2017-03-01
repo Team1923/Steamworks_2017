@@ -135,12 +135,14 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons[0].setP(P_CONSTANT);
 		leftTalons[0].setI(I_CONSTANT);
 		leftTalons[0].setD(D_CONSTANT);
-
+		leftTalons[0].setAllowableClosedLoopErr(400);
+		
 		rightTalons[0].setProfile(0);
 		rightTalons[0].setF(F_CONSTANT);
 		rightTalons[0].setP(P_CONSTANT);
 		rightTalons[0].setI(I_CONSTANT);
 		rightTalons[0].setD(D_CONSTANT);
+		rightTalons[0].setAllowableClosedLoopErr(400);
 
 		setMasterToMode(TalonControlMode.PercentVbus);
 		leftTalons[0].set(0.0);

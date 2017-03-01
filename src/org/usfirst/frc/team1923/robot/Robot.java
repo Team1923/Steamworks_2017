@@ -10,7 +10,6 @@ import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
 import org.usfirst.frc.team1923.robot.OI;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -51,16 +50,16 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		chooser.addDefault("Default Auto", new EmptyCommand());
-		chooser.addObject("Drive 15 inches", new DriveDistanceCommand(15,15));
+		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
 
-//		if (driverStation.getAlliance().equals(Alliance.Blue)) {
-//			// TODO: Add blue autons
-//		} else if (driverStation.getAlliance().equals(Alliance.Red)) {
-//			// TODO: Add red autons
-//		} else {
-//			// TODO: Add all autons
-//		}
-		
+		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
+		// // TODO: Add blue autons
+		// } else if (driverStation.getAlliance().equals(Alliance.Red)) {
+		// // TODO: Add red autons
+		// } else {
+		// // TODO: Add all autons
+		// }
+
 		SmartDashboard.putNumber("P Value", 0.08);
 		SmartDashboard.putNumber("I Value", 0);
 		SmartDashboard.putNumber("D Value", 0);
@@ -68,8 +67,7 @@ public class Robot extends IterativeRobot {
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("auto mode", chooser);
-		
-		
+
 	}
 
 	/**
