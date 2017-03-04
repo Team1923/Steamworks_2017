@@ -37,7 +37,7 @@ public class VisionAlignCommand extends Command {
     		turn=0;
     	}
     	else{
-    		power=-0.4;
+    		power=-0.25;
     		//power=0;
     		turn=Robot.visionSubSys.turn;
     	}
@@ -56,26 +56,27 @@ public class VisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.width<=60)
+    	if(Robot.visionSubSys.width<=37)
     		return false;
-    	else
+    	else{
     		return true;
+    	}
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	Command command = new GearCommand(true);
-    	command.start();
+//    	try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//    	Command command = new GearCommand(true);
+//    	command.start();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	
     }
 }
