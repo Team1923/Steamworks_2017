@@ -1,11 +1,18 @@
 
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
+
+import org.usfirst.frc.team1923.robot.commands.DoNothing;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.subsystems.*;
 
 import org.usfirst.frc.team1923.robot.OI;
 
@@ -30,6 +37,7 @@ public class Robot extends IterativeRobot {
 	public static DrivetrainSubsystem driveSubSys;
 	public static ClimberSubsystem climbSubSys;
 	public static GearSubsystem gearSubSys;
+	public static VisionSubsystem visionSubSys;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -47,9 +55,11 @@ public class Robot extends IterativeRobot {
 		gearSubSys = new GearSubsystem();
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
+		visionSubSys = new VisionSubsystem();
+		
 		oi = new OI();
 
-		chooser.addDefault("Default Auto", new EmptyCommand());
+		chooser.addDefault("Default Auto", new DoNothing());
 		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
 
 		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
@@ -62,8 +72,13 @@ public class Robot extends IterativeRobot {
 		//
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("auto mode", chooser);
-
+		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
+		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
+		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
+		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
+		// chooser.addObject("My Auto", new MyAutoCommand());
+		SmartDashboard.putData("Auto mode", chooser);
+		//SmartDashboard.putData("Turn Auto", chooser);
 	}
 
 	/**

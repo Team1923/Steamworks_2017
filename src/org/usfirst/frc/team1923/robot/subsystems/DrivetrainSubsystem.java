@@ -208,6 +208,10 @@ public class DrivetrainSubsystem extends Subsystem {
 		}
 		set(left, right);
 	}
+	
+	public void auto(double pow, double turn) {
+		set(pow+turn, pow-turn);
+	}
 
 	/**
 	 * Resets current position of the encoders.
@@ -281,8 +285,9 @@ public class DrivetrainSubsystem extends Subsystem {
 	}
 
 	private boolean safeToShift() {
-		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
-				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+//		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
+//				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+		return true;
 	}
 
 	public void stop() {
