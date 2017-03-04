@@ -9,6 +9,7 @@ import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.SlideCommand;
 import org.usfirst.frc.team1923.robot.utils.PS4Controller;
+import org.usfirst.frc.team1923.robot.utils.XboxController;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,7 +44,8 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 
-	public PS4Controller driver, op;
+	public PS4Controller driver;
+	public XboxController op;
 
 	public OI() {
 
@@ -52,7 +54,7 @@ public class OI {
 		driver.lt.setTriggerSensitivity(0.5);
 		driver.rt.setTriggerSensitivity(0.5);
 
-		op = new PS4Controller(RobotMap.OP_CONTROLLER_PORT);
+		op = new XboxController(RobotMap.OP_CONTROLLER_PORT);
 
 		driver.lb.whenActive(new ShiftCommand(true));
 		driver.rb.whenActive(new ShiftCommand(false));
@@ -60,10 +62,13 @@ public class OI {
 		driver.lt.whenActive(new ShiftOmniCommand(true));
 		driver.rt.whenActive(new ShiftOmniCommand(false));
 
-		driver.square.whenActive(new SlideCommand());
-		driver.triangle.whenActive(new GearCommand());
-		driver.circle.whenActive(new GearSetHomeCommand());
-		driver.cross.whenActive(new ResetEncoderCommand());
+    
+		op.x.whenActive(new SlideCommand());
+		op.y.whenActive(new GearCommand());
+    
+		op.b.whenActive(new GearSetHomeCommand());
+    
+    driver.cross.whenActive(new ResetEncoderCommand());
 
 //		driver.dPad.down.whenActive(new TurnAngleCommand(90));
 //		driver.dPad.up.whenActive(new TurnAngleCommand(180));
@@ -74,6 +79,6 @@ public class OI {
 		driver.dPad.up.whenActive(new DriveDistanceCommand(100, 100));
 		driver.dPad.left.whenActive(new DriveDistanceCommand(200, 200));
 		driver.dPad.right.whenActive(new DriveDistanceCommand(300,300));
+    
 	}
-
 }
