@@ -12,6 +12,7 @@ public class VisionProcessing extends Command {
     public VisionProcessing() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.visionSubSys);
     }
 
     // Called just before this Command runs the first time
@@ -26,7 +27,7 @@ public class VisionProcessing extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

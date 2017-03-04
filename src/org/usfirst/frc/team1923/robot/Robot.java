@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+import org.usfirst.frc.team1923.robot.commands.DoNothing;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAuton;
@@ -45,6 +45,7 @@ public class Robot extends IterativeRobot {
 		gearSubSys = new GearSubsystem();
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
+		visionSubSys = new VisionSubsystem();
 		
 		oi = new OI();
 
@@ -53,7 +54,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Vision Auton" , new VisionAuton());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
-		SmartDashboard.putData("Turn Auto", chooser);
+		//SmartDashboard.putData("Turn Auto", chooser);
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		new GearSetHomeCommand().start();
+		//new GearSetHomeCommand().start();
 	}
 
 	/**

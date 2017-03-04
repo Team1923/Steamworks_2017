@@ -3,7 +3,7 @@ package org.usfirst.frc.team1923.robot.commands.visionCommands;
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
 
-import com.sun.webkit.Timer;
+//import com.sun.webkit.Timer;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class VisionAlignCommand extends Command {
 
 	public double power,turn;
-	private Timer time;
+	//private Timer time;
 	
     public VisionAlignCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -23,7 +23,7 @@ public class VisionAlignCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	time = Timer.getTimer();
+    	//time = Timer.getTimer();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -31,12 +31,14 @@ public class VisionAlignCommand extends Command {
     	//TODO: Change power value to account for distance
     	//TODO: Take into account values from ultrasonic sensors
     	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
-    	if(Robot.visionSubSys.turn==Integer.MIN_VALUE){
+    	Robot.visionSubSys.refresh();
+    	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
     	}
     	else{
-    		power=0.2;
+    		power=-0.4;
+    		//power=0;
     		turn=Robot.visionSubSys.turn;
     	}
     	
@@ -44,21 +46,32 @@ public class VisionAlignCommand extends Command {
     	System.out.println("Power: " + power + " Turn: " +  turn);
     	
     	Robot.driveSubSys.auto(power, turn);
-    	try {
-			time.wait(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//    	try {
+//    		Thread.sleep(100);
+//			//time.wait(100);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false; //TODO: return true when perfectly aligned
+    	if(Robot.visionSubSys.width<=60)
+    		return false;
+    	else
+    		return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	//new GearCommand(true);
+    	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	Command command = new GearCommand(true);
+    	command.start();
     }
 
     // Called when another command which requires one or more of the same

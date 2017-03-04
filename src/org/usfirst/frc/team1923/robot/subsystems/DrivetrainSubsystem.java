@@ -218,8 +218,9 @@ public class DrivetrainSubsystem extends Subsystem {
 	}
 
 	private boolean safeToShift() {
-		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
-				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+//		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
+//				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+		return true;
 	}
 
 	public void turnTime(double power) {

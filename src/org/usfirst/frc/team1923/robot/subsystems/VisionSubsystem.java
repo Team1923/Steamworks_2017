@@ -18,6 +18,8 @@ public class VisionSubsystem extends Subsystem {
 	public NetworkTable table;
 	public double[] x;
 	public double centerx,turn;
+	public double[] widtharr;
+	public double width;
 	
 	private double sum;
 	private double[] def; 
@@ -42,7 +44,10 @@ public class VisionSubsystem extends Subsystem {
 	}
 	
 	public void refresh(){
-		x = table.getNumberArray("centerx", def);
+		x = table.getNumberArray("centerX", def);
+		widtharr= table.getNumberArray("width", def);
+		if(widtharr.length>0)
+			width=widtharr[0];
 		sum=0;
 		for(double a : x){
 			sum+=a;
@@ -51,13 +56,18 @@ public class VisionSubsystem extends Subsystem {
 			centerx=sum/x.length;		//centerx: pixel value of middle of peg
 		else
 			centerx=Integer.MIN_VALUE;   
-		turn=centerx-RobotMap.IMG_WIDTH;
+		turn=centerx-RobotMap.IMG_WIDTH/2-30;
 		turn/=RobotMap.TURN_CONSTANT; 
 		//Check Boundaries of turn
 		if(turn<-1)
 			turn=-1;
 		else if(turn>1)
 			turn=1;						//TODO: Use PID to get to turn value and use an angle instead of turn (Using IMU)
+		
+		turn*=-1;
+		
+		if(x.length==0)
+			turn=Integer.MIN_VALUE;
 		
 		//Testing
 		System.out.println("Center X " + centerx);
