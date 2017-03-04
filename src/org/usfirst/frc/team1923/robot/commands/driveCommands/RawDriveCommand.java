@@ -6,7 +6,6 @@ import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This command directly feeds the raw values on the joysticks to the motor

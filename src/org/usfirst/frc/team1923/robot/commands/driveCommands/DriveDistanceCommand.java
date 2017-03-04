@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.driveCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
+import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 
 import com.ctre.CANTalon.TalonControlMode;
 
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveDistanceCommand extends Command {
 
 	private double left, right;
+	private final int TOLERANCE = Robot.driveSubSys.ALLOWABLE_ERROR; // Ticks
 
 	/**
 	 * This command drives the robot a set distance with the left and right
@@ -29,7 +31,7 @@ public class DriveDistanceCommand extends Command {
 		requires(Robot.driveSubSys);
 		this.left = left;
 		this.right = right;
-
+		this.setTimeout(left * 0.05 + 1);
 	}
 
 	// Called just before this Command runs the first time
@@ -37,8 +39,8 @@ public class DriveDistanceCommand extends Command {
 
 		Robot.driveSubSys.resetPosition();
 
-		left_target = left / Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
-		right_target = right / Robot.driveSubSys.DISTANCE_TO_ROTATION_DENOMINATOR;
+		left_target = DrivetrainSubsystem.distanceToRotation(left);
+		right_target = DrivetrainSubsystem.distanceToRotation(right);
 
 		SmartDashboard.putNumber("Left Target", left_target);
 		SmartDashboard.putNumber("Right target", right_target);
@@ -53,15 +55,19 @@ public class DriveDistanceCommand extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		System.out.println(Robot.driveSubSys.getLeftError() + " " + Robot.driveSubSys.getRightError());
-		return (Robot.driveSubSys.getLeftTarget() != 0 && Robot.driveSubSys.getRightTarget() != 0)
-				&& (Math.abs(Robot.driveSubSys.getLeftError()) < 400)
-				&& (Math.abs(Robot.driveSubSys.getRightError()) < 400);
+		return isTimedOut() || ((Math.abs(Robot.driveSubSys.getLeftError()) < TOLERANCE)
+				&& (Math.abs(Robot.driveSubSys.getRightError()) < TOLERANCE));
+		
+		//(Robot.driveSubSys.getLeftTarget() != 0 && Robot.driveSubSys.getRightTarget() != 0)
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		if(isTimedOut()){
+			System.out.println("TIMED OUT");
+		}
 		System.out.println("END END END");
-//		Robot.driveSubSys.resetPosition();
+		// Robot.driveSubSys.resetPosition();
 		// Robot.driveSubSys.disable();
 		Robot.driveSubSys.stop();
 	}

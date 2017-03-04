@@ -20,31 +20,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	private final double P_CONSTANT = 0.04; // TODO: Fill in these values
-	private final double I_CONSTANT = 0;
+	private final double P_CONSTANT = 0.03; // TODO: Fill in these values
+	private final double I_CONSTANT = 0.00005;
 	private final double D_CONSTANT = 0;
-	private final double F_CONSTANT = 0.005;
+	private final double F_CONSTANT = 0;
 	private final boolean LEFT_REVERSED = true; // Reverse the sensor or
 												// the motor or both?
 	private final boolean RIGHT_REVERSED = false;
 	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
 
+	public final int ALLOWABLE_ERROR = 200;
+
 	// TODO: Change wheel diameter and drive base width
-	private final double WHEEL_DIAMETER = 4;
-	private final double DRIVE_RATIO = 31.5 / 50.0;
+	private final static double WHEEL_DIAMETER = 4;
+	private final static double DRIVE_RATIO = 32.5 / 50.0;
 	// Every turn of the encoder equals DRIVE_RATIO turns of the wheel
-	public final double DISTANCE_TO_ROTATION_DENOMINATOR = Math.PI * WHEEL_DIAMETER * DRIVE_RATIO;
-	// Multiply the intended distance in inches with this multiplier to find the
-	// rotational target value e.g. target for 5 inches is
-	// 5/DISTANCE_TO_ROTATION_MULTIPLIER
-	private final double DRIVE_BASE_WIDTH = 22.5; // Middle of wheels
-													// measurement
-													// in inches
-	public final double DEGREE_TO_ROTATION_DENOMINATOR = 360
-			/ (Math.PI * DRIVE_BASE_WIDTH / DISTANCE_TO_ROTATION_DENOMINATOR);
-	// Multiply the intended degree turn to this to find the encoder targets for
-	// the motors
-	// e.g. target for 60 deg is 60/DEGREE_TO_ROTATION_MULTIPLIER
+
+	private final static double DRIVE_BASE_WIDTH = 22.5;
+	// Middle of wheels measurement in inches
+	public static double TURNING_CONSTANT = 1.06;
+	private static final double DRIVE_CONSTANT = 1;
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will
@@ -90,6 +85,9 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons[2].changeControlMode(TalonControlMode.Follower);
 		leftTalons[2].set(leftTalons[0].getDeviceID());
 
+//		leftTalons[0].changeControlMode(TalonControlMode.Follower);
+//		leftTalons[0].set(rightTalons[0].getDeviceID());
+		
 		rightTalons[1].changeControlMode(TalonControlMode.Follower);
 		rightTalons[1].set(rightTalons[0].getDeviceID());
 		rightTalons[2].changeControlMode(TalonControlMode.Follower);
@@ -135,14 +133,16 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons[0].setP(P_CONSTANT);
 		leftTalons[0].setI(I_CONSTANT);
 		leftTalons[0].setD(D_CONSTANT);
-		leftTalons[0].setAllowableClosedLoopErr(400);
-		
+		leftTalons[0].setIZone(8000);
+		leftTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
+
 		rightTalons[0].setProfile(0);
 		rightTalons[0].setF(F_CONSTANT);
 		rightTalons[0].setP(P_CONSTANT);
 		rightTalons[0].setI(I_CONSTANT);
 		rightTalons[0].setD(D_CONSTANT);
-		rightTalons[0].setAllowableClosedLoopErr(400);
+		rightTalons[0].setIZone(8000);
+		rightTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
 
 		setMasterToMode(TalonControlMode.PercentVbus);
 		leftTalons[0].set(0.0);
@@ -154,13 +154,13 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].setInverted(RIGHT_REVERSED);
 	}
 
-	public void setPID(double p, double i, double d, double f){
-		leftTalons[0].setPID(p, i, d);
-		leftTalons[0].setF(f);
-		rightTalons[0].setPID(p, i, d);
-		rightTalons[0].setF(f);
-	}
-	
+	// public void setPID(double p, double i, double d, double f) {
+	// leftTalons[0].setPID(p, i, d);
+	// leftTalons[0].setF(f);
+	// rightTalons[0].setPID(p, i, d);
+	// rightTalons[0].setF(f);
+	// }
+
 	/**
 	 * Directly sets the input value of the motors
 	 * 
@@ -182,12 +182,12 @@ public class DrivetrainSubsystem extends Subsystem {
 	public void disable() {
 		setMasterToMode(TalonControlMode.Disabled);
 	}
-	
+
 	public void disableControl() {
 		leftTalons[0].disableControl();
 		rightTalons[0].disableControl();
 	}
-	
+
 	public void enable() {
 		setMasterToMode(TalonControlMode.PercentVbus);
 	}
@@ -285,20 +285,16 @@ public class DrivetrainSubsystem extends Subsystem {
 				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
 	}
 
-	public void turnTime(double power) {
-		leftTalons[0].changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		rightTalons[0].changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-
-		leftTalons[0].set(power);
-		rightTalons[0].set(-power);
-	}
-
 	public void stop() {
 		drive(0, 0, TalonControlMode.PercentVbus);
 	}
 
-	public double angleToDistance(double angle) {
-		return angle * Math.PI * DRIVE_BASE_WIDTH / 360;
+	public static double angleToDistance(double angle) {
+		return TURNING_CONSTANT * angle * Math.PI * DRIVE_BASE_WIDTH / 360;
+	}
+
+	public static double distanceToRotation(double distance) {
+		return distance / (Math.PI * WHEEL_DIAMETER * DRIVE_RATIO) * DRIVE_CONSTANT;
 	}
 
 }
