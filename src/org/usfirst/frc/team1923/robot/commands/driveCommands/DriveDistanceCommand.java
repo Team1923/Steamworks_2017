@@ -31,10 +31,14 @@ public class DriveDistanceCommand extends Command {
 		requires(Robot.driveSubSys);
 		this.left = left;
 		this.right = right;
-		
+
 		double maxDistance = Math.max(Math.abs(left), Math.abs(right));
-		
+
 		this.setTimeout(maxDistance * 0.05 + 1);
+	}
+
+	public DriveDistanceCommand(int i) {
+		this(i, i);
 	}
 
 	// Called just before this Command runs the first time
@@ -60,13 +64,14 @@ public class DriveDistanceCommand extends Command {
 		System.out.println(Robot.driveSubSys.getLeftError() + " " + Robot.driveSubSys.getRightError());
 		return isTimedOut() || ((Math.abs(Robot.driveSubSys.getLeftError()) < TOLERANCE)
 				&& (Math.abs(Robot.driveSubSys.getRightError()) < TOLERANCE));
-		
-		//(Robot.driveSubSys.getLeftTarget() != 0 && Robot.driveSubSys.getRightTarget() != 0)
+
+		// (Robot.driveSubSys.getLeftTarget() != 0 &&
+		// Robot.driveSubSys.getRightTarget() != 0)
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		if(isTimedOut()){
+		if (isTimedOut()) {
 			System.out.println("TIMED OUT");
 		}
 		System.out.println("END END END");
