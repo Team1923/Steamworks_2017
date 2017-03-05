@@ -3,9 +3,9 @@ package org.usfirst.frc.team1923.robot;
 
 
 import org.usfirst.frc.team1923.robot.commands.DoNothing;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.*;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
 import org.usfirst.frc.team1923.robot.subsystems.*;
@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<Command>();
+	SendableChooser<Command> driver = new SendableChooser<Command>();
 	DriverStation driverStation = DriverStation.getInstance();
 
 	/**
@@ -64,6 +65,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
 		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
 		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
+		chooser.addObject("Test Align" , new TestAlign());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Turn Auto", chooser);
 		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
@@ -77,7 +79,14 @@ public class Robot extends IterativeRobot {
 		// }
 		//
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("auto mode", chooser);
+		
+		//Driver Selection
+		driver.addDefault("Chinmay", new ChoseDriverCommand(RobotMap.CHINMAY_PROFILE));
+		driver.addObject("Suraj", new ChoseDriverCommand(RobotMap.SURAJ_PROFILE));
+		driver.addObject("Anish", new ChoseDriverCommand(RobotMap.ANISH_PROFILE));
+		
+		SmartDashboard.putData("Auto Mode", chooser);
+		SmartDashboard.putData("Driver", driver);
 	}
 
 	/**

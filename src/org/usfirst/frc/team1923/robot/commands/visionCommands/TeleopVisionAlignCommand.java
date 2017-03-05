@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class VisionAlignCommand extends Command {
+public class TeleopVisionAlignCommand extends Command {
 
 	public double power,turn;
 	//private Timer time;
 	
-    public VisionAlignCommand() {
+    public TeleopVisionAlignCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.visionSubSys);
@@ -33,6 +33,7 @@ public class VisionAlignCommand extends Command {
     	//TODO: Take into account values from ultrasonic sensors
     	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
     	Robot.visionSubSys.refresh();
+    	if(Robot.visionSubSys.width>RobotMap.MAX_WIDTH){
     	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
@@ -53,14 +54,15 @@ public class VisionAlignCommand extends Command {
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
 //		}
+    	}
+    	else{
+    		//Put SmartDashboard indicator
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.width>RobotMap.MAX_WIDTH)
-    		return false;
-    	else
-    		return true;
+    	return true;
     }
 
     // Called once after isFinished returns true
