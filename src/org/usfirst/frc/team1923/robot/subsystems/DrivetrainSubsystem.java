@@ -267,7 +267,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	}
 
 	public void shiftDown() {
-		if (safeToShift() && shifter.get() != Value.kReverse) {
+		if (safeToShift()) {
 			shifter.set(Value.kReverse);
 		}
 	}
