@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.visionCommands;
 
 import org.usfirst.frc.team1923.robot.Robot;
+import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
 
 //import com.sun.webkit.Timer;
@@ -56,7 +57,7 @@ public class VisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.width<=37)
+    	if(Robot.visionSubSys.width<=RobotMap.MAX_WIDTH)
     		return false;
     	else{
     		return true;
