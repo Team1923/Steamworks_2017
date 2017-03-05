@@ -1,7 +1,14 @@
 
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
+
+import org.usfirst.frc.team1923.robot.commands.DoNothing;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.subsystems.*;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
@@ -30,6 +37,7 @@ public class Robot extends IterativeRobot {
 	public static DrivetrainSubsystem driveSubSys;
 	public static ClimberSubsystem climbSubSys;
 	public static GearSubsystem gearSubSys;
+	public static VisionSubsystem visionSubSys;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -47,9 +55,17 @@ public class Robot extends IterativeRobot {
 		gearSubSys = new GearSubsystem();
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
+		visionSubSys = new VisionSubsystem();
+		
 		oi = new OI();
 
-		chooser.addDefault("Default Auto", new EmptyCommand());
+		chooser.addDefault("Do Nothing Auto", new DoNothing());
+		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
+		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
+		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
+		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
+		// chooser.addObject("My Auto", new MyAutoCommand());
+		//SmartDashboard.putData("Turn Auto", chooser);
 		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
 
 		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
@@ -60,10 +76,8 @@ public class Robot extends IterativeRobot {
 		// // TODO: Add all autons
 		// }
 		//
-
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("auto mode", chooser);
-
 	}
 
 	/**
@@ -128,8 +142,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		// new GearSetHomeCommand().start();
-		// TODO: Uncomment for COMPETITION!!!
+		//new GearSetHomeCommand().start();
 	}
 
 	/**
