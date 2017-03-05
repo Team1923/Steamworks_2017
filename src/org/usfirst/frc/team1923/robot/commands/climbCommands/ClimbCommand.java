@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ClimbCommand extends Command {
-
+ 
 	private double speed,lt,rt;
 	
 	public ClimbCommand() {

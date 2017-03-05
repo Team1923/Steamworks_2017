@@ -1,18 +1,18 @@
 
 package org.usfirst.frc.team1923.robot;
 
+
+import org.usfirst.frc.team1923.robot.commands.DoNothing;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.*;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.subsystems.*;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
-
-import org.usfirst.frc.team1923.robot.commands.DoNothing;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.TurnTimeCommand;
-import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
-import org.usfirst.frc.team1923.robot.subsystems.*;
 
 import org.usfirst.frc.team1923.robot.OI;
 
@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<Command>();
+	SendableChooser<Command> driver = new SendableChooser<Command>();
 	DriverStation driverStation = DriverStation.getInstance();
 
 	/**
@@ -59,7 +60,14 @@ public class Robot extends IterativeRobot {
 		
 		oi = new OI();
 
-		chooser.addDefault("Default Auto", new DoNothing());
+		chooser.addDefault("Do Nothing Auto", new DoNothing());
+		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
+		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
+		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
+		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
+		chooser.addObject("Test Align" , new TestAlign());
+		// chooser.addObject("My Auto", new MyAutoCommand());
+		//SmartDashboard.putData("Turn Auto", chooser);
 		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
 
 		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
@@ -70,15 +78,15 @@ public class Robot extends IterativeRobot {
 		// // TODO: Add all autons
 		// }
 		//
-
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
-		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
-		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
-		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
-		//SmartDashboard.putData("Turn Auto", chooser);
+		
+		//Driver Selection
+		driver.addDefault("Chinmay", new ChoseDriverCommand(RobotMap.CHINMAY_PROFILE));
+		driver.addObject("Suraj", new ChoseDriverCommand(RobotMap.SURAJ_PROFILE));
+		driver.addObject("Anish", new ChoseDriverCommand(RobotMap.ANISH_PROFILE));
+		
+		SmartDashboard.putData("Auto Mode", chooser);
+		SmartDashboard.putData("Driver", driver);
 	}
 
 	/**
@@ -143,8 +151,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		// new GearSetHomeCommand().start();
-		// TODO: Uncomment for COMPETITION!!!
+		//new GearSetHomeCommand().start();
 	}
 
 	/**
