@@ -380,7 +380,7 @@ public class PS4Controller extends Joystick {
 	 * @return the adjusted y value
 	 */
 	public double getLeftY() {
-		double val = this.getRawAxis(LEFT_STICK_Y_AXIS_ID);
+		double val = -this.getRawAxis(LEFT_STICK_Y_AXIS_ID);
 		return Math.abs(val) > DEFAULT_TRIGGER_DEADZONE ? val : 0;
 	}
 
@@ -390,7 +390,7 @@ public class PS4Controller extends Joystick {
 	 * @return the adjusted y value
 	 */
 	public double getRightY() {
-		double val = this.getRawAxis(RIGHT_STICK_Y_AXIS_ID);
+		double val = -this.getRawAxis(RIGHT_STICK_Y_AXIS_ID);
 		return Math.abs(val) > DEFAULT_TRIGGER_DEADZONE ? val : 0;
 	}
 

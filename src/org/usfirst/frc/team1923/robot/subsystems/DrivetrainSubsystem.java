@@ -20,15 +20,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	private static final double DEFAULT_ERROR_MARGIN = 100;
-	private final double P_CONSTANT = 0; // TODO: Fill in these values
-	private final double I_CONSTANT = 0;
+	private final double P_CONSTANT = 0.03; // TODO: Fill in these values
+	private final double I_CONSTANT = 0.00005;
 	private final double D_CONSTANT = 0;
 	private final double F_CONSTANT = 0;
-	private final boolean LEFT_REVERSED = false; // Reverse the sensor or
-													// the motor or both?
-	private final boolean RIGHT_REVERSED = true;
+	private final boolean LEFT_REVERSED = true; // Reverse the sensor or
+												// the motor or both?
+	private final boolean RIGHT_REVERSED = false;
 	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
+
+	public final int ALLOWABLE_ERROR = 200;
+
+	// TODO: Change wheel diameter and drive base width
+	private final static double WHEEL_DIAMETER = 4;
+	private final static double DRIVE_RATIO = 32.5 / 50.0;
+	// Every turn of the encoder equals DRIVE_RATIO turns of the wheel
+
+	private final static double DRIVE_BASE_WIDTH = 22.5;
+	// Middle of wheels measurement in inches
+	public static double TURNING_CONSTANT = 1.06;
+	private static final double DRIVE_CONSTANT = 1;
 
 	// Arrays of talons to group them together
 	// The 0th element will always be the master Talon, the subsequent ones will
@@ -64,8 +75,6 @@ public class DrivetrainSubsystem extends Subsystem {
 
 		setToFollow();
 		configPID();
-		drive(0, 0, TalonControlMode.PercentVbus);
-
 	}
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -76,6 +85,9 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons[2].changeControlMode(TalonControlMode.Follower);
 		leftTalons[2].set(leftTalons[0].getDeviceID());
 
+//		leftTalons[0].changeControlMode(TalonControlMode.Follower);
+//		leftTalons[0].set(rightTalons[0].getDeviceID());
+		
 		rightTalons[1].changeControlMode(TalonControlMode.Follower);
 		rightTalons[1].set(rightTalons[0].getDeviceID());
 		rightTalons[2].changeControlMode(TalonControlMode.Follower);
@@ -104,12 +116,15 @@ public class DrivetrainSubsystem extends Subsystem {
 	private void configPID() {
 
 		leftTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		leftTalons[0].reverseSensor(false); // Set to true if reverse rotation
+		leftTalons[0].reverseSensor(LEFT_REVERSED); // Set to true if reverse
+													// rotation
 		leftTalons[0].configNominalOutputVoltage(0, 0);
 		leftTalons[0].configPeakOutputVoltage(12, -12);
+		// TODO: Config higher if necessary
 
 		rightTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		rightTalons[0].reverseSensor(false); // Set to true if reverse rotation
+		rightTalons[0].reverseSensor(RIGHT_REVERSED); // Set to true if reverse
+														// rotation
 		rightTalons[0].configNominalOutputVoltage(0, 0);
 		rightTalons[0].configPeakOutputVoltage(12, -12);
 
@@ -118,22 +133,33 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons[0].setP(P_CONSTANT);
 		leftTalons[0].setI(I_CONSTANT);
 		leftTalons[0].setD(D_CONSTANT);
+		leftTalons[0].setIZone(8000);
+		leftTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
 
 		rightTalons[0].setProfile(0);
 		rightTalons[0].setF(F_CONSTANT);
 		rightTalons[0].setP(P_CONSTANT);
 		rightTalons[0].setI(I_CONSTANT);
 		rightTalons[0].setD(D_CONSTANT);
+		rightTalons[0].setIZone(8000);
+		rightTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
 
 		setMasterToMode(TalonControlMode.PercentVbus);
 		leftTalons[0].set(0.0);
-		// leftTalons[0].reverseOutput(LEFT_REVERSED);
+		leftTalons[0].reverseOutput(LEFT_REVERSED);
 		leftTalons[0].setInverted(LEFT_REVERSED);
 
 		rightTalons[0].set(0.0);
-		// rightTalons[0].reverseOutput(RIGHT_REVERSED);
+		rightTalons[0].reverseOutput(RIGHT_REVERSED);
 		rightTalons[0].setInverted(RIGHT_REVERSED);
 	}
+
+	// public void setPID(double p, double i, double d, double f) {
+	// leftTalons[0].setPID(p, i, d);
+	// leftTalons[0].setF(f);
+	// rightTalons[0].setPID(p, i, d);
+	// rightTalons[0].setF(f);
+	// }
 
 	/**
 	 * Directly sets the input value of the motors
@@ -155,6 +181,15 @@ public class DrivetrainSubsystem extends Subsystem {
 	 */
 	public void disable() {
 		setMasterToMode(TalonControlMode.Disabled);
+	}
+
+	public void disableControl() {
+		leftTalons[0].disableControl();
+		rightTalons[0].disableControl();
+	}
+
+	public void enable() {
+		setMasterToMode(TalonControlMode.PercentVbus);
 	}
 
 	/**
@@ -189,11 +224,43 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].setPosition(0);
 	}
 
+	public double getLeftPosition() {
+		return leftTalons[0].getPosition();
+	}
+
+	public double getRightPosition() {
+		return rightTalons[0].getPosition();
+	}
+
+	public double getLeftSpeed() {
+		return leftTalons[0].getSpeed();
+	}
+
+	public double getRightSpeed() {
+		return rightTalons[0].getSpeed();
+	}
+
+	public double getLeftTarget() {
+		return leftTalons[0].get();
+	}
+
+	public double getRightTarget() {
+		return rightTalons[0].get();
+	}
+
+	public double getLeftError() {
+		return leftTalons[0].getError();
+	}
+
+	public double getRightError() {
+		return rightTalons[0].getError();
+	}
+
 	public void initDefaultCommand() {
 		setDefaultCommand(new RawDriveCommand());
 	}
 
-	public void shiftUp() {
+	public void shiftUp() { // TODO: Find if these orientations are correct
 		if (shifter.get() != Value.kForward) {
 			shifter.set(Value.kForward);
 		}
@@ -223,16 +290,16 @@ public class DrivetrainSubsystem extends Subsystem {
 		return true;
 	}
 
-	public void turnTime(double power) {
-		leftTalons[0].changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		rightTalons[0].changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-
-		leftTalons[0].set(power);
-		rightTalons[0].set(-power);
-	}
-
 	public void stop() {
 		drive(0, 0, TalonControlMode.PercentVbus);
+	}
+
+	public static double angleToDistance(double angle) {
+		return TURNING_CONSTANT * angle * Math.PI * DRIVE_BASE_WIDTH / 360;
+	}
+
+	public static double distanceToRotation(double distance) {
+		return distance / (Math.PI * WHEEL_DIAMETER * DRIVE_RATIO) * DRIVE_CONSTANT;
 	}
 
 }
