@@ -44,7 +44,7 @@ public class VisionAlignCommand extends Command {
     	}
     	
     	//Testing
-    	System.out.println("Power: " + power + " Turn: " +  turn);
+    	//System.out.println("Power: " + power + " Turn: " +  turn);
     	
     	Robot.driveSubSys.auto(power, turn);
 //    	try {

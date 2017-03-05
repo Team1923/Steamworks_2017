@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.visionCommands;
 
-import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveTimeCommand;
-import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
-import org.usfirst.frc.team1923.robot.commands.gearCommands.SlideCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
+import org.usfirst.frc.team1923.robot.commands.gearCommands.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -29,17 +28,26 @@ public class VisionAutonRight extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addParallel(new DriveDistanceCommand(36));
+    	addParallel(new ShiftCommand(true));
     	addSequential(new SlideCommand(true));
+    	addSequential(new TurnAngleCommand(-45));
     	addSequential(new VisionAlignCommand());//Aligns Gear
+    	//Wiggle around for the peg to settle into gear
+    	addSequential(new TurnTimeCommand(0.4,0.3));
+    	addSequential(new TurnTimeCommand(-0.4,0.3));
+    	addSequential(new TurnTimeCommand(0.4,0.3));
+    	addSequential(new TurnTimeCommand(-0.4,0.3));
     	try {
 			Thread.sleep(1000);
+			addSequential(new GearCommand(true));
+	    	addSequential(new DriveDistanceCommand(-36));
+	    	addParallel(new GearCommand(false));
+	    	addSequential(new TurnAngleCommand(35));
+	    	addSequential(new DriveDistanceCommand(72));
+	    	//TODO: Get as close to the feeder station as possible
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	addSequential(new GearCommand(true));
-    	addSequential(new DriveTimeCommand(-0.2, 1));
-    	//addSequential(new DriveTimeCommand(-0.5,1)); 
-    	
-    	//TODO: Add Gear Drop and drive past line
     }
 }

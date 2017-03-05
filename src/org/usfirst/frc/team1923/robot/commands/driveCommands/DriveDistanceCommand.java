@@ -33,6 +33,13 @@ public class DriveDistanceCommand extends Command {
 		this.right = right;
 		this.setTimeout(left * 0.05 + 1);
 	}
+	
+	public DriveDistanceCommand(double dist) {
+		requires(Robot.driveSubSys);
+		this.left = dist;
+		this.right = dist;
+		this.setTimeout(left * 0.05 + 1);
+	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
