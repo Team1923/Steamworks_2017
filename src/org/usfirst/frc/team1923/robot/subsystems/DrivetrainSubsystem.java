@@ -49,7 +49,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
 
-	public Ultrasonic frontSonar;
+	//public Ultrasonic frontSonar;
 
 	public DriveProfile dprofile = new DriveProfile(RobotMap.DRIVER_PROFILE);
 
@@ -57,9 +57,11 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons = new CANTalon[RobotMap.LEFT_DRIVE_PORTS.length];
 		rightTalons = new CANTalon[RobotMap.RIGHT_DRIVE_PORTS.length];
 
-		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
-		frontSonar.setAutomaticMode(true);
-
+	//	frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
+	//	frontSonar.setAutomaticMode(true);
+		
+		
+		
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
 		}

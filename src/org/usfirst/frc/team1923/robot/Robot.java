@@ -5,7 +5,7 @@ package org.usfirst.frc.team1923.robot;
 import org.usfirst.frc.team1923.robot.commands.DoNothing;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.*;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
 import org.usfirst.frc.team1923.robot.subsystems.*;
@@ -65,6 +65,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
 		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
 		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
+		chooser.addObject("Test Align" , new TestAlign());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		//SmartDashboard.putData("Turn Auto", chooser);
 		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));

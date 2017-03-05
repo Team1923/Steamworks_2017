@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
+import edu.wpi.first.wpilibj.Ultrasonic;
+
 /**
  *
  */
@@ -20,9 +23,12 @@ public class VisionSubsystem extends Subsystem {
 	public double centerx,turn;
 	public double[] widtharr;
 	public double width;
+	public double dist;
 	
 	private double sum;
 	private double[] def; 
+	
+	public Ultrasonic frontSonar;
 	
 	/**
 	 * Initializes CameraServer and NetworkTables
@@ -40,10 +46,16 @@ public class VisionSubsystem extends Subsystem {
 		//TODO: Add ultrasonic sensors
 		def = new double[0];
 		table = NetworkTable.getTable(RobotMap.NEWTORK_TABLE_ADDRESS);
+		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
+		frontSonar.setEnabled(true);
+		frontSonar.setAutomaticMode(true);
+		dist=frontSonar.getRangeInches();
 		refresh();
 	}
 	
 	public void refresh(){
+		dist=frontSonar.getRangeInches();
+		System.out.println("Distance to target" + dist);
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
 		if(widtharr.length>0)

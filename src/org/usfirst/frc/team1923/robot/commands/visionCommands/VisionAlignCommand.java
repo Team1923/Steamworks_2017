@@ -57,11 +57,10 @@ public class VisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.width<=RobotMap.MAX_WIDTH)
+    	if(Robot.visionSubSys.dist<=18)
     		return false;
-    	else{
-    		return true;
-    	}
+    	else
+    		return false;
     }
 
     // Called once after isFinished returns true
