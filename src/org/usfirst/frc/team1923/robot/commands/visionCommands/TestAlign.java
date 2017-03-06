@@ -28,8 +28,11 @@ public class TestAlign extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm
+    	
+    	//Add sweeping if target not found
     	addParallel(new ShiftCommand(true));
     	addSequential(new SlideCommand(true));
+    	addSequential(new VisionScanCommand(0.3, 5));
     	addSequential(new VisionAlignCommand());//Aligns Gear
     	//Wiggle around for the peg to settle into gear
 //    	addSequential(new TurnTimeCommand(0.4,0.3));

@@ -7,6 +7,7 @@ import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
 //import com.sun.webkit.Timer;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TeleopVisionAlignCommand extends Command {
 
 	public double power,turn;
+	public boolean found;
+	public boolean aligned;
 	//private Timer time;
 	
     public TeleopVisionAlignCommand() {
@@ -33,14 +36,16 @@ public class TeleopVisionAlignCommand extends Command {
     	//TODO: Take into account values from ultrasonic sensors
     	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
     	Robot.visionSubSys.refresh();
-    	if(Robot.visionSubSys.width>RobotMap.MAX_WIDTH){
+    	if(Robot.visionSubSys.width<=RobotMap.MAX_WIDTH){
     	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
+    		found=false;
     	}
     	else{
     		power=-0.25;
     		//power=0;
+    		found=true;
     		turn=Robot.visionSubSys.turn;
     	}
     	
@@ -57,6 +62,13 @@ public class TeleopVisionAlignCommand extends Command {
     	}
     	else{
     		//Put SmartDashboard indicator
+    		if(found)
+    			aligned=true;
+    		else
+    			aligned=false;
+    		
+    		SmartDashboard.putBoolean("Found: ", found);
+    		SmartDashboard.putBoolean("Aligned and Ready to Drop: ", aligned);
     	}
     }
 

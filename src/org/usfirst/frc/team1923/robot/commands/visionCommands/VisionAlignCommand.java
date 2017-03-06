@@ -7,6 +7,7 @@ import org.usfirst.frc.team1923.robot.commands.gearCommands.GearCommand;
 //import com.sun.webkit.Timer;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class VisionAlignCommand extends Command {
 
 	public double power,turn;
+	public boolean found;
+	public boolean aligned;
 	//private Timer time;
 	
     public VisionAlignCommand() {
@@ -36,10 +39,12 @@ public class VisionAlignCommand extends Command {
     	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
+    		found=false;
     	}
     	else{
     		power=0.25;
     		//power=0;
+    		found=true;
     		turn=Robot.visionSubSys.turn;
     	}
     	
@@ -47,6 +52,13 @@ public class VisionAlignCommand extends Command {
     	//System.out.println("Power: " + power + " Turn: " +  turn);
     	
     	Robot.driveSubSys.auto(power, turn);
+    	if(found && Robot.visionSubSys.width>=RobotMap.MAX_WIDTH)
+			aligned=true;
+		else
+			aligned=false;
+		
+		SmartDashboard.putBoolean("Found: ", found);
+		SmartDashboard.putBoolean("Aligned and Ready to Drop: ", aligned);
 //    	try {
 //    		Thread.sleep(100);
 //			//time.wait(100);

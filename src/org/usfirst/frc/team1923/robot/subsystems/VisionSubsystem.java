@@ -9,7 +9,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
@@ -55,7 +55,6 @@ public class VisionSubsystem extends Subsystem {
 	
 	public void refresh(){
 		dist=frontSonar.getRangeInches();
-		System.out.println("Distance to target" + dist);
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
 		if(widtharr.length>0)
@@ -82,7 +81,11 @@ public class VisionSubsystem extends Subsystem {
 			turn=Integer.MIN_VALUE;
 		
 		//Testing
-		System.out.println("Center X " + centerx);
+		SmartDashboard.putNumber("Center X: ", centerx);
+		SmartDashboard.putNumber("Distance to target: ", dist);
+		SmartDashboard.putNumber("Width: ", width);
+		SmartDashboard.putNumber("Turn: ", width);
+		
 	}
 	
 
