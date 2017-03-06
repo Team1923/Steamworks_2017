@@ -38,7 +38,7 @@ public class VisionAlignCommand extends Command {
     		turn=0;
     	}
     	else{
-    		power=-0.25;
+    		power=0.25;
     		//power=0;
     		turn=Robot.visionSubSys.turn;
     	}
@@ -58,9 +58,9 @@ public class VisionAlignCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	if(Robot.visionSubSys.width>RobotMap.MAX_WIDTH)
-    		return false;
-    	else
     		return true;
+    	else
+    		return false;
     }
 
     // Called once after isFinished returns true

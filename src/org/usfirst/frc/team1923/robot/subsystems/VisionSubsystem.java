@@ -62,6 +62,7 @@ public class VisionSubsystem extends Subsystem {
 			width=widtharr[0];
 		else
 			width=Integer.MAX_VALUE;
+		System.out.println("Width " + width);
 		sum=0;
 		for(double a : x){
 			sum+=a;
@@ -77,9 +78,6 @@ public class VisionSubsystem extends Subsystem {
 			turn=-1;
 		else if(turn>1)
 			turn=1;						//TODO: Use PID to get to turn value and use an angle instead of turn (Using IMU)
-		
-		turn*=-1;
-		
 		if(x.length==0)
 			turn=Integer.MIN_VALUE;
 		
