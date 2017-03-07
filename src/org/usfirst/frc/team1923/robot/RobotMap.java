@@ -71,6 +71,6 @@ public class RobotMap {
 	public static final int IMG_WIDTH=640;
 	public static final int IMG_HEIGHT=320;
 	public static final double TURN_CONSTANT=1000;
-	public static final double MAX_WIDTH=50;
+	public static final double MAX_WIDTH=48;
 
 }

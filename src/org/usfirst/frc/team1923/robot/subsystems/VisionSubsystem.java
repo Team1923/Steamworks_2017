@@ -46,7 +46,7 @@ public class VisionSubsystem extends Subsystem {
 		//TODO: Add ultrasonic sensors
 		def = new double[0];
 		table = NetworkTable.getTable(RobotMap.NEWTORK_TABLE_ADDRESS);
-		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
+		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
 		frontSonar.setEnabled(true);
 		frontSonar.setAutomaticMode(true);
 		dist=frontSonar.getRangeInches();
@@ -57,8 +57,12 @@ public class VisionSubsystem extends Subsystem {
 		dist=frontSonar.getRangeInches();
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
+		sum=0;
+		for(double a: widtharr){
+			sum+=a;
+		}
 		if(widtharr.length>0)
-			width=widtharr[0];
+			width=sum/widtharr.length;
 		else
 			width=Integer.MAX_VALUE;
 		System.out.println("Width " + width);

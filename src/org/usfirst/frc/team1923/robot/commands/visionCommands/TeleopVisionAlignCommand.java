@@ -43,7 +43,7 @@ public class TeleopVisionAlignCommand extends Command {
     		found=false;
     	}
     	else{
-    		power=-0.25;
+    		power=0.4;
     		//power=0;
     		found=true;
     		turn=Robot.visionSubSys.turn;
@@ -62,7 +62,7 @@ public class TeleopVisionAlignCommand extends Command {
     	}
     	else{
     		//Put SmartDashboard indicator
-    		if(found)
+    		if(found && Robot.visionSubSys.width<=RobotMap.MAX_WIDTH)
     			aligned=true;
     		else
     			aligned=false;
