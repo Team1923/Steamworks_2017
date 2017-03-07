@@ -52,7 +52,7 @@ public class VisionAlignCommand extends Command {
     	//System.out.println("Power: " + power + " Turn: " +  turn);
     	
     	Robot.driveSubSys.auto(power, turn);
-    	if(found && Robot.visionSubSys.width>=RobotMap.MAX_WIDTH)
+    	if(found && (Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST))
 			aligned=true;
 		else
 			aligned=false;
@@ -69,7 +69,7 @@ public class VisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.width>RobotMap.MAX_WIDTH)
+    	if(Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST)
     		return true;
     	else
     		return false;

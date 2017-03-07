@@ -23,6 +23,7 @@ public class TeleopVisionAlignCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.visionSubSys);
+    	requires(Robot.driveSubSys);
     }
 
     // Called just before this Command runs the first time
@@ -36,14 +37,14 @@ public class TeleopVisionAlignCommand extends Command {
     	//TODO: Take into account values from ultrasonic sensors
     	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
     	Robot.visionSubSys.refresh();
-    	if(Robot.visionSubSys.width<=RobotMap.MAX_WIDTH){
+    	if(Robot.visionSubSys.width<=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist>=RobotMap.MAX_DIST){
     	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
     		found=false;
     	}
     	else{
-    		power=0.4;
+    		power=0.3;
     		//power=0;
     		found=true;
     		turn=Robot.visionSubSys.turn;
@@ -62,7 +63,7 @@ public class TeleopVisionAlignCommand extends Command {
     	}
     	else{
     		//Put SmartDashboard indicator
-    		if(found && Robot.visionSubSys.width<=RobotMap.MAX_WIDTH)
+    		if(found && (Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST))
     			aligned=true;
     		else
     			aligned=false;
@@ -74,7 +75,7 @@ public class TeleopVisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return true;
+    	return Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST;
     }
 
     // Called once after isFinished returns true

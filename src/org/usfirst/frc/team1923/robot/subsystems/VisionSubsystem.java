@@ -54,7 +54,7 @@ public class VisionSubsystem extends Subsystem {
 	}
 	
 	public void refresh(){
-		dist=frontSonar.getRangeInches();
+		dist=17;//frontSonar.getRangeInches();
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
 		sum=0;
@@ -96,4 +96,5 @@ public class VisionSubsystem extends Subsystem {
 	public void initDefaultCommand() {
 		setDefaultCommand(new VisionProcessing());
 	}
+	
 }
