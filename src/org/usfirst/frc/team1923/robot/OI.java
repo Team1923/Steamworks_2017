@@ -12,6 +12,8 @@ import org.usfirst.frc.team1923.robot.commands.visionCommands.*;
 import org.usfirst.frc.team1923.robot.utils.PS4Controller;
 import org.usfirst.frc.team1923.robot.utils.XboxController;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -63,24 +65,26 @@ public class OI {
 		driver.lt.whenActive(new ShiftOmniCommand(true));
 		driver.rt.whenActive(new ShiftOmniCommand(false));
 
-    
+
 		op.x.whenActive(new SlideCommand());
 		op.y.whenActive(new GearCommand());
-    
-		op.b.whenActive(new GearSetHomeCommand());
-    
-    driver.cross.whenActive(new ResetEncoderCommand());
-    driver.square.whileHeld(new TeleopVisionAlignCommand());
 
-//		driver.dPad.down.whenActive(new TurnAngleCommand(90));
-//		driver.dPad.up.whenActive(new TurnAngleCommand(180));
-//		driver.dPad.left.whenActive(new TurnAngleCommand(360));
-//		driver.dPad.right.whenActive(new TurnAngleCommand(720));
+		op.b.whenActive(new GearSetHomeCommand());
+
+		driver.cross.whenActive(new ResetEncoderCommand());
+		//driver.square.whileHeld(new TeleopVisionAlignCommand());
+		Command command = new TeleopVisionAlignCommand();
+		driver.square.whileHeld(command);
+
+		//		driver.dPad.down.whenActive(new TurnAngleCommand(90));
+		//		driver.dPad.up.whenActive(new TurnAngleCommand(180));
+		//		driver.dPad.left.whenActive(new TurnAngleCommand(360));
+		//		driver.dPad.right.whenActive(new TurnAngleCommand(720));
 
 		driver.dPad.down.whenActive(new DriveDistanceCommand(50, 50));
 		driver.dPad.up.whenActive(new DriveDistanceCommand(100, 100));
 		driver.dPad.left.whenActive(new DriveDistanceCommand(200, 200));
 		driver.dPad.right.whenActive(new DriveDistanceCommand(300,300));
-    
+
 	}
 }

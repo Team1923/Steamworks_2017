@@ -57,7 +57,7 @@ public class RobotMap {
 	 * 1 gear piston TO BE DETERMINED: Ultrasonic? Button? Camera?
 	 */
 
-	// Ultrasonic Sensor DIO ports
+	// Ultrasonic Sensorb DIO ports
 	public static final int FRONT_SONAR_PING_PORT = 0;
 	public static final int FRONT_SONAR_ECHO_PORT = 1; // UNITS declared in
 														// constructor in drive
@@ -71,6 +71,7 @@ public class RobotMap {
 	public static final int IMG_WIDTH=640;
 	public static final int IMG_HEIGHT=320;
 	public static final double TURN_CONSTANT=1000;
-	public static final double MAX_WIDTH=50;
+	public static final double MAX_WIDTH=60;
+	public static final double MAX_DIST = 15;
 
 }

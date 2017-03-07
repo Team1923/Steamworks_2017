@@ -33,10 +33,10 @@ public class VisionAutonCenter extends CommandGroup {
     	addSequential(new SlideCommand(true));
     	addSequential(new VisionAlignCommand());//Aligns Gear
     	//Wiggle around for the peg to settle into gear
-    	addSequential(new TurnTimeCommand(0.4,0.3));
-    	addSequential(new TurnTimeCommand(-0.4,0.3));
-    	addSequential(new TurnTimeCommand(0.4,0.3));
-    	addSequential(new TurnTimeCommand(-0.4,0.3));
+    	addSequential(new VisionScanCommand(0.4,0.3));
+    	addSequential(new VisionScanCommand(-0.4,0.3));
+    	addSequential(new VisionScanCommand(0.4,0.3));
+    	addSequential(new VisionScanCommand(-0.4,0.3));
     	try {
 			Thread.sleep(1000);
 			addSequential(new GearCommand(true));
