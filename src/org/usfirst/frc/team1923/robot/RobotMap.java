@@ -59,5 +59,8 @@ public class RobotMap {
 	public static final int FRONT_SONAR_ECHO_PORT = 1; // UNITS declared in
 														// constructor in drive
 														// subsystem
+	
+	//TODO: Figure out the port for PigeonIMU
+	private static final int IMU_PORT = 0;
 
 }

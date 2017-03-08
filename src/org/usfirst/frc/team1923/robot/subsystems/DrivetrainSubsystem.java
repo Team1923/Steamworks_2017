@@ -7,6 +7,7 @@ import org.usfirst.frc.team1923.robot.utils.DriveProfile;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.PigeonImu;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -48,6 +49,8 @@ public class DrivetrainSubsystem extends Subsystem {
 
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
+	
+	private PigeonImu imu;
 
 	public Ultrasonic frontSonar;
 
@@ -59,6 +62,8 @@ public class DrivetrainSubsystem extends Subsystem {
 
 		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
 		frontSonar.setAutomaticMode(true);
+		
+		this.imu = new PigeonImu(RobotMap.IMU_PORT);
 
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
@@ -283,6 +288,10 @@ public class DrivetrainSubsystem extends Subsystem {
 	private boolean safeToShift() {
 		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
 				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+	}
+	
+	public PigeonImu getImu() {
+		return this.imu;
 	}
 
 	public void stop() {
