@@ -7,6 +7,7 @@ import org.usfirst.frc.team1923.robot.utils.DriveProfile;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.PigeonImu;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-	private final double P_CONSTANT = 0.03; // TODO: Fill in these values
+	private final double P_CONSTANT = 0.05; // TODO: Fill in these values
 	private final double I_CONSTANT = 0.00005;
 	private final double D_CONSTANT = 0;
 	private final double F_CONSTANT = 0;
@@ -38,7 +39,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
 	private final static double DRIVE_BASE_WIDTH = 22.5;
 	// Middle of wheels measurement in inches
-	public static double TURNING_CONSTANT = 1.06;
+	public static double TURNING_CONSTANT = 1.12;
 	private static final double DRIVE_CONSTANT = 1;
 
 	// Arrays of talons to group them together
@@ -48,6 +49,8 @@ public class DrivetrainSubsystem extends Subsystem {
 
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
+	
+	private PigeonImu imu;
 
 	public Ultrasonic frontSonar;
 
@@ -59,6 +62,8 @@ public class DrivetrainSubsystem extends Subsystem {
 
 		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
 		frontSonar.setAutomaticMode(true);
+		
+		this.imu = new PigeonImu(RobotMap.IMU_PORT);
 
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
@@ -133,7 +138,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftTalons[0].setP(P_CONSTANT);
 		leftTalons[0].setI(I_CONSTANT);
 		leftTalons[0].setD(D_CONSTANT);
-		leftTalons[0].setIZone(8000);
+		leftTalons[0].setIZone(10000);
 		leftTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
 
 		rightTalons[0].setProfile(0);
@@ -141,7 +146,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightTalons[0].setP(P_CONSTANT);
 		rightTalons[0].setI(I_CONSTANT);
 		rightTalons[0].setD(D_CONSTANT);
-		rightTalons[0].setIZone(8000);
+		rightTalons[0].setIZone(10000);
 		rightTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
 
 		setMasterToMode(TalonControlMode.PercentVbus);
@@ -283,6 +288,10 @@ public class DrivetrainSubsystem extends Subsystem {
 	private boolean safeToShift() {
 		return Math.max(Math.abs(leftTalons[0].getEncVelocity()),
 				Math.abs(rightTalons[0].getEncVelocity())) < MAX_SAFE_SHIFT_SPEED;
+	}
+	
+	public PigeonImu getImu() {
+		return this.imu;
 	}
 
 	public void stop() {
