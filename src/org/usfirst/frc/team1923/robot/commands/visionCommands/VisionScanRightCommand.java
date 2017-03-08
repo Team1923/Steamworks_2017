@@ -15,11 +15,11 @@ public class VisionScanRightCommand extends Command {
 	}
 
 	protected void initialize() {
-		Robot.driveSubSys.drive(-power, power, TalonControlMode.PercentVbus);
+		
 	}
 
 	protected void execute() {
-
+		Robot.driveSubSys.drive(-power, power, TalonControlMode.PercentVbus);
 	}
 
 	protected void end() {
