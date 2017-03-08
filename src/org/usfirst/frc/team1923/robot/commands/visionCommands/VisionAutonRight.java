@@ -35,10 +35,10 @@ public class VisionAutonRight extends CommandGroup {
     	addSequential(new VisionAlignCommand());//Aligns Gear
     	//Add new command to continously turn until target is found
     	//Wiggle around for the peg to settle into gear
-    	addSequential(new VisionScanCommand(0.4,0.3));
-    	addSequential(new VisionScanCommand(-0.4,0.3));
-    	addSequential(new VisionScanCommand(0.4,0.3));
-    	addSequential(new VisionScanCommand(-0.4,0.3));
+    	addSequential(new VisionScanRightCommand(0.4,0.3));
+    	addSequential(new VisionScanRightCommand(-0.4,0.3));
+    	addSequential(new VisionScanRightCommand(0.4,0.3));
+    	addSequential(new VisionScanRightCommand(-0.4,0.3));
     	try {
 			Thread.sleep(1000);
 			addSequential(new GearCommand(true));

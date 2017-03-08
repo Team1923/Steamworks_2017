@@ -25,6 +25,8 @@ public class VisionSubsystem extends Subsystem {
 	public double width;
 	public double dist;
 	
+	public boolean found;
+	
 	private double sum;
 	private double[] def; 
 	
@@ -50,11 +52,12 @@ public class VisionSubsystem extends Subsystem {
 		frontSonar.setEnabled(true);
 		frontSonar.setAutomaticMode(true);
 		dist=frontSonar.getRangeInches();
+		found=false;
 		refresh();
 	}
 	
 	public void refresh(){
-		dist=17;//frontSonar.getRangeInches();
+		dist=frontSonar.getRangeInches();
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
 		sum=0;
@@ -74,7 +77,7 @@ public class VisionSubsystem extends Subsystem {
 			centerx=sum/x.length;		//centerx: pixel value of middle of peg
 		else
 			centerx=Integer.MIN_VALUE;   
-		turn=centerx-RobotMap.IMG_WIDTH/2;
+		turn=centerx-RobotMap.IMG_WIDTH/2+10;
 		turn/=RobotMap.TURN_CONSTANT; 
 		//Check Boundaries of turn
 		if(turn<-1)

@@ -37,16 +37,19 @@ public class TeleopVisionAlignCommand extends Command {
     	//TODO: Take into account values from ultrasonic sensors
     	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
     	Robot.visionSubSys.refresh();
-    	if(Robot.visionSubSys.width<=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist>=RobotMap.MAX_DIST){
+    	if(Robot.visionSubSys.dist>=RobotMap.MAX_DIST){
     	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
-    		found=false;
+    		Robot.visionSubSys.found=false;
     	}
     	else{
-    		power=0.3;
+    		if(Robot.visionSubSys.dist>=30)
+    			power=0.45;
+    		else
+    			power=0.2;
     		//power=0;
-    		found=true;
+    		Robot.visionSubSys.found=true;
     		turn=Robot.visionSubSys.turn;
     	}
     	
@@ -63,7 +66,7 @@ public class TeleopVisionAlignCommand extends Command {
     	}
     	else{
     		//Put SmartDashboard indicator
-    		if(found && (Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST))
+    		if(found && Robot.visionSubSys.dist<=RobotMap.MAX_DIST)
     			aligned=true;
     		else
     			aligned=false;
@@ -75,18 +78,12 @@ public class TeleopVisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST;
+    	return Robot.visionSubSys.dist<=RobotMap.MAX_DIST;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-//    	try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//    	Command command = new GearCommand(true);
-//    	command.start();
+    	Robot.driveSubSys.stop();
     }
 
     // Called when another command which requires one or more of the same
