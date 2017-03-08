@@ -167,6 +167,8 @@ public class Robot extends IterativeRobot {
 		// double i = SmartDashboard.getNumber("I Value", 0);
 		// double d = SmartDashboard.getNumber("D Value", 0);
 		// double f = SmartDashboard.getNumber("F Value", 0);
+		//Robot.visionSubSys.refresh();
+		SmartDashboard.putNumber("Ultrasonic" , Robot.visionSubSys.dist);
 		// driveSubSys.setPID(p, i, d, f);
 		Scheduler.getInstance().run();
 	}

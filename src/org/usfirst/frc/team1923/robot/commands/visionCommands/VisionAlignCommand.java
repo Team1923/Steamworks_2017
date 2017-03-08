@@ -42,7 +42,10 @@ public class VisionAlignCommand extends Command {
     		found=false;
     	}
     	else{
-    		power=0.25;
+    		if(Robot.visionSubSys.dist>=30)
+    			power=0.45;
+    		else
+    			power=0.2;
     		//power=0;
     		found=true;
     		turn=Robot.visionSubSys.turn;
@@ -52,7 +55,7 @@ public class VisionAlignCommand extends Command {
     	//System.out.println("Power: " + power + " Turn: " +  turn);
     	
     	Robot.driveSubSys.auto(power, turn);
-    	if(found && (Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST))
+    	if(Robot.visionSubSys.dist<=RobotMap.MAX_DIST)
 			aligned=true;
 		else
 			aligned=false;
@@ -69,7 +72,7 @@ public class VisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.width>=RobotMap.MAX_WIDTH || Robot.visionSubSys.dist<=RobotMap.MAX_DIST)
+    	if(Robot.visionSubSys.dist<RobotMap.MAX_DIST)
     		return true;
     	else
     		return false;
@@ -84,6 +87,7 @@ public class VisionAlignCommand extends Command {
 //		}
 //    	Command command = new GearCommand(true);
 //    	command.start();
+    	Robot.driveSubSys.stop();
     }
 
     // Called when another command which requires one or more of the same
