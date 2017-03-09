@@ -19,6 +19,7 @@ public class VisionScanRightCommand extends Command {
 	}
 
 	protected void execute() {
+		Robot.visionSubSys.refresh();
 		Robot.driveSubSys.drive(-power, power, TalonControlMode.PercentVbus);
 	}
 
