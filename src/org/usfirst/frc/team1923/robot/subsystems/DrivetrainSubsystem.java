@@ -63,7 +63,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kMillimeters);
 		frontSonar.setAutomaticMode(true);
 		
-		this.imu = new PigeonImu(RobotMap.IMU_PORT);
+		this.imu = new PigeonImu(new CANTalon(RobotMap.IMU_PORT));
 
 		for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
 			leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
