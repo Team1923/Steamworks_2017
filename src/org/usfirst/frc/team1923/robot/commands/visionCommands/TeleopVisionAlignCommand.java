@@ -45,7 +45,7 @@ public class TeleopVisionAlignCommand extends Command {
     	}
     	else{
     		if(Robot.visionSubSys.dist>=30)
-    			power=0.45;
+    			power=0.4;
     		else
     			power=0.2;
     		//power=0;

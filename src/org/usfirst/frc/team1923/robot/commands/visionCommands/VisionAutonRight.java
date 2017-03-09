@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1923.robot.commands.visionCommands;
 
+import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.*;
 
@@ -28,27 +29,31 @@ public class VisionAutonRight extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addParallel(new DriveDistanceCommand(36));
-    	addParallel(new ShiftCommand(true));
-    	addSequential(new SlideCommand(true));
-    	addSequential(new TurnAngleCommand(-45));
-    	addSequential(new VisionAlignCommand());//Aligns Gear
-    	//Add new command to continously turn until target is found
-    	//Wiggle around for the peg to settle into gear
-    	addSequential(new VisionScanRightCommand(0.4,0.3));
-    	addSequential(new VisionScanRightCommand(-0.4,0.3));
-    	addSequential(new VisionScanRightCommand(0.4,0.3));
-    	addSequential(new VisionScanRightCommand(-0.4,0.3));
-    	try {
-			Thread.sleep(1000);
+    	addSequential(new ShiftCommand(true));
+		addSequential(new SlideCommand(true));
+		addSequential(new DriveDistanceCommand(93,2.5, false));
+		addSequential(new TurnAngleCommand(-60));
+		addSequential(new WaitCommand(0.2));
+		//addSequential(new VisionScanRightCommand(0.3, 5));
+		Robot.visionSubSys.refresh();
+		
+		//Add code if target is seen
+		if(Robot.visionSubSys.centerx>0){
+			addSequential(new VisionAlignCommand());//Aligns Gear
+			//Wiggle around for the peg to settle into gear
+			addSequential(new WaitCommand(0.2));
+			//addSequential(new TurnTimeCommand(0.4,0.25));
+			//addSequential(new TurnTimeCommand(-0.4,0.32));
+			//addSequential(new TurnTimeCommand(-0.4,0.4));
+			addSequential(new WaitCommand(0.4));
 			addSequential(new GearCommand(true));
-	    	addSequential(new DriveDistanceCommand(-36));
-	    	addParallel(new GearCommand(false));
-	    	addSequential(new TurnAngleCommand(35));
-	    	addSequential(new DriveDistanceCommand(72));
-	    	//TODO: Get as close to the feeder station as possible
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			addSequential(new WaitCommand(0.4));
+			addSequential(new DriveDistanceCommand(-36));
+			addSequential(new GearCommand(false));
+		}
+		else{
+			//Add code for if target is not seen
+
 		}
     }
 }

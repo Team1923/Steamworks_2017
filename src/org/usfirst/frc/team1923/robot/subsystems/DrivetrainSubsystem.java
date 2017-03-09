@@ -29,7 +29,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	private final boolean RIGHT_REVERSED = false;
 	private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
 
-	public final int ALLOWABLE_ERROR = 200;
+	public final int ALLOWABLE_ERROR = 400;
 
 	// TODO: Change wheel diameter and drive base width
 	private final static double WHEEL_DIAMETER = 4;

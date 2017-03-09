@@ -37,14 +37,25 @@ public class DriveDistanceCommand extends Command {
 		this.setTimeout(maxDistance * 0.05 + 1);
 	}
 
+	public DriveDistanceCommand(double left, double right, double time) {
+		requires(Robot.driveSubSys);
+		this.left = left;
+		this.right = right;
+
+		this.setTimeout(Math.abs(time));
+	}
+	
+	public DriveDistanceCommand(int i, double time, boolean b) {
+		this(i,i,time);
+	}
+	
 	public DriveDistanceCommand(int i) {
-		this(i, i);
+		this(i,i);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-
-		Robot.driveSubSys.resetPosition();
+		System.out.println("Initialized");
 
 		left_target = DrivetrainSubsystem.distanceToRotation(left);
 		right_target = DrivetrainSubsystem.distanceToRotation(right);
@@ -52,6 +63,7 @@ public class DriveDistanceCommand extends Command {
 		SmartDashboard.putNumber("Left Target", left_target);
 		SmartDashboard.putNumber("Right target", right_target);
 
+		Robot.driveSubSys.resetPosition();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

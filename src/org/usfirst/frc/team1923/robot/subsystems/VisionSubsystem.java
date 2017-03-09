@@ -68,7 +68,6 @@ public class VisionSubsystem extends Subsystem {
 			width=sum/widtharr.length;
 		else
 			width=Integer.MAX_VALUE;
-		System.out.println("Width " + width);
 		sum=0;
 		for(double a : x){
 			sum+=a;
@@ -77,7 +76,7 @@ public class VisionSubsystem extends Subsystem {
 			centerx=sum/x.length;		//centerx: pixel value of middle of peg
 		else
 			centerx=Integer.MIN_VALUE;   
-		turn=centerx-RobotMap.IMG_WIDTH/2+10;
+		turn=centerx-RobotMap.IMG_WIDTH/2+13;
 		turn/=RobotMap.TURN_CONSTANT; 
 		//Check Boundaries of turn
 		if(turn<-1)
