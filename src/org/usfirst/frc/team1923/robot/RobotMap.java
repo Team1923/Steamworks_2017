@@ -16,7 +16,7 @@ public class RobotMap {
 	public static final ProfileCurve CHINMAY_PROFILE = ProfileCurve.LINEAR;
 	public static final ProfileCurve ANISH_PROFILE = ProfileCurve.LINEAR;
 	public static final ProfileCurve SURAJ_PROFILE = ProfileCurve.LINEAR;
-	
+
 	// OI port numbers
 	public static final int DRIVER_CONTROLLER_PORT = 0;
 	public static final int OP_CONTROLLER_PORT = 1;
@@ -63,7 +63,6 @@ public class RobotMap {
 	public static final int FRONT_SONAR_ECHO_PORT = 9; // UNITS declared in
 														// constructor in drive
 														// subsystem
-	
 	//Vision Subsystem Constants
 	
 	public static final String CAMERA_IP="10.19.20.15";
@@ -74,5 +73,8 @@ public class RobotMap {
 	public static final double TURN_CONSTANT=1000;
 	public static final double MAX_WIDTH=100;
 	public static final double MAX_DIST = 12.5;
+
+	// TODO: Figure out the port for PigeonIMU
+	public static final int IMU_PORT = 0;
 
 }
