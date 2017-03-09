@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.driveCommands;
 
+import java.awt.Frame;
+
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.utils.PIDController;
 
@@ -15,13 +17,13 @@ import edu.wpi.first.wpilibj.command.Command;
 public class GyroTurnCommand extends Command {
 
 	// TODO: Tune PID constants
-	private final double P_CONST = 0.01;
-	private final double I_CONST = 0.001;
-	private final double D_CONST = 0;
-	private final double I_ZONE = 10;
+	private final double P_CONST = 0.007;
+	private final double I_CONST = 0.0018;
+	private final double D_CONST = 0.000;
+	private final double I_ZONE = 5;
 
 	// Absolute turning tolerance in degrees
-	private final double TOLERANCE = 3;
+	private final double TOLERANCE = 1;
 
 	private ImuTarget target;
 	private Drivetrain output;
@@ -34,9 +36,13 @@ public class GyroTurnCommand extends Command {
 
 		// Ensure that the degrees is [-360, 360] for the PID controller
 		this.degrees = degrees % 360;
-		
+		this.setTimeout(Math.abs(this.degrees) * 0.005 + 1);
+	}
+	
+	protected void initialize(){
 		this.target = new ImuTarget();
 		this.output = new Drivetrain();
+		
 		this.controller = new PIDController(P_CONST, I_CONST, D_CONST, this.target, this.output);
 		this.controller.setContinuous(true);
 		this.controller.setAbsoluteTolerance(TOLERANCE);
@@ -46,9 +52,6 @@ public class GyroTurnCommand extends Command {
 		this.controller.setIZone(I_ZONE);
 		
 		this.setTimeout(Math.abs(this.degrees) * 0.005 + 1);
-	}
-
-	protected void initialize() {
 		this.controller.enable();
 	}
 
@@ -65,9 +68,10 @@ public class GyroTurnCommand extends Command {
 	protected void end() {
 		this.controller.disable();
 
-		this.controller = null;
-		this.target = null;
-		this.output = null;
+		System.out.println("END END END");
+		if(this.isTimedOut()){
+			System.out.println("TIMED OUT");
+		}
 	}
 
 	protected void interrupted() {
@@ -104,6 +108,7 @@ public class GyroTurnCommand extends Command {
 		}
 		
 		protected double getHeading() {
+			this.fusionStatus = new FusionStatus();
 			return this.imu.GetFusedHeading(this.fusionStatus);
 		}
 
@@ -113,7 +118,7 @@ public class GyroTurnCommand extends Command {
 
 		@Override
 		public void pidWrite(double output) {
-			Robot.driveSubSys.drive(output, -output, TalonControlMode.PercentVbus);
+			Robot.driveSubSys.drive(output*11, -output*11, TalonControlMode.Voltage);
 		}
 
 	}

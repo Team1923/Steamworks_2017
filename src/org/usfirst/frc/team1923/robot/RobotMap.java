@@ -61,6 +61,6 @@ public class RobotMap {
 														// subsystem
 	
 	//TODO: Figure out the port for PigeonIMU
-	private static final int IMU_PORT = 0;
+	public static final int IMU_PORT = 0;
 
 }
