@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class BlueHopperCommand extends CommandGroup{
 	public BlueHopperCommand(){
-		this.addSequential(new DriveDistanceCommand(RobotMap.baselineDistance + RobotMap.hopperWidth/2));
+		this.addSequential(new DriveDistanceCommand(RobotMap.BASELINE_DISTANCE + RobotMap.HOPPER_WIDTH/2));
 		this.addSequential(new GyroTurnCommand(90));
-		this.addSequential(new DriveDistanceCommand(RobotMap.forwardDistanceHopper));
+		this.addSequential(new DriveDistanceCommand(RobotMap.FORWARD_DISTANCE_HOPPER));
 		this.addSequential(new GyroTurnCommand(-90));
-		this.addSequential(new DriveDistanceCommand(RobotMap.neutralZoneLength));
+		this.addSequential(new DriveDistanceCommand(RobotMap.NEUTRAL_ZONE_LENGTH));
 	}
 }
