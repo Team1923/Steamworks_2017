@@ -3,9 +3,12 @@ package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.GyroTurnCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
+
+import com.ctre.PigeonImu.FusionStatus;
 
 import org.usfirst.frc.team1923.robot.OI;
 
@@ -63,6 +66,8 @@ public class Robot extends IterativeRobot {
 
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("auto mode", chooser);
+
+		SmartDashboard.putData("Turn 90", new GyroTurnCommand(90));
 
 	}
 
@@ -147,6 +152,7 @@ public class Robot extends IterativeRobot {
 		// double f = SmartDashboard.getNumber("F Value", 0);
 		// driveSubSys.setPID(p, i, d, f);
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("IMU Value", Robot.driveSubSys.getImu().GetFusedHeading(new FusionStatus()));
 	}
 
 	/**
