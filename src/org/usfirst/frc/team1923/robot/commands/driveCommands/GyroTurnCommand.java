@@ -44,7 +44,7 @@ public class GyroTurnCommand extends Command {
 		this.controller.setSetpoint(this.degrees);
 		this.controller.setIZone(I_ZONE);
 
-		this.setTimeout(Math.abs(this.degrees) * 0.005 + 10);
+		this.setTimeout(Math.abs(this.degrees) * 0.005 + 1);
 	}
 
 	protected void initialize(){
