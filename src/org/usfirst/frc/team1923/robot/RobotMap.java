@@ -62,5 +62,10 @@ public class RobotMap {
 	
 	//TODO: Figure out the port for PigeonIMU
 	public static final int IMU_PORT = 0;
-
+	
+	//Distances of Field (acquired from Field Cad)
+	public static final double BASELINE_DISTANCE = 185.3;
+	public static final double FORWARD_DISTANCE_HOPPER = 64.38;
+	public static final double HOPPER_WIDTH = 114;
+	public static final double NEUTRAL_ZONE_LENGTH = 278.22;
 }

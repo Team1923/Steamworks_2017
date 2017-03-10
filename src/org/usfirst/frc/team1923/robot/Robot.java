@@ -4,14 +4,15 @@ package org.usfirst.frc.team1923.robot;
 import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.GyroTurnCommand;
+import org.usfirst.frc.team1923.robot.commands.auton.BlueHopperCommand;
+import org.usfirst.frc.team1923.robot.commands.auton.DriveToBaseline;
+import org.usfirst.frc.team1923.robot.commands.auton.RedHopperCommand;
+import org.usfirst.frc.team1923.robot.commands.auton.doNothingCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
-
 import com.ctre.PigeonImu.FusionStatus;
-
 import org.usfirst.frc.team1923.robot.OI;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -52,8 +53,12 @@ public class Robot extends IterativeRobot {
 		climbSubSys = new ClimberSubsystem();
 		oi = new OI();
 
-		chooser.addDefault("Default Auto", new EmptyCommand());
-		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
+		chooser.addDefault("Default Auto", new doNothingCommand());
+		//chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
+		chooser.addObject("Blue Hopper Auto", new BlueHopperCommand());
+		chooser.addObject("Red Hopper Auto", new RedHopperCommand());
+		chooser.addObject("Drive to BaseLine", new DriveToBaseline());
+		
 
 		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
 		// // TODO: Add blue autons
