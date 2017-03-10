@@ -62,5 +62,10 @@ public class RobotMap {
 	
 	//TODO: Figure out the port for PigeonIMU
 	public static final int IMU_PORT = 0;
-
+	
+	//TODO measure distances
+	public static final double baselineDistance = 185.3;
+	public static final double forwardDistanceHopper = 80;
+	public static final double hopperWidth = 80;
+	public static final double neutralZoneLength = 80;
 }

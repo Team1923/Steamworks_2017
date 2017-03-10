@@ -27,6 +27,10 @@ public class DriveDistanceCommand extends Command {
 	 */
 	private double left_target, right_target;
 
+	public DriveDistanceCommand(double dist){
+		this(dist, dist);
+	}
+	
 	public DriveDistanceCommand(double left, double right) {
 		requires(Robot.driveSubSys);
 		this.left = left;
