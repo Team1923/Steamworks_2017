@@ -65,7 +65,7 @@ public class RobotMap {
 	
 	//TODO measure distances
 	public static final double baselineDistance = 185.3;
-	public static final double forwardDistanceHopper = 80;
-	public static final double hopperWidth = 80;
-	public static final double neutralZoneLength = 80;
+	public static final double forwardDistanceHopper = 64.38;
+	public static final double hopperWidth = 114;
+	public static final double neutralZoneLength = 278.22;
 }
