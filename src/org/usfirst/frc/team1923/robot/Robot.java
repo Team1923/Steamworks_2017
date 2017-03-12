@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team1923.robot;
 
-
 import org.usfirst.frc.team1923.robot.commands.DoNothing;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
 import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
@@ -9,10 +8,15 @@ import org.usfirst.frc.team1923.robot.commands.visionCommands.*;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
 import org.usfirst.frc.team1923.robot.subsystems.*;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
+
+import com.ctre.PigeonImu;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 import org.usfirst.frc.team1923.robot.OI;
 
@@ -33,12 +37,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	private long lastLog = 0;
+
 	// Declare one instance of each subsystem and OI.
 	public static DrivetrainSubsystem driveSubSys;
 	public static ClimberSubsystem climbSubSys;
 	public static GearSubsystem gearSubSys;
 	public static VisionSubsystem visionSubSys;
 	public static OI oi;
+
+	public static PrintWriter writer;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<Command>();
@@ -57,18 +65,19 @@ public class Robot extends IterativeRobot {
 		driveSubSys = new DrivetrainSubsystem();
 		climbSubSys = new ClimberSubsystem();
 		visionSubSys = new VisionSubsystem();
-		
+
 		oi = new OI();
 
 		chooser.addDefault("Do Nothing Auto", new DoNothing());
-		chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
-		chooser.addObject("Vision Auton Right" , new VisionAutonRight());
-		chooser.addObject("Vision Auton Center" , new VisionAutonCenter());
-		chooser.addObject("Vision Auton Left" , new VisionAutonLeft());
-		chooser.addObject("Test Align" , new TestAlign());
+		// chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
+		chooser.addObject("Vision Auton Right", new VisionAutonRight());
+		chooser.addObject("Vision Auton Center", new VisionAutonCenter());
+		chooser.addObject("Vision Auton Left", new VisionAutonLeft());
+		// chooser.addObject("Test Align" , new TestAlign());
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		//SmartDashboard.putData("Turn Auto", chooser);
-		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
+		// SmartDashboard.putData("Turn Auto", chooser);
+		chooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
+		chooser.addObject("Drive 2 seconds", new DriveTimeCommand(1, 2));
 
 		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
 		// // TODO: Add blue autons
@@ -79,12 +88,12 @@ public class Robot extends IterativeRobot {
 		// }
 		//
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		
-		//Driver Selection
+
+		// Driver Selection
 		driver.addDefault("Chinmay", new ChoseDriverCommand(RobotMap.CHINMAY_PROFILE));
 		driver.addObject("Suraj", new ChoseDriverCommand(RobotMap.SURAJ_PROFILE));
 		driver.addObject("Anish", new ChoseDriverCommand(RobotMap.ANISH_PROFILE));
-		
+
 		SmartDashboard.putData("Auto Mode", chooser);
 		SmartDashboard.putData("Driver", driver);
 	}
@@ -96,7 +105,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
 	}
 
 	@Override
@@ -140,6 +148,15 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
 		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
 
+//		if (this.lastLog + 100 < System.currentTimeMillis()) {
+//			this.lastLog = System.currentTimeMillis();
+//			log("Distance: " + Robot.visionSubSys.frontSonar.getRangeInches() + ", Center: "
+//					+ Robot.visionSubSys.centerx + ", Found?: " + Robot.visionSubSys.found + ", Width: "
+//					+ Robot.visionSubSys.width + ", Turn: " + Robot.visionSubSys.turn + ", Heading: "
+//					+ Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()) + ", Enc: "
+//					+ Robot.driveSubSys.getLeftPosition() + "," + Robot.driveSubSys.getRightPosition());
+//		}
+
 		Scheduler.getInstance().run();
 	}
 
@@ -151,7 +168,11 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		//new GearSetHomeCommand().start();
+
+		if (writer != null) {
+			writer.close();
+		}
+		// new GearSetHomeCommand().start();
 	}
 
 	/**
@@ -160,15 +181,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		//SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
-		//SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
-		//DrivetrainSubsystem.TURNING_CONSTANT = SmartDashboard.getNumber("turning", 1.06);
+		// SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
+		// SmartDashboard.putNumber("Right enc",
+		// driveSubSys.getRightPosition());
+		// DrivetrainSubsystem.TURNING_CONSTANT =
+		// SmartDashboard.getNumber("turning", 1.06);
 		// double p = SmartDashboard.getNumber("P Value", 0);
 		// double i = SmartDashboard.getNumber("I Value", 0);
 		// double d = SmartDashboard.getNumber("D Value", 0);
 		// double f = SmartDashboard.getNumber("F Value", 0);
 		Robot.visionSubSys.refresh();
-		SmartDashboard.putNumber("Ultrasonic" , Robot.visionSubSys.dist);
+		SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.dist);
 		// driveSubSys.setPID(p, i, d, f);
 		Scheduler.getInstance().run();
 	}
@@ -179,5 +202,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+
+	public static void log(String message) {
+		try {
+			if (writer == null) {
+				writer = new PrintWriter(new BufferedWriter(new FileWriter("/tmp/match.log")));
+			}
+
+			writer.println("[" + System.currentTimeMillis() + "] " + message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

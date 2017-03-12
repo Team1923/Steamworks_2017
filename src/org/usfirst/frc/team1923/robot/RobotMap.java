@@ -32,7 +32,7 @@ public class RobotMap {
 
 	// Climb motor numbers
 	public static final int LEFT_CLIMB_PORT = 4;
-	public static final int RIGHT_CLIMB_PORT = 5;
+	public static final int RIGHT_CLIMB_PORT = 9;
 
 	// Climber slider port numbers
 	public static final int SLIDE_FORWARD_PORT = 6;
@@ -65,7 +65,7 @@ public class RobotMap {
 														// subsystem
 	//Vision Subsystem Constants
 	
-	public static final String CAMERA_IP="10.19.20.15";
+	public static final String CAMERA_IP="10.19.23.15";
 	
 	public static final String NEWTORK_TABLE_ADDRESS="GRIP/table";
 	public static final int IMG_WIDTH=320;
@@ -75,6 +75,6 @@ public class RobotMap {
 	public static final double MAX_DIST = 12.5;
 
 	// TODO: Figure out the port for PigeonIMU
-	public static final int IMU_PORT = 0;
+	public static final int IMU_PORT = 9;
 
 }

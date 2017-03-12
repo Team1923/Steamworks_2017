@@ -16,7 +16,7 @@ public class VisionAutonCenter extends CommandGroup {
     	//Aligns Gear
     	addParallel(new ShiftCommand(true));
 		addSequential(new SlideCommand(true));
-		addSequential(new VisionScanRightCommand(0.3, 5));
+//		addSequential(new VisionScanRightCommand(0.3, 5));
 		Robot.visionSubSys.refresh();
 		
 		//Add code if target is seen

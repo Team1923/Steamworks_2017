@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveTimeCommand extends Command {
 
-	private double speed;
+	private double power;
 
-	public DriveTimeCommand(double speed, double timeOut) {
+	public DriveTimeCommand(double power, double timeOut) {
 		requires(Robot.driveSubSys);
 		setTimeout(timeOut);
-		this.speed = speed;
+		this.power = power;
 	}
 
 	protected void initialize() {
@@ -21,7 +21,7 @@ public class DriveTimeCommand extends Command {
 	}
 
 	protected void execute() {
-		Robot.driveSubSys.drive(speed, speed, TalonControlMode.Speed);
+		Robot.driveSubSys.drive(power, power, TalonControlMode.PercentVbus);
 	}
 
 	protected boolean isFinished() {

@@ -16,7 +16,7 @@ public class VisionAutonLeft extends CommandGroup {
     	addParallel(new ShiftCommand(true));
 		addSequential(new SlideCommand(true));
 		addSequential(new DriveDistanceCommand(93));
-		addSequential(new TurnAngleCommand(45));
+		addSequential(new GyroTurnCommand(45));
 		addSequential(new VisionScanRightCommand(0.3, 5));
 		Robot.visionSubSys.refresh();
 		
