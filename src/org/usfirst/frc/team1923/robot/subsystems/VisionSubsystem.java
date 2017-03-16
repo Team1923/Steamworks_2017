@@ -32,7 +32,6 @@ public class VisionSubsystem extends Subsystem {
         // TODO: Account for difference in areas of tape to change turn value
         // TODO: Add ultrasonic sensors
 
-        // Start Camera Server
         CameraServer.getInstance().addAxisCamera(RobotMap.CAMERA_IP);
 
         this.table = NetworkTable.getTable(RobotMap.NEWTORK_TABLE_ADDRESS);

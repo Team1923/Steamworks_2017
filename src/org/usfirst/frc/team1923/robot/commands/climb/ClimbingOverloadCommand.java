@@ -2,9 +2,9 @@ package org.usfirst.frc.team1923.robot.commands.climb;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ClimbingOverloadCommandGroup extends CommandGroup {
+public class ClimbingOverloadCommand extends CommandGroup {
 
-    public ClimbingOverloadCommandGroup() {
+    public ClimbingOverloadCommand() {
         // TODO: Put stop wait and warn system in place
 
         /*

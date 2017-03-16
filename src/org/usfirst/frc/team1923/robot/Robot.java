@@ -27,33 +27,23 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class Robot extends IterativeRobot {
 
-    private long lastLog = 0;
-
-    // Declare one instance of each subsystem and OI.
     public static DrivetrainSubsystem driveSubSys;
     public static ClimberSubsystem climbSubSys;
     public static GearSubsystem gearSubSys;
     public static VisionSubsystem visionSubSys;
     public static OI oi;
 
-    public static PrintWriter logger;
+    private static PrintWriter logger;
 
+    private long lastLog;
     private Command autonomousCommand;
     private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
     private SendableChooser<Command> driverChooser = new SendableChooser<Command>();
 
     /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
+     * Called once when the robot first starts up.
      */
     @Override
     public void robotInit() {
@@ -71,8 +61,6 @@ public class Robot extends IterativeRobot {
         this.autonChooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
         this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1, 2));
 
-
-        // Driver Selection
         this.driverChooser.addDefault("Chinmay", new ChoseDriverCommand(RobotMap.CHINMAY_PROFILE));
         this.driverChooser.addObject("Suraj", new ChoseDriverCommand(RobotMap.SURAJ_PROFILE));
         this.driverChooser.addObject("Anish", new ChoseDriverCommand(RobotMap.ANISH_PROFILE));
@@ -82,14 +70,16 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
-     * the robot is disabled.
+     * Called once when the robot is disabled.
      */
     @Override
     public void disabledInit() {
+
     }
 
+    /**
+     * Called every 20ms when the robot is disabled.
+     */
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
@@ -102,14 +92,7 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This autonomous (along with the chooser code above) shows how to select
-     * between different autonomous modes using the dashboard. The sendable
-     * chooser code works with the Java SmartDashboard. If you prefer the
-     * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-     * getString code to get the auto name from the text box below the Gyro You
-     * can add additional auto modes by adding additional commands to the
-     * chooser code above (like the commented example) or additional comparisons
-     * to the switch structure below with additional strings & commands.
+     * Called once at the start of autonomous mode.
      */
     @Override
     public void autonomousInit() {
@@ -124,7 +107,7 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This function is called periodically during autonomous
+     * Called every 20ms during autonomous mode.
      */
     @Override
     public void autonomousPeriodic() {
@@ -135,6 +118,9 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    /**
+     * Called once at the start of tele-op mode.
+     */
     @Override
     public void teleopInit() {
         if (this.autonomousCommand != null) {
@@ -145,7 +131,7 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This function is called periodically during operator control
+     * Called every 20ms during tele-op mode.
      */
     @Override
     public void teleopPeriodic() {
@@ -155,13 +141,16 @@ public class Robot extends IterativeRobot {
     }
 
     /**
-     * This function is called periodically during test mode
+     * Called every 20ms during testing mode.
      */
     @Override
     public void testPeriodic() {
         LiveWindow.run();
     }
 
+    /**
+     * Log critical sensor data into a file.
+     */
     private void logData() {
         if (this.lastLog + 100 > System.currentTimeMillis()) {
             return;
@@ -181,6 +170,9 @@ public class Robot extends IterativeRobot {
         }
     }
 
+    /**
+     * Initialize the PrintWriter for logging to match.log.
+     */
     private void startLog() {
         try {
             logger = new PrintWriter(new BufferedWriter(new FileWriter("~/match.log")));
@@ -189,6 +181,9 @@ public class Robot extends IterativeRobot {
         }
     }
 
+    /**
+     * Flush the buffer in PrintWriter to the disk and close the logger.
+     */
     private void stopLog() {
         logger.close();
     }

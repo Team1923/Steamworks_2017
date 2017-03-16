@@ -32,27 +32,23 @@ public class ControllerRumbleCommand extends TimedCommand {
         this.power = power;
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         Robot.oi.op.setRumble(RumbleType.kRightRumble, power);
         Robot.oi.op.setRumble(RumbleType.kLeftRumble, power);
     }
 
-    // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+
     }
 
-    // Called once after timeout
     @Override
     protected void end() {
         Robot.oi.op.setRumble(RumbleType.kLeftRumble, 0);
         Robot.oi.op.setRumble(RumbleType.kRightRumble, 0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
     protected void interrupted() {
         end();
