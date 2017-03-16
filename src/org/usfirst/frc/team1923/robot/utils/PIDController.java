@@ -7,57 +7,56 @@ import edu.wpi.first.wpilibj.PIDSource;
 
 /**
  * Customized version of PIDController to allow the specification of an IZone.
- *
  */
 public class PIDController extends edu.wpi.first.wpilibj.PIDController {
 
-	private Field totalErrorField;
+    private Field totalErrorField;
 
-	private double IZone;
+    private double IZone;
 
-	public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period) {
-		super(Kp, Ki, Kd, Kf, source, output, period);
+    public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period) {
+        super(Kp, Ki, Kd, Kf, source, output, period);
 
-		try {
-			this.totalErrorField = edu.wpi.first.wpilibj.PIDController.class.getDeclaredField("m_totalError");
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace(); // Should never happen
-		}
-		this.totalErrorField.setAccessible(true);
-		this.IZone = 0;
-	}
-	
-	public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output) {
-		this(Kp, Ki, Kd, Kf, source, output, edu.wpi.first.wpilibj.PIDController.kDefaultPeriod);
-	}
+        try {
+            this.totalErrorField = edu.wpi.first.wpilibj.PIDController.class.getDeclaredField("m_totalError");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace(); // Should never happen
+        }
+        this.totalErrorField.setAccessible(true);
+        this.IZone = 0;
+    }
 
-	public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period) {
-		this(Kp, Ki, Kd, 0, source, output, period);
-	}
+    public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output) {
+        this(Kp, Ki, Kd, Kf, source, output, edu.wpi.first.wpilibj.PIDController.kDefaultPeriod);
+    }
 
-	public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output) {
-		this(Kp, Ki, Kd, source, output, edu.wpi.first.wpilibj.PIDController.kDefaultPeriod);
-	}
+    public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period) {
+        this(Kp, Ki, Kd, 0, source, output, period);
+    }
 
-	public void setIZone(double iZone) {
-		this.IZone = iZone;
-	}
+    public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output) {
+        this(Kp, Ki, Kd, source, output, edu.wpi.first.wpilibj.PIDController.kDefaultPeriod);
+    }
 
-	@Override
-	protected void calculate() {
-		if (this.getError() > this.IZone) {
-			this.setTotalError(0);
-		}
+    public void setIZone(double iZone) {
+        this.IZone = iZone;
+    }
 
-		super.calculate();
-	}
+    @Override
+    protected void calculate() {
+        if (this.getError() > this.IZone) {
+            this.clearTotalError();
+        }
 
-	protected void setTotalError(double totalError) {
-		try {
-			this.totalErrorField.setDouble(this, totalError);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
+        super.calculate();
+    }
+
+    protected void clearTotalError() {
+        try {
+            this.totalErrorField.setDouble(this, 0);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
