@@ -6,9 +6,9 @@ import org.usfirst.frc.team1923.robot.commands.drive.ShiftCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
 import org.usfirst.frc.team1923.robot.commands.vision.VisionAlignCommand;
-import org.usfirst.frc.team1923.robot.commands.vision.WaitCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class VisionCenterAuton extends CommandGroup {
 

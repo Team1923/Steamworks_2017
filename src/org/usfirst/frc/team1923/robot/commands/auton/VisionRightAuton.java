@@ -7,9 +7,9 @@ import org.usfirst.frc.team1923.robot.commands.drive.TurnAngleCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
 import org.usfirst.frc.team1923.robot.commands.vision.VisionAlignCommand;
-import org.usfirst.frc.team1923.robot.commands.vision.WaitCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class VisionRightAuton extends CommandGroup {
 
@@ -23,7 +23,7 @@ public class VisionRightAuton extends CommandGroup {
         Robot.visionSubSys.refresh();
 
         // Add code if target is seen
-        if (Robot.visionSubSys.centerx > 0) {
+        if (Robot.visionSubSys.getCenterX() > 0) {
             addSequential(new VisionAlignCommand());// Aligns Gear
             // Wiggle around for the peg to settle into gear
             addSequential(new WaitCommand(0.2));
