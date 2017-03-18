@@ -10,6 +10,14 @@ public class DriveTimeCommand extends Command {
 
     private double power;
 
+    /**
+     * Drives a set time at a set speed
+     * 
+     * @param power
+     *            PercentVBus value for both motors
+     * @param timeOut
+     *            Timeout in seconds
+     */
     public DriveTimeCommand(double power, double timeOut) {
         requires(Robot.driveSubSys);
         setTimeout(timeOut);

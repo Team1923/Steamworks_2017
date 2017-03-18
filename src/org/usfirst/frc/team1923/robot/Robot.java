@@ -96,9 +96,10 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousInit() {
-        this.startLog();
-        this.logData();
-
+        if (RobotMap.DEBUG) {
+            this.startLog();
+            this.logData();
+        }
         this.autonomousCommand = this.autonChooser.getSelected();
 
         if (this.autonomousCommand != null) {
@@ -111,10 +112,11 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        this.logData();
-        SmartDashboard.putNumber("Left Encoder", driveSubSys.getLeftPosition());
-        SmartDashboard.putNumber("Right Encoder", driveSubSys.getRightPosition());
-
+        if (RobotMap.DEBUG) {
+            this.logData();
+            SmartDashboard.putNumber("Left Encoder", driveSubSys.getLeftPosition());
+            SmartDashboard.putNumber("Right Encoder", driveSubSys.getRightPosition());
+        }
         Scheduler.getInstance().run();
     }
 
@@ -127,7 +129,9 @@ public class Robot extends IterativeRobot {
             this.autonomousCommand.cancel();
         }
 
-        this.stopLog();
+        if (RobotMap.DEBUG) {
+            this.stopLog();
+        }
     }
 
     /**
@@ -136,7 +140,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Robot.visionSubSys.refresh();
-        SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
+        if (RobotMap.DEBUG) {
+            SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
+        }
         Scheduler.getInstance().run();
     }
 
@@ -161,9 +167,9 @@ public class Robot extends IterativeRobot {
 
         String logMessage = "[" + DriverStation.getInstance().getMatchTime() + "] Voltage: " + DriverStation.getInstance().getBatteryVoltage()
                 + ", Sonar: " + Robot.visionSubSys.getDistance() + ", VCenter: " + Robot.visionSubSys.getCenterX() + ", VFound: "
-                + Robot.visionSubSys.isFound() + ", VWidth: " + Robot.visionSubSys.getWidth() + ", VTurn: " + Robot.visionSubSys.getTurn() + ", IMU Heading: "
-                + Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()) + ", LEncPos: " + Robot.driveSubSys.getLeftPosition()
-                + ", REncPos: " + Robot.driveSubSys.getRightPosition();
+                + Robot.visionSubSys.isFound() + ", VWidth: " + Robot.visionSubSys.getWidth() + ", VTurn: " + Robot.visionSubSys.getTurn()
+                + ", IMU Heading: " + Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()) + ", LEncPos: "
+                + Robot.driveSubSys.getLeftPosition() + ", REncPos: " + Robot.driveSubSys.getRightPosition();
 
         if (logger != null) {
             logger.println(logMessage);

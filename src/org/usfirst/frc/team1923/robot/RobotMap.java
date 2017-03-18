@@ -5,6 +5,11 @@ import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 public class RobotMap {
 
     /**
+     * Debug options
+     */
+    public static final boolean DEBUG = true;
+
+    /**
      * Driver profiles.
      */
     public static final ProfileCurve DRIVER_PROFILE = ProfileCurve.LINEAR;
@@ -19,8 +24,8 @@ public class RobotMap {
     public static final int OP_CONTROLLER_PORT = 1;
 
     /**
-     * List of ports for the talons on the left and right drivetrain, respectively.
-     * The master talon will be the first element in the array.
+     * List of ports for the talons on the left and right drivetrain,
+     * respectively. The master talon will be the first element in the array.
      */
     public static final int[] LEFT_DRIVE_PORTS = { 8, 7, 6 };
     public static final int[] RIGHT_DRIVE_PORTS = { 1, 2, 3 };

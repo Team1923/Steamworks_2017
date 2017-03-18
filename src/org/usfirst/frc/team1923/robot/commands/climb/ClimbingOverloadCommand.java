@@ -4,6 +4,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ClimbingOverloadCommand extends CommandGroup {
 
+    /**
+     * UNIMPLEMENTED This will automatically detect overload on the climbers to
+     * prevent damage to the mechanism or the field element
+     */
     public ClimbingOverloadCommand() {
         // TODO: Put stop wait and warn system in place
 

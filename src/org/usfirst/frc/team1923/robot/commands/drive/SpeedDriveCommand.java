@@ -10,6 +10,11 @@ public class SpeedDriveCommand extends Command {
 
     public static final int MAX_RPM = 1000;
 
+    /**
+     * Experimental using encoders to drive at a set speed. This command should
+     * provide a much more consistent driving experience as it negates the
+     * effects of battery drop.
+     */
     public SpeedDriveCommand() {
         requires(Robot.driveSubSys);
     }

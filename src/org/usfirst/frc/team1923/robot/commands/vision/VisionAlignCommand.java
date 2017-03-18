@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionAlignCommand extends Command {
 
+    /**
+     * This command aligns the robot to the peg
+     */
     public VisionAlignCommand() {
         requires(Robot.visionSubSys);
     }
@@ -23,7 +26,8 @@ public class VisionAlignCommand extends Command {
     protected void execute() {
         // TODO: Change power value to account for distance
         // TODO: Take into account values from ultrasonic sensors
-        // new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
+        // new VisionAlignCommand(); TODO: Change to only run when needed to not
+        // waste processor cycles
         boolean found;
         double power;
         double turn;

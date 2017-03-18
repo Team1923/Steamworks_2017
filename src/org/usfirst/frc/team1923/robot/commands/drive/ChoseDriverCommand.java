@@ -7,6 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ChoseDriverCommand extends Command {
 
+    /**
+     * Command for setting a driver curve to become the current profile
+     * 
+     * @param p
+     *            ProfileCurve to be set
+     */
     public ChoseDriverCommand(ProfileCurve p) {
         Robot.driveSubSys.driveProfile.setProfileCurve(p);
     }
@@ -23,17 +29,15 @@ public class ChoseDriverCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
     protected void end() {
-        Robot.driveSubSys.stop();
     }
 
     @Override
     protected void interrupted() {
-        end();
     }
 
 }

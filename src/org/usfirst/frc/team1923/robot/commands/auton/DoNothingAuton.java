@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DoNothingAuton extends Command {
 
+    /**
+     * This class does nothing. It finishes immediately
+     */
     public DoNothingAuton() {
 
     }
@@ -20,7 +23,7 @@ public class DoNothingAuton extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override

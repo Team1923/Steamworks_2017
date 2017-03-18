@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TeleopVisionAlignCommand extends Command {
 
+    /**
+     * This command continuously aligns the robot towards the target
+     */
     public TeleopVisionAlignCommand() {
         requires(Robot.visionSubSys);
         requires(Robot.driveSubSys);
@@ -44,7 +47,6 @@ public class TeleopVisionAlignCommand extends Command {
             Robot.driveSubSys.auto(power, turn);
         } else {
             boolean aligned = Robot.visionSubSys.isFound() && Robot.visionSubSys.getDistance() <= RobotMap.MAX_DIST;
-
             SmartDashboard.putBoolean("Found: ", Robot.visionSubSys.isFound());
             SmartDashboard.putBoolean("Aligned and Ready to Drop: ", aligned);
         }

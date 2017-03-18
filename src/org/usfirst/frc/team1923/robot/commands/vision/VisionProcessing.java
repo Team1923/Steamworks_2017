@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class VisionProcessing extends Command {
 
+    /**
+     * This command calls the refresh function, thus updating the center values
+     */
     public VisionProcessing() {
         requires(Robot.visionSubSys);
     }

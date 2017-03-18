@@ -8,6 +8,12 @@ public class ShiftOmniCommand extends InstantCommand {
 
     private boolean up;
 
+    /**
+     * Shifts the back omni wheels up or down
+     * 
+     * @param up
+     *            true if omnis lifts off floor
+     */
     public ShiftOmniCommand(boolean up) {
         super();
         this.up = up;

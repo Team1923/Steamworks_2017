@@ -137,8 +137,10 @@ public class DrivetrainSubsystem extends Subsystem {
      * Directly sets the input value of the motors. Use with caution because it
      * doesn't automatically check the control mode
      * 
-     * @param left Left power
-     * @param right Right power
+     * @param left
+     *            Left power
+     * @param right
+     *            Right power
      */
     private void set(double left, double right) {
         this.leftTalons[0].set(left);
@@ -164,9 +166,12 @@ public class DrivetrainSubsystem extends Subsystem {
     /**
      * Sets talon powers with a specific mode
      * 
-     * @param left Left power
-     * @param right Right power
-     * @param controlMode TalonControlMode to be used
+     * @param left
+     *            Left power
+     * @param right
+     *            Right power
+     * @param controlMode
+     *            TalonControlMode to be used
      */
     public void drive(double left, double right, TalonControlMode controlMode) {
         if (this.leftTalons[0].getControlMode() != controlMode || this.rightTalons[0].getControlMode() != controlMode) {

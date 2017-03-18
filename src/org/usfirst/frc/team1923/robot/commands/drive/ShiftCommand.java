@@ -8,6 +8,12 @@ public class ShiftCommand extends InstantCommand {
 
     private boolean up;
 
+    /**
+     * This command shifts the gearboxes to high or low gear
+     * 
+     * @param up
+     *            true if shifting to high gear
+     */
     public ShiftCommand(boolean up) {
         super();
         this.up = up;
