@@ -1,15 +1,23 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.climbCommands.ClimbCommand;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAlignCommand;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionProcessing;
+import org.usfirst.frc.team1923.robot.utils.GripPipeline;
 
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
@@ -30,7 +38,16 @@ public class VisionSubsystem extends Subsystem {
 	private double sum;
 	private double[] def; 
 	
+	public double centerX;
+	
 	public Ultrasonic frontSonar;
+
+	private VisionThread visionThread;
+	 Mat source = new Mat();
+     Mat output = new Mat();
+     CvSink cvSink;
+     CvSource outputStream;
+     GripPipeline pipe;
 	
 	/**
 	 * Initializes CameraServer and NetworkTables
@@ -39,7 +56,7 @@ public class VisionSubsystem extends Subsystem {
 		//TODO: Implement Bounding Rectangle
 		//TODO: IMplement Controller Vibration when Match time is getting low
 		//Start Camera Server
-		CameraServer.getInstance().addAxisCamera(RobotMap.CAMERA_IP);
+		//CameraServer.getInstance().addAxisCamera(RobotMap.CAMERA_IP);
 		//Testing Drawing Bounding Rectangle Around Peg
 		/*
 		CvSource output = CameraServer.getInstance().putVideo("Annotated", 320, 240);
@@ -53,6 +70,15 @@ public class VisionSubsystem extends Subsystem {
 		frontSonar.setAutomaticMode(true);
 		dist=frontSonar.getRangeInches();
 		found=false;
+
+		 AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", "10.19.21.15");
+		camera.setResolution(320, 240);
+        
+        cvSink = CameraServer.getInstance().getVideo();
+        outputStream = CameraServer.getInstance().putVideo("Blur", 320, 240);
+        
+        pipe = new GripPipeline();
+       	
 		refresh();
 	}
 	
@@ -91,6 +117,24 @@ public class VisionSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Distance to target: ", dist);
 		SmartDashboard.putNumber("Width: ", width);
 		SmartDashboard.putNumber("Turn: ", width);
+		
+		System.out.println("Testing:");
+		try{
+		cvSink.grabFrameNoTimeout(source);
+		
+		pipe.process(source);
+		if (!pipe.filterContoursOutput().isEmpty()) {
+	            Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
+	                centerX = r.x + (r.width / 2);
+	            System.out.println("Center X Pipeline: " + centerX);
+	        }
+	        
+		//Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+		outputStream.putFrame(pipe.hslThresholdOutput());
+		//outputStream.putFrame(output);
+		}catch (UnsatisfiedLinkError b){
+			System.out.println("Error");
+		}
 		
 	}
 	

@@ -41,6 +41,8 @@ public class ClimberSubsystem extends Subsystem {
 		leftClimb.configNominalOutputVoltage(0, 0);
 
 		leftClimb.setPID(P_CONSTANT, I_CONSTANT, D_CONSTANT);
+		
+		
 
 		// action when
 		// trigger
@@ -49,6 +51,7 @@ public class ClimberSubsystem extends Subsystem {
 
 	public void set(double power) {
 		leftClimb.set(power);
+		//System.out.println("Left CLimber Amperage"  + leftClimb.getOutputCurrent() + "\tRight Climber Amperage" + rightClimb.getOutputCurrent());
 
 	}
 
