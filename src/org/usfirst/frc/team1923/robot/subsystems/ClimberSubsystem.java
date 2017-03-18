@@ -7,6 +7,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -41,8 +42,6 @@ public class ClimberSubsystem extends Subsystem {
 		leftClimb.configNominalOutputVoltage(0, 0);
 
 		leftClimb.setPID(P_CONSTANT, I_CONSTANT, D_CONSTANT);
-		
-		
 
 		// action when
 		// trigger
@@ -51,7 +50,7 @@ public class ClimberSubsystem extends Subsystem {
 
 	public void set(double power) {
 		leftClimb.set(power);
-		//System.out.println("Left CLimber Amperage"  + leftClimb.getOutputCurrent() + "\tRight Climber Amperage" + rightClimb.getOutputCurrent());
+		SmartDashboard.putNumber("Max Climber Amerage: " , getMaxCurrent());
 
 	}
 
@@ -62,6 +61,11 @@ public class ClimberSubsystem extends Subsystem {
 	public double getMaxCurrent() {
 		return Math.max(leftClimb.getOutputCurrent(), rightClimb.getOutputCurrent());
 	}
+	
+	public double getTotalCurrent() {
+		return leftClimb.getOutputCurrent() + rightClimb.getOutputCurrent();
+	}
+
 
 	public double getVoltage() {
 		return leftClimb.getOutputVoltage();

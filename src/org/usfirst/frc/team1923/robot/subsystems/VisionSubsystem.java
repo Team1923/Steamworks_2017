@@ -83,6 +83,26 @@ public class VisionSubsystem extends Subsystem {
 	}
 	
 	public void refresh(){
+		//Process Image
+		try{
+		cvSink.grabFrameNoTimeout(source);
+		
+		pipe.process(source);
+		if (!pipe.filterContoursOutput().isEmpty()) {
+	            Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
+	                centerX = r.x + (r.width / 2);
+	            SmartDashboard.putNumber("Center X Pipeline: ", centerX);
+	        }
+	        
+		//Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+		outputStream.putFrame(pipe.hslThresholdOutput());
+		//outputStream.putFrame(output);
+		}catch (UnsatisfiedLinkError b){
+			System.out.println("Error");
+		}
+		
+		
+		//Extrapolate Values (Turn, distance, etc.)
 		dist=frontSonar.getRangeInches();
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
@@ -112,29 +132,11 @@ public class VisionSubsystem extends Subsystem {
 		if(x.length==0)
 			turn=Integer.MIN_VALUE;
 		
-		//Testing
+		//Logging
 		SmartDashboard.putNumber("Center X: ", centerx);
-		SmartDashboard.putNumber("Distance to target: ", dist);
+		SmartDashboard.putNumber("Distance to target(Ultrasonic): ", dist);
 		SmartDashboard.putNumber("Width: ", width);
 		SmartDashboard.putNumber("Turn: ", width);
-		
-		System.out.println("Testing:");
-		try{
-		cvSink.grabFrameNoTimeout(source);
-		
-		pipe.process(source);
-		if (!pipe.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
-	                centerX = r.x + (r.width / 2);
-	            System.out.println("Center X Pipeline: " + centerX);
-	        }
-	        
-		//Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-		outputStream.putFrame(pipe.hslThresholdOutput());
-		//outputStream.putFrame(output);
-		}catch (UnsatisfiedLinkError b){
-			System.out.println("Error");
-		}
 		
 	}
 	

@@ -1,33 +1,22 @@
 
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.DoNothing;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.*;
-import org.usfirst.frc.team1923.robot.commands.gearCommands.GearSetHomeCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.*;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
-import org.usfirst.frc.team1923.robot.subsystems.*;
-import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
-import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
-import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
-import org.usfirst.frc.team1923.robot.utils.*;
-
-import com.ctre.PigeonImu;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team1923.robot.OI;
+import org.usfirst.frc.team1923.robot.commands.DoNothing;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.ChoseDriverCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
+import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
+import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
+import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
+import org.usfirst.frc.team1923.robot.subsystems.VisionSubsystem;
 
-import edu.wpi.cscore.AxisCamera;
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -36,7 +25,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.VisionThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -55,21 +43,6 @@ public class Robot extends IterativeRobot {
 	public static GearSubsystem gearSubSys;
 	public static VisionSubsystem visionSubSys;
 	public static OI oi;
-	
-	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
-	//private VisionThread visionThread;
-	
-	private static final int IMG_WIDTH = 320;
-	private static final int IMG_HEIGHT = 240;
-	
-	private VisionThread visionThread;
-	private double centerX = 0.0;
-	
-	private final Object imgLock = new Object();
-	 Mat source = new Mat();
-     Mat output = new Mat();
-     CvSink cvSink;
-     CvSource outputStream;
 
 	public static PrintWriter writer;
 
@@ -93,72 +66,6 @@ public class Robot extends IterativeRobot {
 
 		oi = new OI();
 		
-		/*
-			 AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", "10.19.21.15");
-			camera.setResolution(320, 240);
-             
-             cvSink = CameraServer.getInstance().getVideo();
-             outputStream = CameraServer.getInstance().putVideo("Blur", 320, 240);
-             
-
-             new Thread(() -> {
-     			while(true){
-     		   	System.out.println("Testing:");
-     			 cvSink.grabFrame(source);
-     	         Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-     	         outputStream.putFrame(output);
-     			}
-     		}).start();
-            	
-		*/
-		/*
-		 //AxisCamera camera;// = CameraServer.getInstance().startAutomaticCapture();
-         //camera=CameraServer.getInstance().addAxisCamera("Camera", "10.19.21.15");
-		 AxisCamera camera = new AxisCamera("Camera", "10.19.21.15");
-         camera.setResolution(320, 240);
-         //camera.setFPS(30);
-         //camera.setExposureManual(20);
-         //camera.setWhiteBalanceManual(0);
-         //camera.setExposureManual(0);
-         //camera.setExposureAuto();
-         CvSource outputStream = CameraServer.getInstance().putVideo("HSL", 320, 240);
-        
-         visionThread = new VisionThread(camera, new GripPipelineT(), pipeline -> {
-        	 //while(true){
-        		// outputStream.putFrame(pipeline.hslThresholdOutput());
-        	 while(true){
-        	 System.out.println("Test");
-        		 if (!pipeline.filterContoursOutput().isEmpty()) {
-     	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-     	            synchronized (imgLock) {
-     	                centerX = r.x + (r.width / 2);
-     	            }
-     	            System.out.println("Center X Pipeline: " + centerX);
-     	        }
-        	 }
-        	 //}
-        });
-        visionThread.start();
-        */
-		
-		/*
-		AxisCamera camera;// = CameraServer.getInstance().startAutomaticCapture();
-        camera=CameraServer.getInstance().addAxisCamera("Camera", "10.19.21.15");
-		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-	    
-	    visionThread = new VisionThread(camera, new GripPipelineT(), pipeline -> {
-	    	//while(true){
-	        if (!pipeline.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-	            synchronized (imgLock) {
-	                centerX = r.x + (r.width / 2);
-	            }
-	            System.out.println("Center X Pipeline: " + centerX);
-	        }
-	    	//}
-	    });
-	    visionThread.start();*/
-
 		chooser.addDefault("Do Nothing Auto", new DoNothing());
 		// chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
 		chooser.addObject("Vision Auton Right", new VisionAutonRight());
@@ -283,10 +190,7 @@ public class Robot extends IterativeRobot {
 		// double i = SmartDashboard.getNumber("I Value", 0);
 		// double d = SmartDashboard.getNumber("D Value", 0);
 		// double f = SmartDashboard.getNumber("F Value", 0);
-		//Robot.visionSubSys.refresh();
-		SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.dist);
 		
-        
 		// driveSubSys.setPID(p, i, d, f);
 		Scheduler.getInstance().run();
 	}
