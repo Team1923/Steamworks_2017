@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1923.robot.RobotMap;
@@ -26,8 +27,6 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  */
 public class VisionSubsystem extends Subsystem {
 
-	public NetworkTable table;
-	public double[] x;
 	public double centerx,turn;
 	public double[] widtharr;
 	public double width;
@@ -65,7 +64,6 @@ public class VisionSubsystem extends Subsystem {
 		//TODO: Account for difference in areas of tape to change turn value
 		//TODO: Add ultrasonic sensors
 		def = new double[0];
-		table = NetworkTable.getTable(RobotMap.NEWTORK_TABLE_ADDRESS);
 		frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
 		frontSonar.setEnabled(true);
 		frontSonar.setAutomaticMode(true);
@@ -91,10 +89,20 @@ public class VisionSubsystem extends Subsystem {
 		cvSink.grabFrameNoTimeout(source);
 		
 		pipe.process(source);
+		sumx=0;
+		sumw=0;
 		if (!pipe.filterContoursOutput().isEmpty()) {
-			r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
-			centerX = r.x + (r.width / 2);
-			SmartDashboard.putNumber("Center X Pipeline: ", centerX);
+			for(MatOfPoint a: pipe.filterContoursOutput()){
+				r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
+				centerX = r.x + (r.width / 2);
+				sumx+=centerX;
+				sumw+=r.width;
+				//SmartDashboard.putNumber("Center X Pipeline: ", centerX);
+			}
+		}
+		else{
+			width=Integer.MAX_VALUE;
+			centerx=Integer.MIN_VALUE;  
 		}
 		outputStream.putFrame(pipe.hslThresholdOutput());
 		//outputStream.putFrame(output);
@@ -105,26 +113,11 @@ public class VisionSubsystem extends Subsystem {
 		
 		//Extrapolate Values (Turn, distance, etc.)
 		dist=frontSonar.getRangeInches();
-		x = table.getNumberArray("centerX", def);
-		widtharr= table.getNumberArray("width", def);
-		sumx=0;
-		sumw=0;
-		for(double a: widtharr){
-			sumx+=a;
-		}
-		if(widtharr.length>0)
-			width=sumx/widtharr.length;
-		else
-			width=Integer.MAX_VALUE;
-		sumx=0;
-		for(double a : x){
-			sumx+=a;
-		}
-		if(x.length>0)
-			centerx=sumx/x.length;		//centerx: pixel value of middle of peg
-		else
-			centerx=Integer.MIN_VALUE;   
 		
+		if (!pipe.filterContoursOutput().isEmpty()) {
+			width=sumw/pipe.filterContoursOutput().size();
+			centerx=sumx/pipe.filterContoursOutput().size();		//centerx: pixel value of middle of peg
+		}
 		//Added 13 to make sure we dont hit the center of the gear
 		turn=centerx-RobotMap.IMG_WIDTH/2+13;
 		turn/=RobotMap.TURN_CONSTANT; 
@@ -133,7 +126,7 @@ public class VisionSubsystem extends Subsystem {
 			turn=-1;
 		else if(turn>1)
 			turn=1;						//TODO: Use PID to get to turn value and use an angle instead of turn (Using IMU)
-		if(x.length==0)
+		if(pipe.filterContoursOutput().isEmpty())
 			turn=Integer.MIN_VALUE;
 		
 		//Logging
