@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class TeleopVisionAlignCommand extends Command {
+public class TeleopVisionPegAlignCommand extends Command {
 
 	public double power,turn;
 	public boolean found;
 	public boolean aligned;
 	//private Timer time;
 	
-    public TeleopVisionAlignCommand() {
+    public TeleopVisionPegAlignCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.visionSubSys);
@@ -37,7 +37,7 @@ public class TeleopVisionAlignCommand extends Command {
     	//TODO: Take into account values from ultrasonic sensors
     	//new VisionAlignCommand(); TODO: Change to only run when needed to not waste processor cycles
     	Robot.visionSubSys.refresh();
-    	if(Robot.visionSubSys.dist>=RobotMap.MAX_DIST){
+    	if(Robot.visionSubSys.dist>=RobotMap.PEG_DIST){
     	if(Robot.visionSubSys.turn<-1){
     		power=0;
     		turn=0;
@@ -53,20 +53,12 @@ public class TeleopVisionAlignCommand extends Command {
     		turn=Robot.visionSubSys.turn;
     	}
     	
-    	//Testing
-    	//System.out.println("Power: " + power + " Turn: " +  turn);
-    	
     	Robot.driveSubSys.auto(power, turn);
-//    	try {
-//    		Thread.sleep(100);
-//			//time.wait(100);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+
     	}
     	else{
     		//Put SmartDashboard indicator
-    		if(found && Robot.visionSubSys.dist<=RobotMap.MAX_DIST)
+    		if(found && Robot.visionSubSys.dist<=RobotMap.PEG_DIST)
     			aligned=true;
     		else
     			aligned=false;
@@ -78,7 +70,7 @@ public class TeleopVisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return Robot.visionSubSys.dist<=RobotMap.MAX_DIST;
+    	return Robot.visionSubSys.dist<=RobotMap.PEG_DIST;
     }
 
     // Called once after isFinished returns true

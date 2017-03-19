@@ -5,7 +5,7 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.climbCommands.ClimbCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAlignCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionPegAlignCommand;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionProcessing;
 import org.usfirst.frc.team1923.robot.utils.GripPipeline;
 
@@ -35,19 +35,20 @@ public class VisionSubsystem extends Subsystem {
 	
 	public boolean found;
 	
-	private double sum;
+	private double sumx;
+	private double sumw;
 	private double[] def; 
 	
 	public double centerX;
 	
 	public Ultrasonic frontSonar;
-
-	private VisionThread visionThread;
+	
 	 Mat source = new Mat();
      Mat output = new Mat();
      CvSink cvSink;
      CvSource outputStream;
      GripPipeline pipe;
+     Rect r;
 	
 	/**
 	 * Initializes CameraServer and NetworkTables
@@ -75,7 +76,7 @@ public class VisionSubsystem extends Subsystem {
 		camera.setResolution(320, 240);
         
         cvSink = CameraServer.getInstance().getVideo();
-        outputStream = CameraServer.getInstance().putVideo("Blur", 320, 240);
+        outputStream = CameraServer.getInstance().putVideo("Processed", 320, 240);
         
         pipe = new GripPipeline();
        	
@@ -83,18 +84,18 @@ public class VisionSubsystem extends Subsystem {
 	}
 	
 	public void refresh(){
+		//TODO: Move refresh method to a seperate command to get automatic multithreading
+		
 		//Process Image
 		try{
 		cvSink.grabFrameNoTimeout(source);
 		
 		pipe.process(source);
 		if (!pipe.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
-	                centerX = r.x + (r.width / 2);
-	            SmartDashboard.putNumber("Center X Pipeline: ", centerX);
-	        }
-	        
-		//Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+			r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
+			centerX = r.x + (r.width / 2);
+			SmartDashboard.putNumber("Center X Pipeline: ", centerX);
+		}
 		outputStream.putFrame(pipe.hslThresholdOutput());
 		//outputStream.putFrame(output);
 		}catch (UnsatisfiedLinkError b){
@@ -106,22 +107,25 @@ public class VisionSubsystem extends Subsystem {
 		dist=frontSonar.getRangeInches();
 		x = table.getNumberArray("centerX", def);
 		widtharr= table.getNumberArray("width", def);
-		sum=0;
+		sumx=0;
+		sumw=0;
 		for(double a: widtharr){
-			sum+=a;
+			sumx+=a;
 		}
 		if(widtharr.length>0)
-			width=sum/widtharr.length;
+			width=sumx/widtharr.length;
 		else
 			width=Integer.MAX_VALUE;
-		sum=0;
+		sumx=0;
 		for(double a : x){
-			sum+=a;
+			sumx+=a;
 		}
 		if(x.length>0)
-			centerx=sum/x.length;		//centerx: pixel value of middle of peg
+			centerx=sumx/x.length;		//centerx: pixel value of middle of peg
 		else
 			centerx=Integer.MIN_VALUE;   
+		
+		//Added 13 to make sure we dont hit the center of the gear
 		turn=centerx-RobotMap.IMG_WIDTH/2+13;
 		turn/=RobotMap.TURN_CONSTANT; 
 		//Check Boundaries of turn
@@ -142,7 +146,8 @@ public class VisionSubsystem extends Subsystem {
 	
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new VisionProcessing());
+		//Uncomment for continuous Processing
+		//setDefaultCommand(new VisionProcessing());
 	}
 	
 }

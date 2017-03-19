@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class VisionAlignCommand extends Command {
+public class VisionPegAlignCommand extends Command {
 
 	public double power,turn;
 	public boolean found;
 	public boolean aligned;
 	//private Timer time;
 	
-    public VisionAlignCommand() {
+    public VisionPegAlignCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.visionSubSys);
@@ -55,7 +55,7 @@ public class VisionAlignCommand extends Command {
     	//System.out.println("Power: " + power + " Turn: " +  turn);
     	
     	Robot.driveSubSys.auto(power, turn);
-    	if(Robot.visionSubSys.dist<=RobotMap.MAX_DIST)
+    	if(Robot.visionSubSys.dist<=RobotMap.PEG_DIST)
 			aligned=true;
 		else
 			aligned=false;
@@ -72,7 +72,7 @@ public class VisionAlignCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.visionSubSys.dist<RobotMap.MAX_DIST)
+    	if(Robot.visionSubSys.dist<RobotMap.PEG_DIST)
     		return true;
     	else
     		return false;

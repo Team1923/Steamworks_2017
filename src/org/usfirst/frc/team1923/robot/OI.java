@@ -72,9 +72,14 @@ public class OI {
 		op.b.whenActive(new GearSetHomeCommand());
 
 		driver.cross.whenActive(new ResetEncoderCommand());
-		//driver.square.whileHeld(new TeleopVisionAlignCommand());
-		Command command = new TeleopVisionAlignCommand();
-		driver.square.whileHeld(command);
+		
+		//Vision Commands
+		Command pegAlign = new TeleopVisionPegAlignCommand();
+		driver.square.whileHeld(pegAlign);
+		Command feederAlign = new TeleopVisionPegAlignCommand();
+		driver.square.whileHeld(feederAlign);
+		Command refresh = new VisionProcessing();
+		driver.circle.whileHeld(refresh);
 
 		//		driver.dPad.down.whenActive(new TurnAngleCommand(90));
 		//		driver.dPad.up.whenActive(new TurnAngleCommand(180));

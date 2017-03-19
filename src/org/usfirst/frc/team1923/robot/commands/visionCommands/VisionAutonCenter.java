@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class VisionAutonCenter extends CommandGroup {
 
     public VisionAutonCenter() {
-
-    	//Aligns Gear
+    	//Drops of gear on center peg
+    	
     	addParallel(new ShiftCommand(true));
 		addSequential(new SlideCommand(true));
 //		addSequential(new VisionScanRightCommand(0.3, 5));
@@ -21,7 +21,7 @@ public class VisionAutonCenter extends CommandGroup {
 		
 		//Add code if target is seen
 		if(Robot.visionSubSys.centerx>0){
-			addSequential(new VisionAlignCommand());//Aligns Gear
+			addSequential(new VisionPegAlignCommand());//Aligns Gear
 			//Wiggle around for the peg to settle into gear
 			addSequential(new WaitCommand(0.2));
 			//addSequential(new TurnTimeCommand(0.4,0.25));

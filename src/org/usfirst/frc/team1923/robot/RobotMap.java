@@ -72,7 +72,8 @@ public class RobotMap {
 	public static final int IMG_HEIGHT=240;
 	public static final double TURN_CONSTANT=1000;
 	public static final double MAX_WIDTH=100;
-	public static final double MAX_DIST = 12.5;
+	public static final double PEG_DIST = 12.5;
+	public static final double FEEDER_DIST = 6;
 
 	// TODO: Figure out the port for PigeonIMU
 	public static final int IMU_PORT = 9;
