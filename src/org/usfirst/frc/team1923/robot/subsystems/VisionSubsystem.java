@@ -113,6 +113,7 @@ public class VisionSubsystem extends Subsystem {
 		
 		//Extrapolate Values (Turn, distance, etc.)
 		dist=frontSonar.getRangeInches();
+		//dist=16;
 		
 		if (!pipe.filterContoursOutput().isEmpty()) {
 			width=sumw/pipe.filterContoursOutput().size();
@@ -133,7 +134,7 @@ public class VisionSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Center X: ", centerx);
 		SmartDashboard.putNumber("Distance to target(Ultrasonic): ", dist);
 		SmartDashboard.putNumber("Width: ", width);
-		SmartDashboard.putNumber("Turn: ", width);
+		SmartDashboard.putNumber("Turn: ", turn);
 		
 	}
 	

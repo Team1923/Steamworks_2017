@@ -200,7 +200,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
+		//LiveWindow.run();
+		visionSubSys.refresh();
 	}
 
 	public static void log(String message) {

@@ -15,7 +15,7 @@ public class VisionAutonCenter extends CommandGroup {
     	//Drops of gear on center peg
     	
     	addParallel(new ShiftCommand(true));
-		addSequential(new SlideCommand(true));
+		//addSequential(new SlideCommand(true));
 //		addSequential(new VisionScanRightCommand(0.3, 5));
 		Robot.visionSubSys.refresh();
 		

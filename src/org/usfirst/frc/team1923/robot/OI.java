@@ -77,7 +77,7 @@ public class OI {
 		Command pegAlign = new TeleopVisionPegAlignCommand();
 		driver.square.whileHeld(pegAlign);
 		Command feederAlign = new TeleopVisionPegAlignCommand();
-		driver.square.whileHeld(feederAlign);
+		driver.triangle.whileHeld(feederAlign);
 		Command refresh = new VisionProcessing();
 		driver.circle.whileHeld(refresh);
 
