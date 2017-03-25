@@ -36,6 +36,8 @@ public class VisionAutonRight extends CommandGroup {
 		addSequential(new WaitCommand(0.2));
 		//addSequential(new VisionScanRightCommand(0.3, 5));
 		Robot.visionSubSys.refresh();
+		Robot.visionSubSys.refresh();
+		Robot.visionSubSys.refresh();
 		
 		//Add code if target is seen
 		if(Robot.visionSubSys.centerx>0){
@@ -48,7 +50,7 @@ public class VisionAutonRight extends CommandGroup {
 			addSequential(new WaitCommand(0.4));
 			addSequential(new GearCommand(true));
 			addSequential(new WaitCommand(0.4));
-			addSequential(new DriveDistanceCommand(-36));
+			addSequential(new DriveTimeCommand(-0.4, 1));
 			addSequential(new GearCommand(false));
 		}
 		else{

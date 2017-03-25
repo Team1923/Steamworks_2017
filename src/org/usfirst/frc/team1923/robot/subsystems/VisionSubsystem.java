@@ -53,6 +53,7 @@ public class VisionSubsystem extends Subsystem {
 	 * Initializes CameraServer and NetworkTables
 	 */
 	public VisionSubsystem() {
+		try{
 		//TODO: Implement Bounding Rectangle
 		//TODO: IMplement Controller Vibration when Match time is getting low
 		//Start Camera Server
@@ -70,20 +71,26 @@ public class VisionSubsystem extends Subsystem {
 		dist=frontSonar.getRangeInches();
 		found=false;
 
-		 AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", "10.19.21.15");
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", RobotMap.CAMERA_IP);
 		camera.setResolution(320, 240);
         
         cvSink = CameraServer.getInstance().getVideo();
         outputStream = CameraServer.getInstance().putVideo("Processed", 320, 240);
         
+        SmartDashboard.putNumber("Power", 0);
+        
         pipe = new GripPipeline();
        	
 		refresh();
+		}
+		catch(Exception e){
+			System.out.println("Exception was thrown: " + e);
+		}
 	}
 	
 	public void refresh(){
 		//TODO: Move refresh method to a seperate command to get automatic multithreading
-		
+		try{
 		//Process Image
 		try{
 		cvSink.grabFrameNoTimeout(source);
@@ -135,6 +142,11 @@ public class VisionSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Distance to target(Ultrasonic): ", dist);
 		SmartDashboard.putNumber("Width: ", width);
 		SmartDashboard.putNumber("Turn: ", turn);
+		
+	}
+	catch(Exception e){
+		System.out.println("Exception was thrown: " + e);
+	}
 		
 	}
 	

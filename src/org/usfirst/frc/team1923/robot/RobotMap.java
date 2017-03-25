@@ -31,7 +31,7 @@ public class RobotMap {
 	public static final int RIGHT_ENCODER_PORT = 1;
 
 	// Climb motor numbers
-	public static final int LEFT_CLIMB_PORT = 4;
+	public static final int LEFT_CLIMB_PORT = 0;
 	public static final int RIGHT_CLIMB_PORT = 9;
 
 	// Climber slider port numbers
@@ -65,9 +65,9 @@ public class RobotMap {
 														// subsystem
 	//Vision Subsystem Constants
 	
-	public static final String CAMERA_IP="10.19.21.15";
+	public static final String CAMERA_IP="axis-camera.local";
 	
-	public static final String NEWTORK_TABLE_ADDRESS="GRIP/table";
+//	public static final String NEWTORK_TABLE_ADDRESS="GRIP/table";
 	public static final int IMG_WIDTH=320;
 	public static final int IMG_HEIGHT=240;
 	public static final double TURN_CONSTANT=1000;
