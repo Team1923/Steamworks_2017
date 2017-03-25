@@ -127,7 +127,7 @@ public class VisionSubsystem extends Subsystem {
 			centerx=sumx/pipe.filterContoursOutput().size();		//centerx: pixel value of middle of peg
 		}
 		//Added 13 to make sure we dont hit the center of the gear
-		turn=centerx-RobotMap.IMG_WIDTH/2+13;
+		turn=centerx-RobotMap.IMG_WIDTH/2;
 		turn/=RobotMap.TURN_CONSTANT; 
 		//Check Boundaries of turn
 		if(turn<-1)

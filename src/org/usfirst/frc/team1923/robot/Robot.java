@@ -87,13 +87,15 @@ public class Robot extends IterativeRobot {
 		//
 		// chooser.addObject("My Auto", new MyAutoCommand());
 
-		// Driver Selection
-		driver.addDefault("Chinmay", new ChoseDriverCommand(RobotMap.CHINMAY_PROFILE));
-		driver.addObject("Suraj", new ChoseDriverCommand(RobotMap.SURAJ_PROFILE));
-		driver.addObject("Anish", new ChoseDriverCommand(RobotMap.ANISH_PROFILE));
-
 		SmartDashboard.putData("Auto Mode", chooser);
-		SmartDashboard.putData("Driver", driver);
+		
+		SmartDashboard.putNumber("Right Drive Talon 1 Amperage: ", 0);
+		SmartDashboard.putNumber("Right Drive Talon 2 Amperage: ", 0);
+		SmartDashboard.putNumber("Right Drive Talon 3 Amperage: ", 0);
+		SmartDashboard.putNumber("Left Drive Talon 1 Amperage: ", 0);
+		SmartDashboard.putNumber("Left Drive Talon 2 Amperage: ", 0);
+		SmartDashboard.putNumber("Left Drive Talon 3 Amperage: ", 0);
+		
 	}
 
 	/**

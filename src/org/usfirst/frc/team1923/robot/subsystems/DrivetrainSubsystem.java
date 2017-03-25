@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -180,6 +181,12 @@ public class DrivetrainSubsystem extends Subsystem {
 	private void set(double left, double right) {
 		leftTalons[0].set(left);
 		rightTalons[0].set(right);
+		SmartDashboard.putNumber("Right Drive Talon 1 Amperage: ", rightTalons[0].getOutputCurrent());
+		SmartDashboard.putNumber("Right Drive Talon 2 Amperage: ", rightTalons[1].getOutputCurrent());
+		SmartDashboard.putNumber("Right Drive Talon 3 Amperage: ", rightTalons[2].getOutputCurrent());
+		SmartDashboard.putNumber("Left Drive Talon 1 Amperage: ", leftTalons[0].getOutputCurrent());
+		SmartDashboard.putNumber("Left Drive Talon 2 Amperage: ", leftTalons[1].getOutputCurrent());
+		SmartDashboard.putNumber("Left Drive Talon 3 Amperage: ", leftTalons[2].getOutputCurrent());
 	}
 
 	/**
