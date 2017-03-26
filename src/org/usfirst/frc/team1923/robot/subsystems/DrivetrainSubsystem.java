@@ -50,7 +50,13 @@ public class DrivetrainSubsystem extends Subsystem {
 
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
-
+	
+	public double RightCurrentMax;
+	public double leftCurrentMax;
+	
+	private double[] rightCurrents = new double[3];
+	private double[] leftCurrents = new double[3];
+	
 	private PigeonImu imu;
 
 	// public Ultrasonic frontSonar;
@@ -187,8 +193,28 @@ public class DrivetrainSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Left Drive Talon 1 Amperage: ", leftTalons[0].getOutputCurrent());
 		SmartDashboard.putNumber("Left Drive Talon 2 Amperage: ", leftTalons[1].getOutputCurrent());
 		SmartDashboard.putNumber("Left Drive Talon 3 Amperage: ", leftTalons[2].getOutputCurrent());
+		
+		rightCurrents[0] = rightTalons[0].getOutputCurrent();
+		rightCurrents[1] = rightTalons[1].getOutputCurrent();
+		rightCurrents[2] = rightTalons[2].getOutputCurrent();
+		
+		leftCurrents[0] = leftTalons[0].getOutputCurrent();
+		leftCurrents[1] = leftTalons[1].getOutputCurrent();
+		leftCurrents[2] = leftTalons[2].getOutputCurrent();
+		
+		SmartDashboard.putNumber("Right Drive Max Current: ", max(rightCurrents));	
+		SmartDashboard.putNumber("Left Drive Max Current: ", max(leftCurrents));	
+		
 	}
-
+	
+	private double max(double[] a) {
+		double max=a[0];
+		for(double b :a){
+			if(b>max)
+				max=b;
+		}
+		return max;
+	}
 	/**
 	 * Disables the closed-loop system and allows direct power setting
 	 */

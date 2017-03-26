@@ -29,10 +29,11 @@ public class VisionAutonRight extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	Robot.visionSubSys.refresh();
     	addSequential(new ShiftCommand(true));
 		addSequential(new SlideCommand(true));
-		addSequential(new DriveDistanceCommand(93,2.5, false));
-		addSequential(new TurnAngleCommand(-60));
+		addSequential(new DriveTimeCommand(0.5,0.5));
+		addSequential(new VisionScanLeftCommand(-0.3,15));
 		addSequential(new WaitCommand(0.2));
 		//addSequential(new VisionScanRightCommand(0.3, 5));
 		Robot.visionSubSys.refresh();
@@ -50,8 +51,8 @@ public class VisionAutonRight extends CommandGroup {
 			addSequential(new WaitCommand(0.4));
 			addSequential(new GearCommand(true));
 			addSequential(new WaitCommand(0.4));
-			addSequential(new DriveTimeCommand(-0.4, 1));
-			addSequential(new GearCommand(false));
+			addSequential(new DriveTimeCommand(-0.5, 1));
+			//addSequential(new GearCommand(false));
 		}
 		else{
 			//Add code for if target is not seen

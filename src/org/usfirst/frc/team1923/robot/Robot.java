@@ -66,10 +66,10 @@ public class Robot extends IterativeRobot {
 
 		oi = new OI();
 		
-		chooser.addDefault("Do Nothing Auto", new DoNothing());
+		chooser.addObject("Do Nothing Auto", new DoNothing());
 		// chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
 		chooser.addObject("Vision Auton Right", new VisionAutonRight());
-		chooser.addObject("Vision Auton Center", new VisionAutonCenter());
+		chooser.addDefault("Vision Auton Center", new VisionAutonCenter());
 		chooser.addObject("Vision Auton Left", new VisionAutonLeft());
 		// chooser.addObject("Test Align" , new TestAlign());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -95,6 +95,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Drive Talon 1 Amperage: ", 0);
 		SmartDashboard.putNumber("Left Drive Talon 2 Amperage: ", 0);
 		SmartDashboard.putNumber("Left Drive Talon 3 Amperage: ", 0);
+		SmartDashboard.putNumber("Right Drive Max Current: ", 0);	
+		SmartDashboard.putNumber("Left Drive Max Current: ", 0);	
 		
 	}
 
@@ -202,7 +204,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		//LiveWindow.run();
+		LiveWindow.run();
 		visionSubSys.refresh();
 	}
 

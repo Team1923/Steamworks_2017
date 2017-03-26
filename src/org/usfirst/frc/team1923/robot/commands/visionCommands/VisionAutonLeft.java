@@ -13,11 +13,15 @@ public class VisionAutonLeft extends CommandGroup {
 
     public VisionAutonLeft() {
     	
-    	addParallel(new ShiftCommand(true));
+    	Robot.visionSubSys.refresh();
+    	addSequential(new ShiftCommand(true));
 		addSequential(new SlideCommand(true));
-		addSequential(new DriveDistanceCommand(93));
-		addSequential(new GyroTurnCommand(45));
-		addSequential(new VisionScanRightCommand(0.3, 5));
+		addSequential(new DriveTimeCommand(0.5,0.5));
+		addSequential(new VisionScanRightCommand(-0.3,15));
+		addSequential(new WaitCommand(0.2));
+		//addSequential(new VisionScanRightCommand(0.3, 5));
+		Robot.visionSubSys.refresh();
+		Robot.visionSubSys.refresh();
 		Robot.visionSubSys.refresh();
 		
 		//Add code if target is seen
@@ -31,13 +35,12 @@ public class VisionAutonLeft extends CommandGroup {
 			addSequential(new WaitCommand(0.4));
 			addSequential(new GearCommand(true));
 			addSequential(new WaitCommand(0.4));
-			addSequential(new DriveDistanceCommand(-36));
-			addSequential(new GearCommand(false));
+			addSequential(new DriveTimeCommand(-0.5, 1));
+			//addSequential(new GearCommand(false));
 		}
 		else{
 			//Add code for if target is not seen
 
 		}
-
     }
 }
