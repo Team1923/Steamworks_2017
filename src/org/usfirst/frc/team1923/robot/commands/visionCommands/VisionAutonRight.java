@@ -36,9 +36,6 @@ public class VisionAutonRight extends CommandGroup {
 		addSequential(new VisionScanLeftCommand(-0.3,15));
 		addSequential(new WaitCommand(0.2));
 		//addSequential(new VisionScanRightCommand(0.3, 5));
-		Robot.visionSubSys.refresh();
-		Robot.visionSubSys.refresh();
-		Robot.visionSubSys.refresh();
 		
 		//Add code if target is seen
 		if(Robot.visionSubSys.centerx>0){

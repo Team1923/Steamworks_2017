@@ -9,6 +9,7 @@ import org.usfirst.frc.team1923.robot.commands.DoNothing;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.ChoseDriverCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.TeleopVisionPegAlignCommand;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
 import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
@@ -70,7 +71,8 @@ public class Robot extends IterativeRobot {
 		// chooser.addObject("Turn Time Auto", new TurnTimeCommand(0.25, 0.5));
 		chooser.addObject("Vision Auton Right", new VisionAutonRight());
 		chooser.addDefault("Vision Auton Center", new VisionAutonCenter());
-		chooser.addObject("Vision Auton Left", new VisionAutonLeft());
+		chooser.addDefault("Vision Auton Center", new VisionAutonCenter());
+		chooser.addObject("Vision Test", new TeleopVisionPegAlignCommand());
 		// chooser.addObject("Test Align" , new TestAlign());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		// SmartDashboard.putData("Turn Auto", chooser);
@@ -107,11 +109,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
+//		visionSubSys.refresh();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+//		visionSubSys.refresh();
 	}
 
 	/**
@@ -121,14 +125,14 @@ public class Robot extends IterativeRobot {
 	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
 	 * getString code to get the auto name from the text box below the Gyro
 	 *
-	 * You can add additional auto modes by adding additional commands to the
+	 * You can add additional auto modes by adding additional commands to th
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-
+		visionSubSys.refresh();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -149,6 +153,8 @@ public class Robot extends IterativeRobot {
 
 		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
 		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
+		
+		//visionSubSys.refresh();
 
 //		if (this.lastLog + 100 < System.currentTimeMillis()) {
 //			this.lastLog = System.currentTimeMillis();

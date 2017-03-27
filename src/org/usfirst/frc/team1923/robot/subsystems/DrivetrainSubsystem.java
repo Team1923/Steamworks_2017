@@ -51,11 +51,13 @@ public class DrivetrainSubsystem extends Subsystem {
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid shiftOmnis;
 	
-	public double RightCurrentMax;
-	public double leftCurrentMax;
+	public double RightCurrentMax=0;
+	public double leftCurrentMax=0;
+	public double prevRight=0;
+	public double prevLeft=0;
 	
-	private double[] rightCurrents = new double[3];
-	private double[] leftCurrents = new double[3];
+	private double[] rightCurrents = {0,0,0};
+	private double[] leftCurrents = {0,0,0};
 	
 	private PigeonImu imu;
 
@@ -187,24 +189,29 @@ public class DrivetrainSubsystem extends Subsystem {
 	private void set(double left, double right) {
 		leftTalons[0].set(left);
 		rightTalons[0].set(right);
-		SmartDashboard.putNumber("Right Drive Talon 1 Amperage: ", rightTalons[0].getOutputCurrent());
-		SmartDashboard.putNumber("Right Drive Talon 2 Amperage: ", rightTalons[1].getOutputCurrent());
-		SmartDashboard.putNumber("Right Drive Talon 3 Amperage: ", rightTalons[2].getOutputCurrent());
-		SmartDashboard.putNumber("Left Drive Talon 1 Amperage: ", leftTalons[0].getOutputCurrent());
-		SmartDashboard.putNumber("Left Drive Talon 2 Amperage: ", leftTalons[1].getOutputCurrent());
-		SmartDashboard.putNumber("Left Drive Talon 3 Amperage: ", leftTalons[2].getOutputCurrent());
 		
-		rightCurrents[0] = rightTalons[0].getOutputCurrent();
-		rightCurrents[1] = rightTalons[1].getOutputCurrent();
-		rightCurrents[2] = rightTalons[2].getOutputCurrent();
-		
-		leftCurrents[0] = leftTalons[0].getOutputCurrent();
-		leftCurrents[1] = leftTalons[1].getOutputCurrent();
-		leftCurrents[2] = leftTalons[2].getOutputCurrent();
-		
-		SmartDashboard.putNumber("Right Drive Max Current: ", max(rightCurrents));	
-		SmartDashboard.putNumber("Left Drive Max Current: ", max(leftCurrents));	
-		
+//		prevRight=max(rightCurrents);
+//		prevLeft=max(leftCurrents);
+//		
+//		SmartDashboard.putNumber("Right Drive Talon 1 Amperage: ", rightTalons[0].getOutputCurrent());
+//		SmartDashboard.putNumber("Right Drive Talon 2 Amperage: ", rightTalons[1].getOutputCurrent());
+//		SmartDashboard.putNumber("Right Drive Talon 3 Amperage: ", rightTalons[2].getOutputCurrent());
+//		SmartDashboard.putNumber("Left Drive Talon 1 Amperage: ", leftTalons[0].getOutputCurrent());
+//		SmartDashboard.putNumber("Left Drive Talon 2 Amperage: ", leftTalons[1].getOutputCurrent());
+//		SmartDashboard.putNumber("Left Drive Talon 3 Amperage: ", leftTalons[2].getOutputCurrent());
+//		
+//		rightCurrents[0] = rightTalons[0].getOutputCurrent();
+//		rightCurrents[1] = rightTalons[1].getOutputCurrent();
+//		rightCurrents[2] = rightTalons[2].getOutputCurrent();
+//		
+//		leftCurrents[0] = leftTalons[0].getOutputCurrent();
+//		leftCurrents[1] = leftTalons[1].getOutputCurrent();
+//		leftCurrents[2] = leftTalons[2].getOutputCurrent();
+//		
+//		SmartDashboard.putNumber("Right Drive Max Current: ", Math.max(prevRight,max(rightCurrents)));	
+//		SmartDashboard.putNumber("Left Drive Max Current: ", Math.max(prevLeft, max(leftCurrents)));	
+//		
+//		
 	}
 	
 	private double max(double[] a) {
@@ -334,6 +341,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	}
 
 	public void stop() {
+		
 		drive(0, 0, TalonControlMode.PercentVbus);
 	}
 

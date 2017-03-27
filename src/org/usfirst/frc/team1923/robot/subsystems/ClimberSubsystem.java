@@ -50,7 +50,7 @@ public class ClimberSubsystem extends Subsystem {
 
 	public void set(double power) {
 		leftClimb.set(power);
-		SmartDashboard.putNumber("Max Climber Amerage: " , getMaxCurrent());
+		//SmartDashboard.putNumber("Max Climber Amerage: " , getMaxCurrent());
 
 	}
 
