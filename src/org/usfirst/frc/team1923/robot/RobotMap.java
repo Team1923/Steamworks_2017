@@ -33,7 +33,7 @@ public class RobotMap {
     /**
      * Ports for the talons that control the climbing motors.
      */
-    public static final int LEFT_CLIMB_PORT = 4;
+    public static final int LEFT_CLIMB_PORT = 0;
     public static final int RIGHT_CLIMB_PORT = 9;
 
     /**
@@ -79,12 +79,12 @@ public class RobotMap {
     /**
      * Settings and ports for GRIP and vision processing.
      */
-    public static final String CAMERA_IP = "10.19.23.15";
-    public static final String NEWTORK_TABLE_ADDRESS = "GRIP/table";
-    public static final int IMG_WIDTH = 320;
-    public static final int IMG_HEIGHT = 240;
-    public static final double TURN_CONSTANT = 1000;
-    public static final double MAX_WIDTH = 100;
-    public static final double MAX_DIST = 12.5;
+    public static final String CAMERA_IP="axis-camera.local";
+    	public static final int IMG_WIDTH=320;
+	public static final int IMG_HEIGHT=240;
+	public static final double TURN_CONSTANT=1000;
+	public static final double MAX_WIDTH=100;
+	public static final double PEG_DIST = 12.5;
+	public static final double FEEDER_DIST = 6;
 
 }

@@ -2,7 +2,6 @@ package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.drive.ArcadeRawDriveCommand;
-import org.usfirst.frc.team1923.robot.utils.DriveProfile;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
@@ -36,8 +35,6 @@ public class DrivetrainSubsystem extends Subsystem {
     private static final double DRIVE_BASE_WIDTH = 22.5;
     private static final double DRIVE_CONSTANT = 1;
     private static final double TURNING_CONSTANT = 1.12;
-
-    public DriveProfile driveProfile = new DriveProfile(RobotMap.DRIVER_PROFILE);
 
     // Arrays of talons to group them together
     // The first element will always be the master Talon, the subsequent ones
@@ -193,6 +190,15 @@ public class DrivetrainSubsystem extends Subsystem {
     public void resetPosition() {
         this.leftTalons[0].setPosition(0);
         this.rightTalons[0].setPosition(0);
+    }
+
+    private double max(double[] a) {
+        double max = a[0];
+        for (double b : a) {
+            if (b > max)
+                max = b;
+        }
+        return max;
     }
 
     public double getLeftPosition() {

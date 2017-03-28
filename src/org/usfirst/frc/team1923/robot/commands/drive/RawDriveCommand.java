@@ -2,11 +2,13 @@ package org.usfirst.frc.team1923.robot.commands.drive;
 
 import org.usfirst.frc.team1923.robot.Robot;
 
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ArcadeRawDriveCommand extends Command {
+public class RawDriveCommand extends Command {
 
-    public ArcadeRawDriveCommand() {
+    public RawDriveCommand() {
     }
 
     @Override
@@ -16,7 +18,7 @@ public class ArcadeRawDriveCommand extends Command {
 
     @Override
     public void execute() {
-        Robot.driveSubSys.auto(Robot.oi.driver.getLeftY(), Robot.oi.driver.getRightY());
+        Robot.driveSubSys.drive(Robot.oi.driver.getLeftY(), Robot.oi.driver.getRightY(), TalonControlMode.PercentVbus);
     }
 
     @Override
