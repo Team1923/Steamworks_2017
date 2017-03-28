@@ -23,6 +23,9 @@ public class PS4Controller extends Controller {
     private static final int RIGHT_STICK_X_AXIS_ID = 2;
     private static final int RIGHT_STICK_Y_AXIS_ID = 5;
 
+    private static final int LEFT_TRIGGER_AXIS_ID = 3; // Also called L2
+    private static final int RIGHT_TRIGGER_AXIS_ID = 4; // Also called R2
+
     public final Trigger lt;
     public final Trigger rt;
     public final DirectionalPad dPad;
@@ -41,8 +44,8 @@ public class PS4Controller extends Controller {
         super(port);
 
         this.dPad = new DirectionalPad(this.controller);
-        this.lt = new Trigger(this.controller, Hand.LEFT);
-        this.rt = new Trigger(this.controller, Hand.RIGHT);
+        this.lt = new Trigger(this.controller, LEFT_TRIGGER_AXIS_ID);
+        this.rt = new Trigger(this.controller, RIGHT_TRIGGER_AXIS_ID);
         this.square = new JoystickButton(this.controller, SQUARE_BUTTON_ID);
         this.triangle = new JoystickButton(this.controller, TRIANGLE_BUTTON_ID);
         this.circle = new JoystickButton(this.controller, CIRCLE_BUTTON_ID);
