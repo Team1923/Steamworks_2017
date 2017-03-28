@@ -6,12 +6,12 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 import org.usfirst.frc.team1923.robot.commands.auton.DoNothingAuton;
-import org.usfirst.frc.team1923.robot.commands.auton.VisionCenterAuton;
-import org.usfirst.frc.team1923.robot.commands.auton.VisionLeftAuton;
-import org.usfirst.frc.team1923.robot.commands.auton.VisionRightAuton;
-import org.usfirst.frc.team1923.robot.commands.drive.ChoseDriverCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.TeleopVisionPegAlignCommand;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
@@ -27,12 +27,19 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
 public class Robot extends IterativeRobot {
 
-    public static DrivetrainSubsystem driveSubSys;
     public static ClimberSubsystem climbSubSys;
     public static GearSubsystem gearSubSys;
     public static VisionSubsystem visionSubSys;
+    public static DrivetrainSubsystem driveSubSys;
     public static OI oi;
 
     private static PrintWriter logger;
@@ -41,6 +48,7 @@ public class Robot extends IterativeRobot {
     private Command autonomousCommand;
     private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
     private SendableChooser<Command> driverChooser = new SendableChooser<Command>();
+    public static DriverStation driverStation = DriverStation.getInstance();
 
     /**
      * Called once when the robot first starts up.
@@ -55,15 +63,12 @@ public class Robot extends IterativeRobot {
         oi = new OI();
 
         this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
-        this.autonChooser.addObject("Vision Auton Right", new VisionRightAuton());
-        this.autonChooser.addObject("Vision Auton Center", new VisionCenterAuton());
-        this.autonChooser.addObject("Vision Auton Left", new VisionLeftAuton());
+        this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
+        this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
+        this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());
+        this.autonChooser.addObject("Vision Test", new TeleopVisionPegAlignCommand());
         this.autonChooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
         this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1, 2));
-
-        this.driverChooser.addDefault("Chinmay", new ChoseDriverCommand(RobotMap.CHINMAY_PROFILE));
-        this.driverChooser.addObject("Suraj", new ChoseDriverCommand(RobotMap.SURAJ_PROFILE));
-        this.driverChooser.addObject("Anish", new ChoseDriverCommand(RobotMap.ANISH_PROFILE));
 
         SmartDashboard.putData("Auto Mode", this.autonChooser);
         SmartDashboard.putData("Driver", this.driverChooser);
@@ -96,9 +101,11 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousInit() {
-        this.startLog();
-        this.logData();
-
+        if (RobotMap.DEBUG) {
+            this.startLog();
+            this.logData();
+        }
+        visionSubSys.refresh();
         this.autonomousCommand = this.autonChooser.getSelected();
 
         if (this.autonomousCommand != null) {
@@ -111,10 +118,11 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        this.logData();
-        SmartDashboard.putNumber("Left Encoder", driveSubSys.getLeftPosition());
-        SmartDashboard.putNumber("Right Encoder", driveSubSys.getRightPosition());
-
+        if (RobotMap.DEBUG) {
+            this.logData();
+            SmartDashboard.putNumber("Left Encoder", driveSubSys.getLeftPosition());
+            SmartDashboard.putNumber("Right Encoder", driveSubSys.getRightPosition());
+        }
         Scheduler.getInstance().run();
     }
 
@@ -127,7 +135,9 @@ public class Robot extends IterativeRobot {
             this.autonomousCommand.cancel();
         }
 
-        this.stopLog();
+        if (RobotMap.DEBUG) {
+            this.stopLog();
+        }
     }
 
     /**
@@ -136,9 +146,13 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Robot.visionSubSys.refresh();
-        SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
+        if (RobotMap.DEBUG) {
+            SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
+        }
         Scheduler.getInstance().run();
     }
+
+    // visionSubSys.refresh();
 
     /**
      * Called every 20ms during testing mode.
@@ -161,9 +175,9 @@ public class Robot extends IterativeRobot {
 
         String logMessage = "[" + DriverStation.getInstance().getMatchTime() + "] Voltage: " + DriverStation.getInstance().getBatteryVoltage()
                 + ", Sonar: " + Robot.visionSubSys.getDistance() + ", VCenter: " + Robot.visionSubSys.getCenterX() + ", VFound: "
-                + Robot.visionSubSys.isFound() + ", VWidth: " + Robot.visionSubSys.getWidth() + ", VTurn: " + Robot.visionSubSys.getTurn() + ", IMU Heading: "
-                + Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()) + ", LEncPos: " + Robot.driveSubSys.getLeftPosition()
-                + ", REncPos: " + Robot.driveSubSys.getRightPosition();
+                + Robot.visionSubSys.isFound() + ", VWidth: " + Robot.visionSubSys.getWidth() + ", VTurn: " + Robot.visionSubSys.getTurn()
+                + ", IMU Heading: " + Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()) + ", LEncPos: "
+                + Robot.driveSubSys.getLeftPosition() + ", REncPos: " + Robot.driveSubSys.getRightPosition();
 
         if (logger != null) {
             logger.println(logMessage);

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.drive;
 
 import org.usfirst.frc.team1923.robot.Robot;
+import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.utils.PIDController;
 
 import com.ctre.CANTalon.TalonControlMode;
@@ -29,6 +30,12 @@ public class GyroTurnCommand extends Command {
 
     private double degrees;
 
+    /**
+     * This command turns the robot to a specific degree with gyro PID
+     * 
+     * @param degrees
+     *            Degrees to turn to the right
+     */
     public GyroTurnCommand(double degrees) {
         requires(Robot.driveSubSys);
 
@@ -56,8 +63,10 @@ public class GyroTurnCommand extends Command {
     @Override
     protected void execute() {
         // Debug
-        double currentAngle = this.target.pidGet();
-        System.out.println("target = " + this.degrees + ", current = " + currentAngle + ", error = " + (this.degrees - currentAngle));
+        if (RobotMap.DEBUG) {
+            double currentAngle = this.target.pidGet();
+            System.out.println("target = " + this.degrees + ", current = " + currentAngle + ", error = " + (this.degrees - currentAngle));
+        }
     }
 
     @Override

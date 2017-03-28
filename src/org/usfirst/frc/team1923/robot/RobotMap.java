@@ -5,6 +5,11 @@ import org.usfirst.frc.team1923.robot.utils.DriveProfile.ProfileCurve;
 public class RobotMap {
 
     /**
+     * Debug options
+     */
+    public static final boolean DEBUG = true;
+
+    /**
      * Driver profiles.
      */
     public static final ProfileCurve DRIVER_PROFILE = ProfileCurve.LINEAR;
@@ -19,8 +24,8 @@ public class RobotMap {
     public static final int OP_CONTROLLER_PORT = 1;
 
     /**
-     * List of ports for the talons on the left and right drivetrain, respectively.
-     * The master talon will be the first element in the array.
+     * List of ports for the talons on the left and right drivetrain,
+     * respectively. The master talon will be the first element in the array.
      */
     public static final int[] LEFT_DRIVE_PORTS = { 8, 7, 6 };
     public static final int[] RIGHT_DRIVE_PORTS = { 1, 2, 3 };
@@ -28,7 +33,7 @@ public class RobotMap {
     /**
      * Ports for the talons that control the climbing motors.
      */
-    public static final int LEFT_CLIMB_PORT = 4;
+    public static final int LEFT_CLIMB_PORT = 0;
     public static final int RIGHT_CLIMB_PORT = 9;
 
     /**
@@ -74,12 +79,12 @@ public class RobotMap {
     /**
      * Settings and ports for GRIP and vision processing.
      */
-    public static final String CAMERA_IP = "10.19.23.15";
-    public static final String NEWTORK_TABLE_ADDRESS = "GRIP/table";
-    public static final int IMG_WIDTH = 320;
-    public static final int IMG_HEIGHT = 240;
-    public static final double TURN_CONSTANT = 1000;
-    public static final double MAX_WIDTH = 100;
-    public static final double MAX_DIST = 12.5;
+    public static final String CAMERA_IP="axis-camera.local";
+    	public static final int IMG_WIDTH=320;
+	public static final int IMG_HEIGHT=240;
+	public static final double TURN_CONSTANT=1000;
+	public static final double MAX_WIDTH=100;
+	public static final double PEG_DIST = 12.5;
+	public static final double FEEDER_DIST = 6;
 
 }

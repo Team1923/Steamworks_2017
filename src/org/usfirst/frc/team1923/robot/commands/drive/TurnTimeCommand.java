@@ -10,6 +10,14 @@ public class TurnTimeCommand extends Command {
 
     private double power;
 
+    /**
+     * Turns a set time at a set power. Turns right with positive power
+     * 
+     * @param power
+     *            PercentVBus of the motors
+     * @param timeOut
+     *            timeout in seconds
+     */
     public TurnTimeCommand(double power, double timeOut) {
         requires(Robot.driveSubSys);
         this.power = power;

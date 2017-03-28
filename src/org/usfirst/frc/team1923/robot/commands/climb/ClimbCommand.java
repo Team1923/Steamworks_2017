@@ -8,6 +8,10 @@ public class ClimbCommand extends Command {
 
     private double speed, leftTrigger, rightTrigger;
 
+    /**
+     * When executed, the climber motors will spin based on trigger level, right
+     * trigger overrides
+     */
     public ClimbCommand() {
         requires(Robot.climbSubSys);
     }

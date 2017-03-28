@@ -9,12 +9,21 @@ public class GearCommand extends InstantCommand {
     private boolean open;
     private boolean toggle;
 
+    /**
+     * This command toggles the current gear placing position
+     */
     public GearCommand() {
         super();
         requires(Robot.gearSubSys);
         this.toggle = true;
     }
 
+    /**
+     * This sets the mechanism to a specific position
+     * 
+     * @param open
+     *            true if want to eject
+     */
     public GearCommand(boolean open) {
         super();
         requires(Robot.gearSubSys);
