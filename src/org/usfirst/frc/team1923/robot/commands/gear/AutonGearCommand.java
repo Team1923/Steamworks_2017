@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1923.robot.commands.gearCommands;
+package org.usfirst.frc.team1923.robot.commands.gear;
 
 import org.usfirst.frc.team1923.robot.Robot;
 

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1923.robot.commands.visionCommands;
+package org.usfirst.frc.team1923.robot.commands.vision;
 
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.RobotMap;
@@ -8,17 +8,21 @@ import org.usfirst.frc.team1923.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisionPegAlignCommand extends Command {
+/**
+ *
+ */
+public class TeleopVisionFeederAlignCommand extends Command {
 
     public double power, turn;
-    // public boolean found;
+    public boolean found;
     public boolean aligned;
     // private Timer time;
 
-    public VisionPegAlignCommand() {
+    public TeleopVisionFeederAlignCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.visionSubSys);
+        requires(Robot.driveSubSys);
     }
 
     // Called just before this Command runs the first time
@@ -35,39 +39,37 @@ public class VisionPegAlignCommand extends Command {
         // new VisionAlignCommand(); TODO: Change to only run when needed to not
         // waste processor cycles
         Robot.visionSubSys.refresh();
-        if (Robot.visionSubSys.turn < -1) {
-            power = 0;
-            turn = 0;
-            Robot.visionSubSys.found = false;
+        if (Robot.visionSubSys.dist >= RobotMap.FEEDER_DIST) {
+            if (Robot.visionSubSys.turn < -1) {
+                power = 0;
+                turn = 0;
+                Robot.visionSubSys.found = false;
+            } else {
+                if (Robot.visionSubSys.dist >= 30)
+                    power = 0.4;
+                else power = 0.2;
+                // power=0;
+                Robot.visionSubSys.found = true;
+                turn = Robot.visionSubSys.turn;
+            }
+
+            Robot.driveSubSys.auto(power, turn);
+
         } else {
-            if (Robot.visionSubSys.dist >= 30)
-                power = 0.45;
-            else power = 0.2;
-            // power=0;
-            Robot.visionSubSys.found = true;
-            turn = Robot.visionSubSys.turn;
+            // Put SmartDashboard indicator
+            if (found && Robot.visionSubSys.dist <= RobotMap.FEEDER_DIST)
+                aligned = true;
+            else aligned = false;
+
+            SmartDashboard.putBoolean("Found: ", found);
+            SmartDashboard.putBoolean("Aligned and Ready to Drop: ", aligned);
         }
-
-        SmartDashboard.putNumber("Power", power);
-
-        // Testing
-        // System.out.println("Power: " + power + " Turn: " + turn);
-
-        Robot.driveSubSys.auto(power, turn);
-        if (Robot.visionSubSys.dist <= RobotMap.PEG_DIST)
-            aligned = true;
-        else aligned = false;
-
-        SmartDashboard.putBoolean("Found: ", Robot.visionSubSys.found);
-        SmartDashboard.putBoolean("Aligned and Ready to Drop: ", aligned);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (Robot.visionSubSys.dist < RobotMap.PEG_DIST)
-            return true;
-        else return false;
+        return Robot.visionSubSys.dist <= RobotMap.FEEDER_DIST;
     }
 
     // Called once after isFinished returns true
@@ -80,7 +82,6 @@ public class VisionPegAlignCommand extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        System.out.println("Interrupted!!!!!!!");
-        end();
+
     }
 }

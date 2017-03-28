@@ -6,8 +6,8 @@ import org.usfirst.frc.team1923.robot.commands.drive.ShiftOmniCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.TeleopVisionPegAlignCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionProcessing;
+import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionPegAlignCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.VisionProcessing;
 import org.usfirst.frc.team1923.robot.utils.controller.PS4Controller;
 import org.usfirst.frc.team1923.robot.utils.controller.XboxController;
 

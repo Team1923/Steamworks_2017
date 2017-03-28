@@ -1,10 +1,11 @@
-package org.usfirst.frc.team1923.robot.commands.visionCommands;
+package org.usfirst.frc.team1923.robot.commands.auton;
 
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.ShiftCommand;
+import org.usfirst.frc.team1923.robot.commands.gear.AutonGearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
-import org.usfirst.frc.team1923.robot.commands.gearCommands.AutonGearCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionPegAlignCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;

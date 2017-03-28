@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1923.robot.commands.visionCommands;
+package org.usfirst.frc.team1923.robot.commands.vision;
 
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.RobotMap;

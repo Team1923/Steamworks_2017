@@ -1,10 +1,11 @@
-package org.usfirst.frc.team1923.robot.commands.visionCommands;
+package org.usfirst.frc.team1923.robot.commands.auton;
 
 import org.usfirst.frc.team1923.robot.Robot;
-import org.usfirst.frc.team1923.robot.commands.drive.DriveDistanceCommand;
+import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.ShiftCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.VisionPegAlignCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -12,14 +13,17 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 /**
  *
  */
-public class TestAlign extends CommandGroup {
+public class VisionAutonLeft extends CommandGroup {
 
-    public TestAlign() {
+    public VisionAutonLeft() {
 
-        addParallel(new ShiftCommand(true));
-        addSequential(new SlideCommand(true));
-        addSequential(new VisionScanLeftCommand(0.3, 5));
         Robot.visionSubSys.refresh();
+        addSequential(new ShiftCommand(true));
+        addSequential(new SlideCommand(true));
+        addSequential(new DriveTimeCommand(0.5, 0.5));
+        // addSequential(new VisionScanLeftCommand(-0.3, 15));
+        addSequential(new WaitCommand(0.2));
+        // addSequential(new VisionScanRightCommand(0.3, 5));
 
         // Add code if target is seen
         if (Robot.visionSubSys.centerx > 0) {
@@ -32,12 +36,11 @@ public class TestAlign extends CommandGroup {
             addSequential(new WaitCommand(0.4));
             addSequential(new GearCommand(true));
             addSequential(new WaitCommand(0.4));
-            addSequential(new DriveDistanceCommand(-36, 2.5));
-            addSequential(new GearCommand(false));
+            addSequential(new DriveTimeCommand(-0.5, 1));
+            // addSequential(new GearCommand(false));
         } else {
             // Add code for if target is not seen
 
         }
-        // TODO: Get as close to the feeder station as possible
     }
 }

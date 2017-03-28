@@ -6,12 +6,12 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 import org.usfirst.frc.team1923.robot.commands.auton.DoNothingAuton;
+import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonRight;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.TeleopVisionPegAlignCommand;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonCenter;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonLeft;
-import org.usfirst.frc.team1923.robot.commands.visionCommands.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionPegAlignCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
