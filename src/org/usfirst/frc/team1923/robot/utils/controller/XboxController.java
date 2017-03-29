@@ -16,6 +16,9 @@ public class XboxController extends Controller {
     private static final int LEFT_CLICK_ID = 9;
     private static final int RIGHT_CLICK_ID = 10;
 
+    private static final int LEFT_TRIGGER_AXIS_ID = 2;
+    private static final int RIGHT_TRIGGER_AXIS_ID = 3;
+
     public final Trigger lt;
     public final Trigger rt;
     public final DirectionalPad dPad;
@@ -34,8 +37,8 @@ public class XboxController extends Controller {
         super(port);
 
         this.dPad = new DirectionalPad(this.controller);
-        this.lt = new Trigger(this.controller, Hand.LEFT);
-        this.rt = new Trigger(this.controller, Hand.RIGHT);
+        this.lt = new Trigger(this.controller, LEFT_TRIGGER_AXIS_ID);
+        this.rt = new Trigger(this.controller, RIGHT_TRIGGER_AXIS_ID);
         this.a = new JoystickButton(this.controller, A_BUTTON_ID);
         this.b = new JoystickButton(this.controller, B_BUTTON_ID);
         this.x = new JoystickButton(this.controller, X_BUTTON_ID);

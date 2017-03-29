@@ -16,9 +16,6 @@ public class Controller extends Joystick {
     private static final double DEFAULT_TRIGGER_DEADZONE = 0.01;
     private static final double DEFAULT_TRIGGER_SENSITIVITY = 0.6;
 
-    private static final int LEFT_TRIGGER_AXIS_ID = 2;
-    private static final int RIGHT_TRIGGER_AXIS_ID = 3;
-
     protected final int port;
     protected final Joystick controller;
 
@@ -76,14 +73,14 @@ public class Controller extends Joystick {
     public static class Trigger extends Button {
 
         private final Joystick parent;
-        private final Hand hand;
 
         private double deadZone;
         private double sensitivity;
+        private int axisId;
 
-        Trigger(final Joystick joystick, final Hand hand) {
+        Trigger(final Joystick joystick, final int axisId) {
             this.parent = joystick;
-            this.hand = hand;
+            this.axisId = axisId;
             this.deadZone = DEFAULT_TRIGGER_DEADZONE;
             this.sensitivity = DEFAULT_TRIGGER_SENSITIVITY;
         }
@@ -93,12 +90,6 @@ public class Controller extends Joystick {
             return getX() > sensitivity;
         }
 
-        /**
-         * @return Trigger hand See which side of the controller this trigger is
-         */
-        public Hand getHand() {
-            return hand;
-        }
 
         /**
          * 0 = Not pressed 1 = Completely pressed
@@ -106,14 +97,7 @@ public class Controller extends Joystick {
          * @return How far its pressed
          */
         public double getX() {
-            final double rawInput;
-
-            if (hand == Hand.LEFT) {
-                rawInput = parent.getRawAxis(LEFT_TRIGGER_AXIS_ID);
-            } else {
-                rawInput = parent.getRawAxis(RIGHT_TRIGGER_AXIS_ID);
-            }
-
+            final double rawInput = parent.getRawAxis(axisId);
             return createDeadZone(rawInput, deadZone);
         }
 
