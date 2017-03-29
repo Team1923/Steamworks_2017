@@ -11,7 +11,7 @@ import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonLeft;
 import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonRight;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
-import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionPegAlignCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionAlignCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
@@ -66,7 +66,7 @@ public class Robot extends IterativeRobot {
         this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
         this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
         this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());
-        this.autonChooser.addObject("Vision Test", new TeleopVisionPegAlignCommand());
+        this.autonChooser.addObject("Vision Test", new TeleopVisionAlignCommand());
         this.autonChooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
         this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1, 2));
 

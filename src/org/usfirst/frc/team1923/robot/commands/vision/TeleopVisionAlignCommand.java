@@ -6,21 +6,28 @@ import org.usfirst.frc.team1923.robot.RobotMap;
 // import com.sun.webkit.Timer;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * This commands aligns the Robot with the peg or the feeder (depending on
+ * boolean passed by constructor)
+ * 
+ * @author Abhinav
  */
-public class TeleopVisionPegAlignCommand extends Command {
+public class TeleopVisionAlignCommand extends Command {
 
     public double power, turn;
-    public boolean found;
-    public boolean aligned;
+    boolean feeder = false;
+    public double dist;
     // private Timer time;
 
-    public TeleopVisionPegAlignCommand() {
+    public TeleopVisionAlignCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        this(false);
+    }
+
+    public TeleopVisionAlignCommand(boolean feeder) {
+        this.feeder = feeder;
+        this.dist = (!feeder ? RobotMap.PEG_DIST : RobotMap.FEEDER_DIST);
         requires(Robot.visionSubSys);
         requires(Robot.driveSubSys);
     }
@@ -39,7 +46,7 @@ public class TeleopVisionPegAlignCommand extends Command {
         // new VisionAlignCommand(); TODO: Change to only run when needed to not
         // waste processor cycles
         Robot.visionSubSys.refresh();
-        if (Robot.visionSubSys.dist >= RobotMap.PEG_DIST) {
+        if (Robot.visionSubSys.dist >= dist) {
             if (Robot.visionSubSys.turn < -1) {
                 power = 0;
                 turn = 0;
@@ -54,22 +61,13 @@ public class TeleopVisionPegAlignCommand extends Command {
             }
 
             Robot.driveSubSys.auto(power, turn);
-
-        } else {
-            // Put SmartDashboard indicator
-            if (found && Robot.visionSubSys.dist <= RobotMap.PEG_DIST)
-                aligned = true;
-            else aligned = false;
-
-            SmartDashboard.putBoolean("Found: ", found);
-            SmartDashboard.putBoolean("Aligned and Ready to Drop: ", aligned);
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.visionSubSys.dist <= RobotMap.PEG_DIST;
+        return Robot.visionSubSys.dist <= dist;
     }
 
     // Called once after isFinished returns true
@@ -82,6 +80,5 @@ public class TeleopVisionPegAlignCommand extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-
     }
 }
