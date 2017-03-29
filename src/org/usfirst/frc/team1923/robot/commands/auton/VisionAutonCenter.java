@@ -5,7 +5,7 @@ import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.ShiftCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.AutonGearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
-import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionPegAlignCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionAlignCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -25,7 +25,7 @@ public class VisionAutonCenter extends CommandGroup {
         Robot.visionSubSys.refresh();
         // Add code if target is seen
         // if(Robot.visionSubSys.centerx>0){
-        addSequential(new TeleopVisionPegAlignCommand());// Aligns Gear
+        addSequential(new TeleopVisionAlignCommand());// Aligns Gear
         // Wiggle around for the peg to settle into gear
         addSequential(new WaitCommand(0.2));
         // addSequential(new TurnTimeCommand(0.4,0.25));
