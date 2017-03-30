@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.usfirst.frc.team1923.robot.RobotMap;
-import org.usfirst.frc.team1923.robot.commands.drive.ArcadeRawDriveCommand;
+import org.usfirst.frc.team1923.robot.commands.drive.RawDriveCommand;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
@@ -289,7 +289,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArcadeRawDriveCommand());
+        setDefaultCommand(new RawDriveCommand());
     }
 
     public static double angleToDistance(double angle) {
