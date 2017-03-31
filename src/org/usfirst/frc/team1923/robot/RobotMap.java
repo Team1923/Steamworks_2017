@@ -68,7 +68,7 @@ public class RobotMap {
     /**
      * Port for the talon that the PigeonIMU is connected to.
      */
-    public static final int IMU_PORT = 9;
+    public static final int IMU_PORT = 0;
 
     /**
      * Ultrasonic Sensor DIO ports.
@@ -79,12 +79,12 @@ public class RobotMap {
     /**
      * Settings and ports for GRIP and vision processing.
      */
-    public static final String CAMERA_IP="axis-camera.local";
-    	public static final int IMG_WIDTH=320;
-	public static final int IMG_HEIGHT=240;
-	public static final double TURN_CONSTANT=1000;
-	public static final double MAX_WIDTH=100;
-	public static final double PEG_DIST = 12.5;
-	public static final double FEEDER_DIST = 6;
+    public static final String CAMERA_IP = "10.19.21.15";
+    public static final int IMG_WIDTH = 320;
+    public static final int IMG_HEIGHT = 240;
+    public static final double TURN_CONSTANT = 1000;
+    public static final double MAX_WIDTH = 100;
+    public static final double PEG_DIST = 12.5;
+    public static final double FEEDER_DIST = 6;
 
 }

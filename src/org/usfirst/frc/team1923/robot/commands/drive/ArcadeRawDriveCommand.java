@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ArcadeRawDriveCommand extends Command {
 
     public ArcadeRawDriveCommand() {
+        requires(Robot.driveSubSys);
     }
 
     @Override

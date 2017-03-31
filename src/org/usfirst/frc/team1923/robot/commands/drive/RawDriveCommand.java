@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RawDriveCommand extends Command {
 
     public RawDriveCommand() {
+        requires(Robot.driveSubSys);
     }
 
     @Override
