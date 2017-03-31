@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-    public final int ALLOWABLE_ERROR = 400;
+    public final int ALLOWABLE_ERROR = 300;
 
-    private final double P_CONSTANT = 0.05;
-    private final double I_CONSTANT = 0.00005;
+    private final double P_CONSTANT = 0.4;
+    private final double I_CONSTANT = 0.0001;
     private final double D_CONSTANT = 0;
     private final double F_CONSTANT = 0;
     private final boolean LEFT_REVERSED = true;
@@ -298,6 +298,15 @@ public class DrivetrainSubsystem extends Subsystem {
 
     public static double distanceToRotation(double distance) {
         return distance / (Math.PI * WHEEL_DIAMETER * DRIVE_RATIO) * DRIVE_CONSTANT;
+    }
+
+    public void configMM() {
+        leftTalons[0].setMotionMagicAcceleration(500);
+        rightTalons[0].setMotionMagicAcceleration(500);
+
+        leftTalons[0].setMotionMagicCruiseVelocity(800); // TODO: Is this in
+                                                         // rpm?
+        rightTalons[0].setMotionMagicCruiseVelocity(800);
     }
 
 }

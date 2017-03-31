@@ -35,7 +35,7 @@ public class LogDataCommand extends Command {
     @Override
     protected void initialize() {
         if (this.message != null) {
-            Robot.debug.logEvent(this.message);
+            Robot.debug.logData(this.message);
         }
     }
 

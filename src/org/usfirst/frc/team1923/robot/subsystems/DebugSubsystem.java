@@ -22,7 +22,6 @@ public class DebugSubsystem extends Subsystem {
     private static PrintWriter logger;
     private long lastLog;
     private int refresh_time;
-    private String event_String;
     private String filePath;
 
     /**
@@ -35,8 +34,6 @@ public class DebugSubsystem extends Subsystem {
 
         lastLog = 0;
         this.refresh_time = 100;
-        this.event_String = "";
-
     }
 
     /**
@@ -56,19 +53,9 @@ public class DebugSubsystem extends Subsystem {
     }
 
     /**
-     * Adds a specific string to the log, used for logging events
-     * 
-     * @param msg
-     *            String that will be added in a new line to the log file
-     */
-    public void addData(String msg) {
-        this.event_String = msg;
-    }
-
-    /**
      * Log critical sensor data into a file.
      */
-    public void logData() {
+    public void logData(String event_message) {
         if (logger == null) {
             try {
                 logger = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
@@ -97,8 +84,7 @@ public class DebugSubsystem extends Subsystem {
                 Robot.visionSubSys.getCenterX(), Robot.visionSubSys.isFound(), Robot.visionSubSys.getWidth(), Robot.visionSubSys.getTurn(),
                 Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()), Robot.driveSubSys.getLeftPosition(),
                 Robot.driveSubSys.getRightPosition());
-        message += event_String;
-        event_String = "";
+        message += event_message;
         if (logger != null) {
             logger.println(message);
             System.out.println(message);
@@ -107,15 +93,8 @@ public class DebugSubsystem extends Subsystem {
         }
     }
 
-    /**
-     * Logs data with a special message string
-     * 
-     * @param s
-     *            Message string
-     */
-    public void logEvent(String s) {
-        this.addData(s);
-        this.logData();
+    public void logData() {
+        this.logData("");
     }
 
     @Override
