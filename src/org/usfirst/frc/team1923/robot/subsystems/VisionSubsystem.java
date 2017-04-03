@@ -97,7 +97,7 @@ public class VisionSubsystem extends Subsystem {
                 sumw = 0;
                 if (!pipe.filterContoursOutput().isEmpty()) {
                     for (MatOfPoint a : pipe.filterContoursOutput()) {
-                        r = Imgproc.boundingRect(pipe.filterContoursOutput().get(0));
+                        r = Imgproc.boundingRect(a);
                         contourX = r.x + (r.width / 2);
                         sumx += contourX;
                         sumw += r.width;
@@ -127,7 +127,7 @@ public class VisionSubsystem extends Subsystem {
                                                                      // of peg
             }
             // Added 13 to make sure we dont hit the center of the gear
-            turn = centerx - RobotMap.IMG_WIDTH / 2;
+            turn = centerx - RobotMap.IMG_WIDTH / 2 + 4;
             turn /= RobotMap.TURN_CONSTANT;
             // Check Boundaries of turn
             if (turn < -1)

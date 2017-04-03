@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1923.robot.commands.vision;
 
 import org.usfirst.frc.team1923.robot.Robot;
-import org.usfirst.frc.team1923.robot.commands.drive.DriveDistanceCommand;
 import org.usfirst.frc.team1923.robot.commands.drive.ShiftCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
@@ -32,8 +31,8 @@ public class TestAlign extends CommandGroup {
             addSequential(new WaitCommand(0.4));
             addSequential(new GearCommand(true));
             addSequential(new WaitCommand(0.4));
-            addSequential(new DriveDistanceCommand(-36, 2.5));
-            addSequential(new GearCommand(false));
+            // addSequential(new DriveDistanceCommand(-36, 2.5));
+            // addSequential(new GearCommand(false));
         } else {
             // Add code for if target is not seen
 

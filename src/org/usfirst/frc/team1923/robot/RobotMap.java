@@ -33,8 +33,8 @@ public class RobotMap {
     /**
      * Ports for the talons that control the climbing motors.
      */
-    public static final int LEFT_CLIMB_PORT = 0;
-    public static final int RIGHT_CLIMB_PORT = 9;
+    public static final int LEFT_CLIMB_PORT = 5;
+    public static final int RIGHT_CLIMB_PORT = 4;
 
     /**
      * Climber slider port numbers
@@ -68,18 +68,18 @@ public class RobotMap {
     /**
      * Port for the talon that the PigeonIMU is connected to.
      */
-    public static final int IMU_PORT = 0;
+    public static final int IMU_PORT = 9;
 
     /**
      * Ultrasonic Sensor DIO ports.
      */
-    public static final int FRONT_SONAR_PING_PORT = 8;
-    public static final int FRONT_SONAR_ECHO_PORT = 9;
+    public static final int FRONT_SONAR_PING_PORT = 0;
+    public static final int FRONT_SONAR_ECHO_PORT = 1;
 
     /**
      * Settings and ports for GRIP and vision processing.
      */
-    public static final String CAMERA_IP = "10.19.21.15";
+    public static final String CAMERA_IP = "10.19.23.15";
     public static final int IMG_WIDTH = 320;
     public static final int IMG_HEIGHT = 240;
     public static final double TURN_CONSTANT = 1000;

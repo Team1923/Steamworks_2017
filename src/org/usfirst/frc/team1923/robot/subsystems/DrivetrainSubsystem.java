@@ -62,7 +62,8 @@ public class DrivetrainSubsystem extends Subsystem {
         this.shiftOmnis = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.OMNI_FORWARD_PORT, RobotMap.OMNI_BACKWARD_PORT);
 
         setToFollow();
-        configPID();
+        setReverse();
+        // configPID();
     }
 
     private void setToFollow() {
@@ -120,6 +121,10 @@ public class DrivetrainSubsystem extends Subsystem {
         this.rightTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
 
         setMasterToMode(TalonControlMode.PercentVbus);
+        setReverse();
+    }
+
+    public void setReverse() {
 
         this.leftTalons[0].set(0.0);
         this.leftTalons[0].reverseOutput(LEFT_REVERSED);
