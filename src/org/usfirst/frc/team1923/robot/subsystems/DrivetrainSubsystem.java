@@ -214,6 +214,14 @@ public class DrivetrainSubsystem extends Subsystem {
         return this.rightTalons[0].getPosition();
     }
 
+    public int getLeftEncPosition() {
+        return -this.leftTalons[0].getEncPosition();
+    }
+
+    public int getRightEncPosition() {
+        return this.rightTalons[0].getEncPosition();
+    }
+
     public double getLeftSpeed() {
         return this.leftTalons[0].getSpeed();
     }

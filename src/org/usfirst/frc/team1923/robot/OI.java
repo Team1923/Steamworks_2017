@@ -6,7 +6,7 @@ import org.usfirst.frc.team1923.robot.commands.drive.ShiftOmniCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
-import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionPegAlignCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.TeleopVisionAlignCommand;
 import org.usfirst.frc.team1923.robot.commands.vision.VisionProcessing;
 import org.usfirst.frc.team1923.robot.utils.controller.PS4Controller;
 import org.usfirst.frc.team1923.robot.utils.controller.XboxController;
@@ -43,9 +43,9 @@ public class OI {
         this.op.b.whenActive(new GearSetHomeCommand());
 
         // Vision Commands
-        Command pegAlign = new TeleopVisionPegAlignCommand();
+        Command pegAlign = new TeleopVisionAlignCommand();
         driver.square.whileHeld(pegAlign);
-        Command feederAlign = new TeleopVisionPegAlignCommand();
+        Command feederAlign = new TeleopVisionAlignCommand();
         driver.triangle.whileHeld(feederAlign);
         Command refresh = new VisionProcessing();
         driver.circle.whileHeld(refresh);
