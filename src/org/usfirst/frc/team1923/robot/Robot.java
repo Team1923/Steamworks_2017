@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot {
 
         this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
         // this.autonChooser.addObject("Log", new LogDataCommand("LOGGED"));
-        this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1, 2));
+        this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1.0, 2, true));
         this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
         this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
         this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());

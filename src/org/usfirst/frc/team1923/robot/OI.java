@@ -28,8 +28,8 @@ public class OI {
         this.driver.lt.setTriggerSensitivity(0.5);
         this.driver.rt.setTriggerSensitivity(0.5);
 
-        this.driver.lb.whenActive(new ShiftCommand(true));
-        this.driver.rb.whenActive(new ShiftCommand(false));
+        this.driver.lb.whenActive(new ShiftCommand(false));
+        this.driver.rb.whenActive(new ShiftCommand(true));
 
         this.driver.lt.whenActive(new ShiftOmniCommand(true));
         this.driver.rt.whenActive(new ShiftOmniCommand(false));

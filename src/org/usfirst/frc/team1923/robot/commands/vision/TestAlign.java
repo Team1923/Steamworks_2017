@@ -15,7 +15,7 @@ public class TestAlign extends CommandGroup {
 
     public TestAlign() {
 
-        addParallel(new ShiftCommand(true));
+        addParallel(new ShiftCommand(false));
         addSequential(new SlideCommand(true));
         addSequential(new VisionScanCommand(0.3, 5));
         Robot.visionSubSys.refresh();

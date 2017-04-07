@@ -247,14 +247,14 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public void shiftUp() {
-        if (this.shifter.get() != Value.kForward) {
-            this.shifter.set(Value.kForward);
+        if (this.shifter.get() != Value.kReverse) {
+            this.shifter.set(Value.kReverse);
         }
     }
 
     public void shiftDown() {
         if (safeToShift()) {
-            this.shifter.set(Value.kReverse);
+            this.shifter.set(Value.kForward);
         }
     }
 

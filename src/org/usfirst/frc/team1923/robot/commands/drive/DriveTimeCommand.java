@@ -24,6 +24,18 @@ public class DriveTimeCommand extends Command {
         this.power = power;
     }
 
+    public DriveTimeCommand(double power, double timeOut, boolean isLow) {
+
+        requires(Robot.driveSubSys);
+        setTimeout(timeOut);
+        this.power = power;
+        if (isLow) {
+            Robot.driveSubSys.shiftDown();
+        } else {
+            Robot.driveSubSys.shiftUp();
+        }
+    }
+
     @Override
     protected void initialize() {
 
