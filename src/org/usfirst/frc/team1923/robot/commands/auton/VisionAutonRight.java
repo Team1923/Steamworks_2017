@@ -6,7 +6,7 @@ import org.usfirst.frc.team1923.robot.commands.drive.ShiftCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
 import org.usfirst.frc.team1923.robot.commands.vision.VisionPegAlignCommand;
-import org.usfirst.frc.team1923.robot.commands.vision.VisionScanLeftCommand;
+import org.usfirst.frc.team1923.robot.commands.vision.VisionScanCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -37,7 +37,7 @@ public class VisionAutonRight extends CommandGroup {
         addSequential(new ShiftCommand(true));
         addSequential(new SlideCommand(true));
         addSequential(new DriveTimeCommand(0.5, 0.5));
-        addSequential(new VisionScanLeftCommand(-0.3, 15));
+        addSequential(new VisionScanCommand(-0.3, 15));
         addSequential(new WaitCommand(0.2));
         // addSequential(new VisionScanRightCommand(0.3, 5));
 

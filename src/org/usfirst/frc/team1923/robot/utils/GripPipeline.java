@@ -41,9 +41,9 @@ public class GripPipeline implements VisionPipeline {
     public void process(Mat source0) {
         // Step HSL_Threshold0:
         Mat hslThresholdInput = source0;
-        double[] hslThresholdHue = { 86.02260882905918, 102.76937660503711 };
-        double[] hslThresholdSaturation = { 209.6608379118734, 255.0 };
-        double[] hslThresholdLuminance = { 51.10483229589119, 186.61870953166036 };
+        double[] hslThresholdHue = { 73.07296622571327, 103.64699978877252 };
+        double[] hslThresholdSaturation = { 145.45220809874775, 255.0 };
+        double[] hslThresholdLuminance = { 104.83041950266994, 184.13213541076453 };
         hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
         // Step Find_Contours0:

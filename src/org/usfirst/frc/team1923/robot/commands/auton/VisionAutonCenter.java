@@ -19,7 +19,6 @@ public class VisionAutonCenter extends CommandGroup {
         // Drops of gear on center peg
         Robot.visionSubSys.refresh();
         addSequential(new ShiftCommand(true));
-        addSequential(new SlideCommand(true));
         // addSequential(new VisionScanRightCommand(0.3, 5));
         addSequential(new WaitCommand(0.2));
         Robot.visionSubSys.refresh();
@@ -31,6 +30,8 @@ public class VisionAutonCenter extends CommandGroup {
         // addSequential(new TurnTimeCommand(0.4,0.25));
         // addSequential(new TurnTimeCommand(-0.4,0.32));
         // addSequential(new TurnTimeCommand(-0.4,0.4));
+
+        addSequential(new SlideCommand(true));
         addSequential(new WaitCommand(0.4));
         addSequential(new AutonGearCommand(true));
         addSequential(new WaitCommand(0.4));

@@ -48,7 +48,7 @@ public class TeleopVisionAlignCommand extends Command {
         Robot.visionSubSys.refresh();
         if (Robot.visionSubSys.dist >= dist) {
             if (Robot.visionSubSys.turn < -1) {
-                power = 0;
+                power = 0.4;
                 turn = 0;
                 Robot.visionSubSys.found = false;
             } else {
@@ -73,6 +73,9 @@ public class TeleopVisionAlignCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        // if (!Robot.visionSubSys.found) {
+        // Scheduler.getInstance().removeAll();
+        // }
         Robot.driveSubSys.stop();
     }
 
@@ -80,5 +83,6 @@ public class TeleopVisionAlignCommand extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }
