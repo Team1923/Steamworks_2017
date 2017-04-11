@@ -4,6 +4,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.utils.GripPipeline;
 
@@ -30,7 +31,6 @@ public class VisionSubsystem extends Subsystem {
 
     private double sumx;
     private double sumw;
-    private double[] def;
 
     public double contourX;
 
@@ -48,24 +48,11 @@ public class VisionSubsystem extends Subsystem {
      */
     public VisionSubsystem() {
         try {
-            // TODO: Implement Bounding Rectangle
-            // TODO: IMplement Controller Vibration when Match time is getting
-            // low
-            // Start Camera Server
-            // CameraServer.getInstance().addAxisCamera(RobotMap.CAMERA_IP);
-            // Testing Drawing Bounding Rectangle Around Peg
-            /*
-             * CvSource output =
-             * CameraServer.getInstance().putVideo("Annotated", 320, 240);
-             */
-            // TODO: Account for difference in areas of tape to change turn
-            // value
-            // TODO: Add ultrasonic sensors
-            def = new double[0];
             frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
             frontSonar.setEnabled(true);
             frontSonar.setAutomaticMode(true);
             dist = frontSonar.getRangeInches();
+
             found = false;
 
             AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", RobotMap.CAMERA_IP);
@@ -79,14 +66,15 @@ public class VisionSubsystem extends Subsystem {
             pipe = new GripPipeline();
 
             refresh();
+
         } catch (Exception e) {
             System.out.println("Exception was thrown: " + e);
         }
     }
 
     public void refresh() {
-        // TODO: Move refresh method to a seperate command to get automatic
-        // multithreading
+        // TODO: Move refresh method to a separate command to get automatic
+        // multi-threading
         try {
             // Process Image
             try {
@@ -96,45 +84,42 @@ public class VisionSubsystem extends Subsystem {
                 sumx = 0;
                 sumw = 0;
                 if (!pipe.filterContoursOutput().isEmpty()) {
+                    // Find sum of center x and width of contours
+                    // TODO: Add ranking system for each contour
                     for (MatOfPoint a : pipe.filterContoursOutput()) {
                         r = Imgproc.boundingRect(a);
                         contourX = r.x + (r.width / 2);
                         sumx += contourX;
                         sumw += r.width;
-                        // SmartDashboard.putNumber("Center X Pipeline: ",
-                        // centerX);
                     }
                 } else {
                     width = Integer.MAX_VALUE;
                     centerx = Integer.MIN_VALUE;
                 }
                 outputStream.putFrame(pipe.hslThresholdOutput());
-                // outputStream.putFrame(output);
+
             } catch (UnsatisfiedLinkError b) {
-                System.out.println("Error");
+                System.out.println("Unsatisfied Link Error");
+                Robot.debug.logData("Unsatisfied Link Error!!");
             }
 
             // Extrapolate Values (Turn, distance, etc.)
             dist = frontSonar.getRangeInches();
-            // dist=16;
-
             if (!pipe.filterContoursOutput().isEmpty()) {
                 width = sumw / pipe.filterContoursOutput().size();
-                centerx = sumx / pipe.filterContoursOutput().size(); // centerx:
-                                                                     // pixel
-                                                                     // value of
-                                                                     // middle
-                                                                     // of peg
+                // center x is pixel value of the middle of the peg
+                centerx = sumx / pipe.filterContoursOutput().size();
             }
-            // Added 13 to make sure we dont hit the center of the gear
+            // Add 4 to make sure we don't hit the center of the gear
             turn = centerx - RobotMap.IMG_WIDTH / 2 + 4;
             turn /= RobotMap.TURN_CONSTANT;
             // Check Boundaries of turn
             if (turn < -1)
                 turn = -1;
             else if (turn > 1)
-                turn = 1; // TODO: Use PID to get to turn value and use an angle
-                          // instead of turn (Using IMU)
+                turn = 1;
+
+            // Make sure if no contours are seen the robot will not move
             if (pipe.filterContoursOutput().isEmpty())
                 turn = Integer.MIN_VALUE;
 
