@@ -13,9 +13,6 @@ public class RobotMap {
      * Driver profiles.
      */
     public static final ProfileCurve DRIVER_PROFILE = ProfileCurve.LINEAR;
-    public static final ProfileCurve CHINMAY_PROFILE = ProfileCurve.LINEAR;
-    public static final ProfileCurve ANISH_PROFILE = ProfileCurve.LINEAR;
-    public static final ProfileCurve SURAJ_PROFILE = ProfileCurve.LINEAR;
 
     /**
      * Controller ports for driver and operator controllers.
