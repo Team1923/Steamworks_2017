@@ -1,13 +1,17 @@
 
 package org.usfirst.frc.team1923.robot;
 
-import org.usfirst.frc.team1923.robot.commands.EmptyCommand;
-import org.usfirst.frc.team1923.robot.commands.driveCommands.DriveDistanceCommand;
+import org.usfirst.frc.team1923.robot.commands.auton.DoNothingAuton;
+import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonCenter;
+import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonLeft;
+import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.commands.drive.DriveDistanceCommand;
+import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
+import org.usfirst.frc.team1923.robot.subsystems.DebugSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
-
-import org.usfirst.frc.team1923.robot.OI;
+import org.usfirst.frc.team1923.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -26,134 +30,108 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	// Declare one instance of each subsystem and OI.
-	public static DrivetrainSubsystem driveSubSys;
-	public static ClimberSubsystem climbSubSys;
-	public static GearSubsystem gearSubSys;
-	public static OI oi;
+    public static ClimberSubsystem climbSubSys;
+    public static GearSubsystem gearSubSys;
+    public static VisionSubsystem visionSubSys;
+    public static DrivetrainSubsystem driveSubSys;
+    public static OI oi;
+    public static DriverStation dstation = DriverStation.getInstance();
+    public static DebugSubsystem debug;
 
-	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<Command>();
-	DriverStation driverStation = DriverStation.getInstance();
+    private Command autonomousCommand;
+    private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
-	@Override
-	public void robotInit() {
-		// Initialize all the subsystems and OI.
+    /**
+     * Called once when the robot first starts up.
+     */
+    @Override
+    public void robotInit() {
+        gearSubSys = new GearSubsystem();
+        driveSubSys = new DrivetrainSubsystem();
+        climbSubSys = new ClimberSubsystem();
+        visionSubSys = new VisionSubsystem();
+        debug = new DebugSubsystem();
 
-		gearSubSys = new GearSubsystem();
-		driveSubSys = new DrivetrainSubsystem();
-		climbSubSys = new ClimberSubsystem();
-		oi = new OI();
+        oi = new OI();
 
-		chooser.addDefault("Default Auto", new EmptyCommand());
-		chooser.addObject("Drive 50 inches", new DriveDistanceCommand(50, 50));
+        this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
+        // this.autonChooser.addObject("Log", new LogDataCommand("LOGGED"));
+        this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1.0, 2, true));
+        this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
+        this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
+        this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());
+        this.autonChooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
 
-		// if (driverStation.getAlliance().equals(Alliance.Blue)) {
-		// // TODO: Add blue autons
-		// } else if (driverStation.getAlliance().equals(Alliance.Red)) {
-		// // TODO: Add red autons
-		// } else {
-		// // TODO: Add all autons
-		// }
-		//
+        // SmartDashboard.putData("Motion Magic SRX", new
+        // DriveMotionMagicCommand(100));
 
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("auto mode", chooser);
+        SmartDashboard.putData("Auto Mode", this.autonChooser);
+    }
 
-	}
+    /**
+     * Called once when the robot is disabled.
+     */
+    @Override
+    public void disabledInit() {
+        debug.stopLog();
+    }
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
-	@Override
-	public void disabledInit() {
+    /**
+     * Called every 20ms when the robot is disabled.
+     */
+    @Override
+    public void disabledPeriodic() {
 
-	}
+    }
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    /**
+     * Called once at the start of autonomous mode.
+     */
+    @Override
+    public void autonomousInit() {
+        visionSubSys.refresh();
+        this.autonomousCommand = this.autonChooser.getSelected();
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
-	@Override
-	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
+        if (this.autonomousCommand != null) {
+            this.autonomousCommand.start();
+        }
+    }
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+    /**
+     * Called every 20ms during autonomous mode.
+     */
+    @Override
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
-	}
+    /**
+     * Called once at the start of tele-op mode.
+     */
+    @Override
+    public void teleopInit() {
+        if (this.autonomousCommand != null) {
+            this.autonomousCommand.cancel();
+        }
+    }
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
-	@Override
-	public void autonomousPeriodic() {
+    /**
+     * Called every 20ms during tele-op mode.
+     */
+    @Override
+    public void teleopPeriodic() {
+        if (RobotMap.DEBUG) {
+            SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
+        }
+        Scheduler.getInstance().run();
+    }
 
-		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
-		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
+    /**
+     * Called every 20ms during testing mode.
+     */
+    @Override
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
 
-		Scheduler.getInstance().run();
-	}
-
-	@Override
-	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
-		// new GearSetHomeCommand().start();
-		// TODO: Uncomment for COMPETITION!!!
-	}
-
-	/**
-	 * This function is called periodically during operator control
-	 */
-	@Override
-	public void teleopPeriodic() {
-
-		SmartDashboard.putNumber("Left Enc", driveSubSys.getLeftPosition());
-		SmartDashboard.putNumber("Right enc", driveSubSys.getRightPosition());
-		DrivetrainSubsystem.TURNING_CONSTANT = SmartDashboard.getNumber("turning", 1.06);
-		// double p = SmartDashboard.getNumber("P Value", 0);
-		// double i = SmartDashboard.getNumber("I Value", 0);
-		// double d = SmartDashboard.getNumber("D Value", 0);
-		// double f = SmartDashboard.getNumber("F Value", 0);
-		// driveSubSys.setPID(p, i, d, f);
-		Scheduler.getInstance().run();
-	}
-
-	/**
-	 * This function is called periodically during test mode
-	 */
-	@Override
-	public void testPeriodic() {
-		LiveWindow.run();
-	}
 }
