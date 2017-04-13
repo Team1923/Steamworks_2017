@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Warning: Command not fully functional.
  */
 public class DriveMotionMagicCommand extends Command {
 

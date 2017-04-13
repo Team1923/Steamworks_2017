@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1923.robot.utils.debug;
+package org.usfirst.frc.team1923.robot.commands;
 
 import org.usfirst.frc.team1923.robot.Robot;
 
@@ -17,7 +17,7 @@ public class LogDataCommand extends Command {
      */
     public LogDataCommand() {
         super();
-        requires(Robot.debug);
+        requires(Robot.debugSubSys);
     }
 
     /**
@@ -27,7 +27,7 @@ public class LogDataCommand extends Command {
      */
     public LogDataCommand(String message) {
         super();
-        requires(Robot.debug);
+        requires(Robot.debugSubSys);
         this.message = message;
     }
 
@@ -35,13 +35,13 @@ public class LogDataCommand extends Command {
     @Override
     protected void initialize() {
         if (this.message != null) {
-            Robot.debug.logData(this.message);
+            Robot.debugSubSys.logData(this.message);
         }
     }
 
     @Override
     protected void execute() {
-        Robot.debug.logData();
+        Robot.debugSubSys.logData();
     }
 
     @Override

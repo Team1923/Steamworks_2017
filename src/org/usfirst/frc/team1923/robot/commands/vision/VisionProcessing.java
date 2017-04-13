@@ -4,38 +4,38 @@ import org.usfirst.frc.team1923.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class VisionProcessing extends Command {
 
-	public VisionProcessing() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(Robot.visionSubSys);
-	}
+    public VisionProcessing() {
+        // TODO: Is this really necessary?
+        // Multiple commands should be able to access VisionSubsystem at the
+        // same time since nothing is being modified physically
+        requires(Robot.visionSubSys);
+    }
 
-	// Called just before this Command runs the first time
-	protected void initialize() {
-		Robot.visionSubSys.refresh();
-	}
+    @Override
+    protected void initialize() {
+        Robot.visionSubSys.refresh();
+    }
 
-	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		Robot.visionSubSys.refresh();
-	}
+    @Override
+    protected void execute() {
+        Robot.visionSubSys.refresh();
+    }
 
-	// Make this return true when this Command no longer needs to run execute()
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	// Called once after isFinished returns true
-	protected void end() {
-	}
+    @Override
+    protected void end() {
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	protected void interrupted() {
-	}
+    }
+
+    @Override
+    protected void interrupted() {
+
+    }
+
 }

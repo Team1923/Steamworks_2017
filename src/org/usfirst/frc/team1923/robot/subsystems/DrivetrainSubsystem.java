@@ -125,7 +125,6 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public void setReverse() {
-
         this.leftTalons[0].set(0.0);
         this.leftTalons[0].reverseOutput(LEFT_REVERSED);
         this.leftTalons[0].setInverted(LEFT_REVERSED);
@@ -200,9 +199,11 @@ public class DrivetrainSubsystem extends Subsystem {
     private double max(double[] a) {
         double max = a[0];
         for (double b : a) {
-            if (b > max)
+            if (b > max) {
                 max = b;
+            }
         }
+
         return max;
     }
 
@@ -314,12 +315,11 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public void configMM() {
-        leftTalons[0].setMotionMagicAcceleration(500);
-        rightTalons[0].setMotionMagicAcceleration(500);
+        this.leftTalons[0].setMotionMagicAcceleration(500);
+        this.rightTalons[0].setMotionMagicAcceleration(500);
 
-        leftTalons[0].setMotionMagicCruiseVelocity(800); // TODO: Is this in
-                                                         // rpm?
-        rightTalons[0].setMotionMagicCruiseVelocity(800);
+        this.leftTalons[0].setMotionMagicCruiseVelocity(800);
+        this.rightTalons[0].setMotionMagicCruiseVelocity(800);
     }
 
 }

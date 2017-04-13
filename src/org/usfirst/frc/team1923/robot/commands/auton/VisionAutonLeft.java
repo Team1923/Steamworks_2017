@@ -11,9 +11,6 @@ import org.usfirst.frc.team1923.robot.commands.vision.VisionScanCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-/**
- *
- */
 public class VisionAutonLeft extends CommandGroup {
 
     public VisionAutonLeft() {
@@ -33,4 +30,5 @@ public class VisionAutonLeft extends CommandGroup {
 
         // TODO: Drive to Feeder Station
     }
+
 }

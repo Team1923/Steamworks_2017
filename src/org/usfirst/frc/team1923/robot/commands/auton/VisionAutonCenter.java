@@ -10,9 +10,6 @@ import org.usfirst.frc.team1923.robot.commands.vision.VisionAlignCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-/**
- *
- */
 public class VisionAutonCenter extends CommandGroup {
 
     public VisionAutonCenter() {
@@ -30,4 +27,5 @@ public class VisionAutonCenter extends CommandGroup {
         addSequential(new WaitCommand(0.4));
         addSequential(new DriveTimeCommand(-0.5, 1));
     }
+
 }

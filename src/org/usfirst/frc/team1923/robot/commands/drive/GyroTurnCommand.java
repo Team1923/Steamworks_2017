@@ -15,14 +15,13 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class GyroTurnCommand extends Command {
 
-    // TODO: Tune PID constants
     private final double P_CONST = 0.0070;
     private final double I_CONST = 0.0018;
     private final double D_CONST = 0.0000;
     private final double I_ZONE = 5;
 
-    // Absolute turning tolerance in degrees
-    private final double TOLERANCE = 5;
+    private final double TURN_TOLERANCE = 1; // Turn tolerance (in degrees)
+    private final double OUTPUT_POWER = 11; // Output Power [0, 12]
 
     private ImuTarget target;
     private Drivetrain output;
@@ -30,23 +29,17 @@ public class GyroTurnCommand extends Command {
 
     private double degrees;
 
-    /**
-     * This command turns the robot to a specific degree with gyro PID
-     * 
-     * @param degrees
-     *            Degrees to turn to the right
-     */
     public GyroTurnCommand(double degrees) {
         requires(Robot.driveSubSys);
 
         // Ensure that the degrees is [-360, 360] for the PID controller
         this.degrees = degrees % 360;
-
         this.target = new ImuTarget();
         this.output = new Drivetrain();
+
         this.controller = new PIDController(P_CONST, I_CONST, D_CONST, this.target, this.output);
         this.controller.setContinuous(true);
-        this.controller.setAbsoluteTolerance(TOLERANCE);
+        this.controller.setAbsoluteTolerance(TURN_TOLERANCE);
         this.controller.setOutputRange(-1, 1);
         this.controller.setInputRange(-360, 360);
         this.controller.setSetpoint(this.degrees);
@@ -55,36 +48,36 @@ public class GyroTurnCommand extends Command {
         this.setTimeout(Math.abs(this.degrees) * 0.005 + 1);
     }
 
-    @Override
-    protected void initialize() {
+    protected void initialize(){
+        this.target.resetHeading();
+        System.out.println(this.target.getHeading());
+        this.controller.setSetpoint(this.degrees);
         this.controller.enable();
     }
 
-    @Override
     protected void execute() {
         // Debug
-        if (RobotMap.DEBUG) {
-            double currentAngle = this.target.pidGet();
-            System.out.println("target = " + this.degrees + ", current = " + currentAngle + ", error = " + (this.degrees - currentAngle));
-        }
+        double currentAngle = this.target.pidGet();
+        System.out.println("target = " + this.degrees + ", current = " + currentAngle + ", error = " + (this.degrees - currentAngle));
     }
 
-    @Override
     protected boolean isFinished() {
         return this.controller.onTarget() || this.isTimedOut();
     }
 
-    @Override
     protected void end() {
+        System.out.println("On Target? " + this.controller.onTarget());
+        System.out.println("Is Finished? " + this.isFinished());
         this.controller.disable();
 
-        this.controller = null;
-        this.target = null;
-        this.output = null;
+        System.out.println("END END END");
+        if (this.isTimedOut()){
+            System.out.println("TIMED OUT");
+        }
     }
 
-    @Override
     protected void interrupted() {
+        System.out.println("INTERRUPT");
         this.end();
     }
 
@@ -99,6 +92,10 @@ public class GyroTurnCommand extends Command {
             this.imu = Robot.driveSubSys.getImu();
             this.fusionStatus = new FusionStatus();
 
+            this.startingAngle = this.getHeading();
+        }
+
+        public void resetHeading() {
             this.startingAngle = this.getHeading();
         }
 
@@ -118,6 +115,7 @@ public class GyroTurnCommand extends Command {
         }
 
         protected double getHeading() {
+            this.fusionStatus = new FusionStatus(); // TODO: Is this really needed?
             return this.imu.GetFusedHeading(this.fusionStatus);
         }
 
@@ -127,7 +125,7 @@ public class GyroTurnCommand extends Command {
 
         @Override
         public void pidWrite(double output) {
-            Robot.driveSubSys.drive(output, -output, TalonControlMode.PercentVbus);
+            Robot.driveSubSys.drive(output * OUTPUT_POWER, -output * OUTPUT_POWER, TalonControlMode.Voltage);
         }
 
     }
