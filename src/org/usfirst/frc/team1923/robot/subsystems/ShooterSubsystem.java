@@ -4,6 +4,7 @@ import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCalibrateCommand;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,12 +33,14 @@ public class ShooterSubsystem extends Subsystem {
 	}
 
 	public void set(double power) {
+		shooter.changeControlMode(TalonControlMode.PercentVbus);
 		shooter.set(power);
 		speed = shooter.getEncVelocity();
 		SmartDashboard.putNumber("Shooter Encoder Speed", speed);
 	}
 
 	public void setSetpoint(double setpoint) {
+		shooter.changeControlMode(TalonControlMode.Speed);
 		shooter.setSetpoint(setpoint);
 	}
 
