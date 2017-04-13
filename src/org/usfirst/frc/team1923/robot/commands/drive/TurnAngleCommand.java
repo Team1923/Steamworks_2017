@@ -2,6 +2,7 @@ package org.usfirst.frc.team1923.robot.commands.drive;
 
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 
+@Deprecated
 public class TurnAngleCommand extends DriveDistanceCommand {
 
     /**

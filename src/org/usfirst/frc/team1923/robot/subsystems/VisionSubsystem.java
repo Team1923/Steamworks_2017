@@ -18,12 +18,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * TODO: Formatting & Testing
  */
 public class VisionSubsystem extends Subsystem {
 
     public double centerx, turn;
-    public double[] widtharr;
     public double width;
     public double dist;
 
@@ -36,37 +35,35 @@ public class VisionSubsystem extends Subsystem {
 
     public Ultrasonic frontSonar;
 
-    Mat source = new Mat();
-    Mat output = new Mat();
-    CvSink cvSink;
-    CvSource outputStream;
-    GripPipeline pipe;
-    Rect r;
+    private Mat source = new Mat();
+    private CvSink cvSink;
+    private CvSource outputStream;
+    private GripPipeline pipe;
+    private Rect r;
 
     /**
      * Initializes CameraServer and NetworkTables
      */
     public VisionSubsystem() {
         try {
-            frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
-            frontSonar.setEnabled(true);
-            frontSonar.setAutomaticMode(true);
-            dist = frontSonar.getRangeInches();
+            this.frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
+            this.frontSonar.setEnabled(true);
+            this.frontSonar.setAutomaticMode(true);
+            this.dist = this.frontSonar.getRangeInches();
 
-            found = false;
+            this.found = false;
 
             AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", RobotMap.CAMERA_IP);
             camera.setResolution(320, 240);
 
-            cvSink = CameraServer.getInstance().getVideo();
-            outputStream = CameraServer.getInstance().putVideo("Processed", 320, 240);
+            this.cvSink = CameraServer.getInstance().getVideo();
+            this.outputStream = CameraServer.getInstance().putVideo("Processed", 320, 240);
 
             SmartDashboard.putNumber("Power", 0);
 
-            pipe = new GripPipeline();
+            this.pipe = new GripPipeline();
 
             refresh();
-
         } catch (Exception e) {
             System.out.println("Exception was thrown: " + e);
         }
@@ -78,56 +75,57 @@ public class VisionSubsystem extends Subsystem {
         try {
             // Process Image
             try {
-                cvSink.grabFrameNoTimeout(source);
+                this.cvSink.grabFrameNoTimeout(this.source);
 
-                pipe.process(source);
-                sumx = 0;
-                sumw = 0;
-                if (!pipe.filterContoursOutput().isEmpty()) {
+                this.pipe.process(this.source);
+                this.sumx = 0;
+                this.sumw = 0;
+                if (!this.pipe.filterContoursOutput().isEmpty()) {
                     // Find sum of center x and width of contours
                     // TODO: Add ranking system for each contour
-                    for (MatOfPoint a : pipe.filterContoursOutput()) {
-                        r = Imgproc.boundingRect(a);
-                        contourX = r.x + (r.width / 2);
-                        sumx += contourX;
-                        sumw += r.width;
+                    for (MatOfPoint a : this.pipe.filterContoursOutput()) {
+                        this.r = Imgproc.boundingRect(a);
+                        this.contourX = this.r.x + this.r.width / 2;
+                        this.sumx += this.contourX;
+                        this.sumw += this.r.width;
                     }
                 } else {
-                    width = Integer.MAX_VALUE;
-                    centerx = Integer.MIN_VALUE;
+                    this.width = Integer.MAX_VALUE;
+                    this.centerx = Integer.MIN_VALUE;
                 }
-                outputStream.putFrame(pipe.hslThresholdOutput());
-
+                this.outputStream.putFrame(this.pipe.hslThresholdOutput());
             } catch (UnsatisfiedLinkError b) {
                 System.out.println("Unsatisfied Link Error");
-                Robot.debug.logData("Unsatisfied Link Error!!");
+                Robot.debugSubSys.logData("Unsatisfied Link Error!!");
             }
 
             // Extrapolate Values (Turn, distance, etc.)
-            dist = frontSonar.getRangeInches();
-            if (!pipe.filterContoursOutput().isEmpty()) {
-                width = sumw / pipe.filterContoursOutput().size();
+            this.dist = this.frontSonar.getRangeInches();
+            if (!this.pipe.filterContoursOutput().isEmpty()) {
+                this.width = this.sumw / this.pipe.filterContoursOutput().size();
                 // center x is pixel value of the middle of the peg
-                centerx = sumx / pipe.filterContoursOutput().size();
+                this.centerx = this.sumx / this.pipe.filterContoursOutput().size();
             }
             // Add 4 to make sure we don't hit the center of the gear
-            turn = centerx - RobotMap.IMG_WIDTH / 2 + 4;
-            turn /= RobotMap.TURN_CONSTANT;
+            this.turn = this.centerx - RobotMap.IMG_WIDTH / 2 + 4;
+            this.turn /= RobotMap.TURN_CONSTANT;
             // Check Boundaries of turn
-            if (turn < -1)
-                turn = -1;
-            else if (turn > 1)
-                turn = 1;
+            if (this.turn < -1) {
+                this.turn = -1;
+            } else if (this.turn > 1) {
+                this.turn = 1;
+            }
 
             // Make sure if no contours are seen the robot will not move
-            if (pipe.filterContoursOutput().isEmpty())
-                turn = Integer.MIN_VALUE;
+            if (this.pipe.filterContoursOutput().isEmpty()) {
+                this.turn = Integer.MIN_VALUE;
+            }
 
             // Logging
-            SmartDashboard.putNumber("Center X: ", centerx);
-            SmartDashboard.putNumber("Distance to target(Ultrasonic): ", dist);
-            SmartDashboard.putNumber("Width: ", width);
-            SmartDashboard.putNumber("Turn: ", turn);
+            SmartDashboard.putNumber("Center X: ", this.centerx);
+            SmartDashboard.putNumber("Distance to target(Ultrasonic): ", this.dist);
+            SmartDashboard.putNumber("Width: ", this.width);
+            SmartDashboard.putNumber("Turn: ", this.turn);
 
         } catch (Exception e) {
             System.out.println("Exception was thrown: " + e);
@@ -142,27 +140,27 @@ public class VisionSubsystem extends Subsystem {
     }
 
     public Ultrasonic getUltrasonic() {
-        return frontSonar;
+        return this.frontSonar;
     }
 
     public double getCenterX() {
-        return centerx;
+        return this.centerx;
     }
 
     public double getDistance() {
-        return dist;
+        return this.dist;
     }
 
     public double getWidth() {
-        return width;
+        return this.width;
     }
 
     public boolean isFound() {
-        return centerx >= 0;
+        return this.centerx >= 0;
     }
 
     public double getTurn() {
-        return turn;
+        return this.turn;
     }
 
 }

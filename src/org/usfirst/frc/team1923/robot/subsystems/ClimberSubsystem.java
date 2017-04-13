@@ -7,19 +7,15 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *
- */
 public class ClimberSubsystem extends Subsystem {
 
-	private final double P_CONSTANT = 0;
-	private final double I_CONSTANT = 0;
-	private final double D_CONSTANT = 0;
-	public final double OVER_CURRENT_RATIO = 5; // Amps / Volt
-	public final double CLIMB_POWER = 0.8;
-	private CANTalon leftClimb, rightClimb;
+    private final double P_CONSTANT = 0;
+    private final double I_CONSTANT = 0;
+    private final double D_CONSTANT = 0;
+    public final double OVER_CURRENT_RATIO = 5; // Amps / Volt
+    public final double CLIMB_POWER = 0.8;
+    private CANTalon leftClimb, rightClimb;
 
     /**
      * Creates an instance of the Climber subsystem with two talons Creates the
@@ -52,7 +48,7 @@ public class ClimberSubsystem extends Subsystem {
     public double getMaxCurrent() {
         return Math.max(this.leftClimb.getOutputCurrent(), this.rightClimb.getOutputCurrent());
     }
-		//SmartDashboard.putNumber("Max Climber Amerage: " , getMaxCurrent());
+    // SmartDashboard.putNumber("Max Climber Amperage: " , getMaxCurrent());
 
     public double getVoltage() {
         return this.leftClimb.getOutputVoltage();

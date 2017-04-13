@@ -6,6 +6,7 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+@Deprecated
 public class TurnTimeCommand extends Command {
 
     private double power;

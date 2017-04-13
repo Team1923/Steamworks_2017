@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * 
  * @author Abhinav
  */
-
 public class VisionAlignCommand extends Command {
 
     public double power, turn;

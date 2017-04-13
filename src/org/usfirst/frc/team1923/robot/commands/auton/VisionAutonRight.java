@@ -11,9 +11,6 @@ import org.usfirst.frc.team1923.robot.commands.vision.VisionScanCommand;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-/**
- *
- */
 public class VisionAutonRight extends CommandGroup {
 
     public VisionAutonRight() {
@@ -32,6 +29,6 @@ public class VisionAutonRight extends CommandGroup {
         addSequential(new DriveTimeCommand(-0.3, 0.5));
 
         // TODO: Drive to Feeder Station
-
     }
+
 }
