@@ -22,147 +22,210 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class VisionSubsystem extends Subsystem {
 
-    public double centerx, turn;
-    public double[] widtharr;
-    public double width;
-    public double dist;
+	public double gearCenterx, gearTurn, shooterCenterx, shooterTurn;
+	public double[] gearWidtharr;
+	public double gearWidth, shooterArea;
+	public double dist;
 
-    public boolean found;
+	public boolean found;
 
-    private double sumx;
-    private double sumw;
+	private double sumx, sumw;
 
-    public double contourX;
+	public double contourX;
 
-    public Ultrasonic frontSonar;
+	public Ultrasonic frontSonar;
 
-    Mat source = new Mat();
-    Mat output = new Mat();
-    CvSink cvSink;
-    CvSource outputStream;
-    GripPipeline pipe;
-    Rect r;
+	Mat source = new Mat();
+	Mat output = new Mat();
+	CvSink gearSink, shooterSink;
+	CvSource gearOutputStream, shooterOutputStream;
+	GripPipeline pipe;
+	Rect r;
 
-    /**
-     * Initializes CameraServer and NetworkTables
-     */
-    public VisionSubsystem() {
-        try {
-            frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
-            frontSonar.setEnabled(true);
-            frontSonar.setAutomaticMode(true);
-            dist = frontSonar.getRangeInches();
+	/**
+	 * Initializes CameraServer and NetworkTables
+	 */
+	public VisionSubsystem() {
+		try {
+			frontSonar = new Ultrasonic(RobotMap.FRONT_SONAR_PING_PORT, RobotMap.FRONT_SONAR_ECHO_PORT, Unit.kInches);
+			frontSonar.setEnabled(true);
+			frontSonar.setAutomaticMode(true);
+			dist = frontSonar.getRangeInches();
 
-            found = false;
+			found = false;
 
-            AxisCamera camera = CameraServer.getInstance().addAxisCamera("Axis Cam", RobotMap.CAMERA_IP);
-            camera.setResolution(320, 240);
+			AxisCamera gearCamera = CameraServer.getInstance().addAxisCamera("Gear Cam", RobotMap.GEAR_CAMERA_IP);
+			gearCamera.setResolution(320, 240);
 
-            cvSink = CameraServer.getInstance().getVideo();
-            outputStream = CameraServer.getInstance().putVideo("Processed", 320, 240);
+			AxisCamera shooterCamera = CameraServer.getInstance().addAxisCamera("Shooter Cam",
+					RobotMap.SHOOTER_CAMERA_IP);
+			shooterCamera.setResolution(320, 240);
 
-            SmartDashboard.putNumber("Power", 0);
+			gearSink = CameraServer.getInstance().getVideo("Gear Cam");
+			shooterSink = CameraServer.getInstance().getVideo("Shooter Cam");
 
-            pipe = new GripPipeline();
+			gearOutputStream = CameraServer.getInstance().putVideo("Gear Processed", 320, 240);
+			shooterOutputStream = CameraServer.getInstance().putVideo("Shooter Processed", 320, 240);
 
-            refresh();
+			SmartDashboard.putNumber("Power", 0);
 
-        } catch (Exception e) {
-            System.out.println("Exception was thrown: " + e);
-        }
-    }
+			pipe = new GripPipeline();
 
-    public void refresh() {
-        // TODO: Move refresh method to a separate command to get automatic
-        // multi-threading
-        try {
-            // Process Image
-            try {
-                cvSink.grabFrameNoTimeout(source);
+			refreshGear();
 
-                pipe.process(source);
-                sumx = 0;
-                sumw = 0;
-                if (!pipe.filterContoursOutput().isEmpty()) {
-                    // Find sum of center x and width of contours
-                    // TODO: Add ranking system for each contour
-                    for (MatOfPoint a : pipe.filterContoursOutput()) {
-                        r = Imgproc.boundingRect(a);
-                        contourX = r.x + (r.width / 2);
-                        sumx += contourX;
-                        sumw += r.width;
-                    }
-                } else {
-                    width = Integer.MAX_VALUE;
-                    centerx = Integer.MIN_VALUE;
-                }
-                outputStream.putFrame(pipe.hslThresholdOutput());
+		} catch (Exception e) {
+			System.out.println("Exception was thrown: " + e);
+		}
+	}
 
-            } catch (UnsatisfiedLinkError b) {
-                System.out.println("Unsatisfied Link Error");
-                Robot.debug.logData("Unsatisfied Link Error!!");
-            }
+	public void refreshGear() {
+		// TODO: Move refresh method to a separate command to get automatic
+		// multi-threading
+		try {
+			// Process Image
+			try {
+				gearSink.grabFrameNoTimeout(source);
 
-            // Extrapolate Values (Turn, distance, etc.)
-            dist = frontSonar.getRangeInches();
-            if (!pipe.filterContoursOutput().isEmpty()) {
-                width = sumw / pipe.filterContoursOutput().size();
-                // center x is pixel value of the middle of the peg
-                centerx = sumx / pipe.filterContoursOutput().size();
-            }
-            // Add 4 to make sure we don't hit the center of the gear
-            turn = centerx - RobotMap.IMG_WIDTH / 2 + 4;
-            turn /= RobotMap.TURN_CONSTANT;
-            // Check Boundaries of turn
-            if (turn < -1)
-                turn = -1;
-            else if (turn > 1)
-                turn = 1;
+				pipe.process(source);
+				sumx = 0;
+				sumw = 0;
+				if (!pipe.filterContoursOutput().isEmpty()) {
+					// Find sum of center x and width of contours
+					// TODO: Add ranking system for each contour
+					for (MatOfPoint a : pipe.filterContoursOutput()) {
+						r = Imgproc.boundingRect(a);
+						contourX = r.x + (r.width / 2);
+						sumx += contourX;
+						sumw += r.width;
+					}
+				} else {
+					gearWidth = Integer.MAX_VALUE;
+					gearCenterx = Integer.MIN_VALUE;
+				}
+				gearOutputStream.putFrame(pipe.hslThresholdOutput());
 
-            // Make sure if no contours are seen the robot will not move
-            if (pipe.filterContoursOutput().isEmpty())
-                turn = Integer.MIN_VALUE;
+			} catch (UnsatisfiedLinkError b) {
+				System.out.println("Unsatisfied Link Error");
+				Robot.debug.logData("Unsatisfied Link Error!!");
+			}
 
-            // Logging
-            SmartDashboard.putNumber("Center X: ", centerx);
-            SmartDashboard.putNumber("Distance to target(Ultrasonic): ", dist);
-            SmartDashboard.putNumber("Width: ", width);
-            SmartDashboard.putNumber("Turn: ", turn);
+			// Extrapolate Values (Turn, distance, etc.)
+			dist = frontSonar.getRangeInches();
+			if (!pipe.filterContoursOutput().isEmpty()) {
+				gearWidth = sumw / pipe.filterContoursOutput().size();
+				// center x is pixel value of the middle of the peg
+				gearCenterx = sumx / pipe.filterContoursOutput().size();
+			}
+			// Add 4 to make sure we don't hit the center of the gear
+			gearTurn = gearCenterx - RobotMap.IMG_WIDTH / 2 + 4;
+			gearTurn /= RobotMap.TURN_CONSTANT;
+			// Check Boundaries of turn
+			if (gearTurn < -1)
+				gearTurn = -1;
+			else if (gearTurn > 1)
+				gearTurn = 1;
 
-        } catch (Exception e) {
-            System.out.println("Exception was thrown: " + e);
-        }
+			// Make sure if no contours are seen the robot will not move
+			if (pipe.filterContoursOutput().isEmpty())
+				gearTurn = Integer.MIN_VALUE;
 
-    }
+			// Logging
+			SmartDashboard.putNumber("Center X Gear: ", gearCenterx);
+			SmartDashboard.putNumber("Distance to target(Ultrasonic): ", dist);
+			SmartDashboard.putNumber("Gear Width: ", gearWidth);
+			SmartDashboard.putNumber("Gear Turn: ", gearTurn);
 
-    @Override
-    public void initDefaultCommand() {
-        // Uncomment for continuous Processing
-        // setDefaultCommand(new VisionProcessing());
-    }
+		} catch (Exception e) {
+			System.out.println("Exception was thrown: " + e);
+		}
 
-    public Ultrasonic getUltrasonic() {
-        return frontSonar;
-    }
+	}
 
-    public double getCenterX() {
-        return centerx;
-    }
+	public void refreshShooter() {
+		// TODO: Move refresh method to a separate command to get automatic
+		// multi-threading
+		try {
+			// Process Image
+			try {
+				shooterSink.grabFrameNoTimeout(source);
 
-    public double getDistance() {
-        return dist;
-    }
+				pipe.process(source);
+				sumx = 0;
+				shooterArea = 0;
+				if (!pipe.filterContoursOutput().isEmpty()) {
+					// Find sum of center x and width of contours
+					// TODO: Add ranking system for each contour
+					for (MatOfPoint a : pipe.filterContoursOutput()) {
+						r = Imgproc.boundingRect(a);
+						contourX = r.x + (r.width / 2);
+						sumx += contourX;
+						shooterArea += r.area();
+					}
+				} else {
+					shooterCenterx = Integer.MIN_VALUE;
+				}
+				shooterOutputStream.putFrame(pipe.hslThresholdOutput());
 
-    public double getWidth() {
-        return width;
-    }
+			} catch (UnsatisfiedLinkError b) {
+				System.out.println("Unsatisfied Link Error");
+				Robot.debug.logData("Unsatisfied Link Error!!");
+			}
 
-    public boolean isFound() {
-        return centerx >= 0;
-    }
+			// Extrapolate Values (Turn, distance, etc.)
+			if (!pipe.filterContoursOutput().isEmpty()) {
+				// shooter center x is pixel value of the middle of the boiler
+				shooterCenterx = sumx / pipe.filterContoursOutput().size();
+			}
+			shooterTurn = shooterCenterx - RobotMap.IMG_WIDTH / 2;
+			shooterTurn /= RobotMap.TURN_CONSTANT;
+			// Check Boundaries of turn
+			if (shooterTurn < -1)
+				shooterTurn = -1;
+			else if (shooterTurn > 1)
+				shooterTurn = 1;
 
-    public double getTurn() {
-        return turn;
-    }
+			// Make sure if no contours are seen the robot will not move
+			if (pipe.filterContoursOutput().isEmpty())
+				shooterTurn = Integer.MIN_VALUE;
+
+			// Logging
+			SmartDashboard.putNumber("Center X Shooter: ", shooterCenterx);
+			SmartDashboard.putNumber("Shooter Turn: ", shooterTurn);
+
+		} catch (Exception e) {
+			System.out.println("Exception was thrown: " + e);
+		}
+
+	}
+
+	@Override
+	public void initDefaultCommand() {
+		// Uncomment for continuous Processing
+		// setDefaultCommand(new VisionProcessing());
+	}
+
+	public Ultrasonic getUltrasonic() {
+		return frontSonar;
+	}
+
+	public double getCenterX() {
+		return gearCenterx;
+	}
+
+	public double getDistance() {
+		return dist;
+	}
+
+	public double getWidth() {
+		return gearWidth;
+	}
+
+	public boolean isFound() {
+		return gearCenterx >= 0;
+	}
+
+	public double getTurn() {
+		return gearTurn;
+	}
 
 }

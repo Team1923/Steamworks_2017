@@ -15,17 +15,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Abhinav
  */
 
-public class VisionAlignCommand extends Command {
+public class VisionGearAlignCommand extends Command {
 
     public double power, turn;
     boolean feeder = false, aligned;
     public double stoppingDist;
 
-    public VisionAlignCommand() {
+    public VisionGearAlignCommand() {
         this(false);
     }
 
-    public VisionAlignCommand(boolean feeder) {
+    public VisionGearAlignCommand(boolean feeder) {
         this.feeder = feeder;
         this.stoppingDist = (!feeder ? RobotMap.PEG_DIST : RobotMap.FEEDER_DIST);
         requires(Robot.visionSubSys);
@@ -40,9 +40,9 @@ public class VisionAlignCommand extends Command {
     protected void execute() {
         // TODO: Change power value to account for distance
 
-        Robot.visionSubSys.refresh();
+        Robot.visionSubSys.refreshGear();
 
-        if (Robot.visionSubSys.turn < -1) {
+        if (Robot.visionSubSys.gearTurn < -1) {
             power = 0;
             turn = 0;
             Robot.visionSubSys.found = false;
@@ -52,7 +52,7 @@ public class VisionAlignCommand extends Command {
             else power = 0.2;
 
             Robot.visionSubSys.found = true;
-            turn = Robot.visionSubSys.turn;
+            turn = Robot.visionSubSys.gearTurn;
         }
 
         SmartDashboard.putNumber("Power", power);
