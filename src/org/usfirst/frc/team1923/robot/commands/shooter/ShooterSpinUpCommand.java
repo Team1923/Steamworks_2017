@@ -28,8 +28,11 @@ public class ShooterSpinUpCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Robot.shooterSubSys.getError() < 1; // TODO: Change this error
-													// value
+		return Robot.shooterSubSys.getError() < Robot.shooterSubSys.allowableError; // TODO:
+																					// Change
+																					// this
+																					// error
+		// value
 	}
 
 	@Override

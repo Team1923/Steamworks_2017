@@ -4,6 +4,7 @@ import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCalibrateCommand;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,11 +22,15 @@ public class ShooterSubsystem extends Subsystem {
 	private CANTalon shooter;
 	private double speed;
 
+	public final double allowableError = 100;
+
 	public ShooterSubsystem() {
 		this.shooter = new CANTalon(RobotMap.SHOOTER_PORT);
 
 		this.shooter.configPeakOutputVoltage(12, -12);
 		this.shooter.configNominalOutputVoltage(0, 0);
+
+		this.shooter.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 
 		this.shooter.setPID(P_CONSTANT, I_CONSTANT, D_CONSTANT);
 		this.shooter.setF(F_CONSTANT);
@@ -41,6 +46,7 @@ public class ShooterSubsystem extends Subsystem {
 
 	public void setSetpoint(double setpoint) {
 		shooter.changeControlMode(TalonControlMode.Speed);
+		SmartDashboard.putNumber("Shooter Encoder Speed", speed);
 		shooter.setSetpoint(setpoint);
 	}
 
