@@ -1,11 +1,11 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
 import org.usfirst.frc.team1923.robot.RobotMap;
-import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCalibrateCommand;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.CANTalon.VelocityMeasurementPeriod;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,54 +15,60 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ShooterSubsystem extends Subsystem {
 
-	private final double P_CONSTANT = 0;
-	private final double I_CONSTANT = 0;
-	private final double D_CONSTANT = 0;
-	private final double F_CONSTANT = 0;
-	private CANTalon shooter;
-	private double speed;
+    private final double P_CONSTANT = 0;
+    private final double I_CONSTANT = 0;
+    private final double D_CONSTANT = 0;
+    private final double F_CONSTANT = 0;
+    private CANTalon shooter;
+    private double speed;
 
-	public final double allowableError = 100;
+    public final double allowableError = 100;
 
-	public ShooterSubsystem() {
-		this.shooter = new CANTalon(RobotMap.SHOOTER_PORT);
+    public ShooterSubsystem() {
+        this.shooter = new CANTalon(RobotMap.SHOOTER_PORT);
 
-		this.shooter.configPeakOutputVoltage(12, -12);
-		this.shooter.configNominalOutputVoltage(0, 0);
+        this.shooter.configPeakOutputVoltage(12, -12);
+        this.shooter.configNominalOutputVoltage(0, 0);
 
-		this.shooter.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        this.shooter.setP(P_CONSTANT);
+        this.shooter.setI(I_CONSTANT);
+        this.shooter.setD(D_CONSTANT);
+        this.shooter.setF(F_CONSTANT);
 
-		this.shooter.setPID(P_CONSTANT, I_CONSTANT, D_CONSTANT);
-		this.shooter.setF(F_CONSTANT);
+        this.shooter.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        this.shooter.SetVelocityMeasurementPeriod(VelocityMeasurementPeriod.Period_1Ms);
+        this.shooter.reverseSensor(false);
+        this.shooter.reverseOutput(false);
 
-	}
+    }
 
-	public void set(double power) {
-		shooter.changeControlMode(TalonControlMode.PercentVbus);
-		shooter.set(power);
-		speed = shooter.getEncVelocity();
-		SmartDashboard.putNumber("Shooter Encoder Speed", speed);
-	}
+    public void set(double power) {
+        shooter.changeControlMode(TalonControlMode.PercentVbus);
+        shooter.set(power);
+        speed = shooter.getSpeed();
+        SmartDashboard.putNumber("Shooter Encoder Speed", speed);
+    }
 
-	public void setSetpoint(double setpoint) {
-		shooter.changeControlMode(TalonControlMode.Speed);
-		SmartDashboard.putNumber("Shooter Encoder Speed", speed);
-		shooter.setSetpoint(setpoint);
-	}
+    public void setSetpoint(double setpoint) {
+        shooter.changeControlMode(TalonControlMode.Speed);
+        shooter.setF(0.7 * 1023 / (setpoint / 60 / 10 * 4096));
+        speed = shooter.getSpeed();
+        SmartDashboard.putNumber("Shooter Encoder Speed", speed);
+        shooter.setSetpoint(setpoint);
+    }
 
-	@Override
-	public void initDefaultCommand() {
-		setDefaultCommand(new ShooterCalibrateCommand());
-	}
+    @Override
+    public void initDefaultCommand() {
+        // setDefaultCommand(new ShooterCalibrateCommand());
+    }
 
-	public double getSpeed() {
-		speed = shooter.getEncVelocity();
-		SmartDashboard.putNumber("Shooter Encoder Speed", speed);
-		return speed;
-	}
+    public double getSpeed() {
+        speed = shooter.getSpeed();
+        SmartDashboard.putNumber("Shooter Encoder Speed", speed);
+        return speed;
+    }
 
-	public double getError() {
-		return shooter.getError();
-	}
-
+    public double getError() {
+        return shooter.getError();
+    }
 }

@@ -6,6 +6,7 @@ import org.usfirst.frc.team1923.robot.commands.drive.ShiftOmniCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.GearSetHomeCommand;
 import org.usfirst.frc.team1923.robot.commands.gear.SlideCommand;
+import org.usfirst.frc.team1923.robot.commands.shooter.ShooterSpinUpCommand;
 import org.usfirst.frc.team1923.robot.commands.vision.VisionGearAlignCommand;
 import org.usfirst.frc.team1923.robot.commands.vision.VisionProcessing;
 import org.usfirst.frc.team1923.robot.utils.controller.PS4Controller;
@@ -41,6 +42,8 @@ public class OI {
         this.op.x.whenActive(new SlideCommand());
         this.op.y.whenActive(new GearCommand());
         this.op.b.whenActive(new GearSetHomeCommand());
+        this.op.rb.whenActive(new ShooterSpinUpCommand());
+        this.op.lb.whenActive(new ShooterSpinUpCommand(0));
 
         // Vision Commands
         Command pegAlign = new VisionGearAlignCommand(false);

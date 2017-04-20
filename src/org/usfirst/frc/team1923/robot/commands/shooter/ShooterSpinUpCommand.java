@@ -6,42 +6,47 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ShooterSpinUpCommand extends Command {
 
-	private double setpoint;
+    private final double CENTER_PEG_SPEED = 6000;
+    private double setpoint;
 
-	/**
-	 * When executed, the climber motors will spin based on trigger level, right
-	 * trigger overrides
-	 */
-	public ShooterSpinUpCommand(double setpoint) {
-		requires(Robot.shooterSubSys);
-	}
+    /**
+     * When executed the shooter will spin up to speed
+     */
 
-	@Override
-	protected void initialize() {
-		setpoint = 0;
-	}
+    public ShooterSpinUpCommand() {
+        setpoint = CENTER_PEG_SPEED;
+    }
 
-	@Override
-	protected void execute() {
-		Robot.shooterSubSys.setSetpoint(setpoint);
-	}
+    public ShooterSpinUpCommand(double setpoint) {
+        this.setpoint = setpoint;
+        requires(Robot.shooterSubSys);
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return Robot.shooterSubSys.getError() < Robot.shooterSubSys.allowableError; // TODO:
-																					// Change
-																					// this
-																					// error
-		// value
-	}
+    @Override
+    protected void initialize() {
+    }
 
-	@Override
-	protected void end() {
-	}
+    @Override
+    protected void execute() {
+        Robot.shooterSubSys.setSetpoint(setpoint);
+    }
 
-	@Override
-	protected void interrupted() {
-		end();
-	}
+    @Override
+    protected boolean isFinished() {
+        return Robot.shooterSubSys.getError() < Robot.shooterSubSys.allowableError; // TODO:
+                                                                                    // Change
+                                                                                    // this
+                                                                                    // error
+        // value
+    }
+
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
+    }
 
 }
