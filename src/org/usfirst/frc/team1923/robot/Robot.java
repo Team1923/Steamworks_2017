@@ -31,109 +31,110 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static ClimberSubsystem climbSubSys;
-	public static ShooterSubsystem shooterSubSys;
-	public static GearSubsystem gearSubSys;
-	public static VisionSubsystem visionSubSys;
-	public static DrivetrainSubsystem driveSubSys;
-	public static OI oi;
-	public static DriverStation dstation = DriverStation.getInstance();
-	public static DebugSubsystem debug;
+    public static ClimberSubsystem climbSubSys;
+    public static ShooterSubsystem shooterSubSys;
+    public static GearSubsystem gearSubSys;
+    public static VisionSubsystem visionSubSys;
+    public static DrivetrainSubsystem driveSubSys;
+    public static OI oi;
+    public static DriverStation dstation = DriverStation.getInstance();
+    public static DebugSubsystem debug;
 
-	private Command autonomousCommand;
-	private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
+    private Command autonomousCommand;
+    private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
-	/**
-	 * Called once when the robot first starts up.
-	 */
-	@Override
-	public void robotInit() {
-		gearSubSys = new GearSubsystem();
-		driveSubSys = new DrivetrainSubsystem();
-		climbSubSys = new ClimberSubsystem();
-		visionSubSys = new VisionSubsystem();
-		debug = new DebugSubsystem();
+    /**
+     * Called once when the robot first starts up.
+     */
+    @Override
+    public void robotInit() {
+        gearSubSys = new GearSubsystem();
+        driveSubSys = new DrivetrainSubsystem();
+        climbSubSys = new ClimberSubsystem();
+        visionSubSys = new VisionSubsystem();
+        shooterSubSys = new ShooterSubsystem();
+        debug = new DebugSubsystem();
 
-		oi = new OI();
+        oi = new OI();
 
-		this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
-		// this.autonChooser.addObject("Log", new LogDataCommand("LOGGED"));
-		this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1.0, 2, true));
-		this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
-		this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
-		this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());
-		this.autonChooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
+        this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
+        // this.autonChooser.addObject("Log", new LogDataCommand("LOGGED"));
+        this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1.0, 2, true));
+        this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
+        this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
+        this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());
+        this.autonChooser.addObject("Drive 100 inches", new DriveDistanceCommand(100));
 
-		// SmartDashboard.putData("Motion Magic SRX", new
-		// DriveMotionMagicCommand(100));
+        // SmartDashboard.putData("Motion Magic SRX", new
+        // DriveMotionMagicCommand(100));
 
-		SmartDashboard.putData("Auto Mode", this.autonChooser);
-	}
+        SmartDashboard.putData("Auto Mode", this.autonChooser);
+    }
 
-	/**
-	 * Called once when the robot is disabled.
-	 */
-	@Override
-	public void disabledInit() {
-		debug.stopLog();
-	}
+    /**
+     * Called once when the robot is disabled.
+     */
+    @Override
+    public void disabledInit() {
+        debug.stopLog();
+    }
 
-	/**
-	 * Called every 20ms when the robot is disabled.
-	 */
-	@Override
-	public void disabledPeriodic() {
+    /**
+     * Called every 20ms when the robot is disabled.
+     */
+    @Override
+    public void disabledPeriodic() {
 
-	}
+    }
 
-	/**
-	 * Called once at the start of autonomous mode.
-	 */
-	@Override
-	public void autonomousInit() {
-		visionSubSys.refreshGear();
-		this.autonomousCommand = this.autonChooser.getSelected();
+    /**
+     * Called once at the start of autonomous mode.
+     */
+    @Override
+    public void autonomousInit() {
+        visionSubSys.refreshGear();
+        this.autonomousCommand = this.autonChooser.getSelected();
 
-		if (this.autonomousCommand != null) {
-			this.autonomousCommand.start();
-		}
-	}
+        if (this.autonomousCommand != null) {
+            this.autonomousCommand.start();
+        }
+    }
 
-	/**
-	 * Called every 20ms during autonomous mode.
-	 */
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    /**
+     * Called every 20ms during autonomous mode.
+     */
+    @Override
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-	/**
-	 * Called once at the start of tele-op mode.
-	 */
-	@Override
-	public void teleopInit() {
-		if (this.autonomousCommand != null) {
-			this.autonomousCommand.cancel();
-		}
-	}
+    /**
+     * Called once at the start of tele-op mode.
+     */
+    @Override
+    public void teleopInit() {
+        if (this.autonomousCommand != null) {
+            this.autonomousCommand.cancel();
+        }
+    }
 
-	/**
-	 * Called every 20ms during tele-op mode.
-	 */
-	@Override
-	public void teleopPeriodic() {
-		if (RobotMap.DEBUG) {
-			SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
-		}
-		Scheduler.getInstance().run();
-	}
+    /**
+     * Called every 20ms during tele-op mode.
+     */
+    @Override
+    public void teleopPeriodic() {
+        if (RobotMap.DEBUG) {
+            SmartDashboard.putNumber("Ultrasonic", Robot.visionSubSys.getDistance());
+        }
+        Scheduler.getInstance().run();
+    }
 
-	/**
-	 * Called every 20ms during testing mode.
-	 */
-	@Override
-	public void testPeriodic() {
-		LiveWindow.run();
-	}
+    /**
+     * Called every 20ms during testing mode.
+     */
+    @Override
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
 
 }
