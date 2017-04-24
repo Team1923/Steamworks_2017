@@ -2,14 +2,15 @@
 package org.usfirst.frc.team1923.robot;
 
 import org.usfirst.frc.team1923.robot.commands.auton.DoNothingAuton;
-import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonCenter;
-import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonLeft;
-import org.usfirst.frc.team1923.robot.commands.auton.VisionAutonRight;
+import org.usfirst.frc.team1923.robot.commands.auton.GearCenterAuton;
+import org.usfirst.frc.team1923.robot.commands.auton.GearLeftAuton;
+import org.usfirst.frc.team1923.robot.commands.auton.GearRightAuton;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DebugSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.GearSubsystem;
+import org.usfirst.frc.team1923.robot.subsystems.ShooterSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
     public static DebugSubsystem debugSubSys;
     public static DrivetrainSubsystem driveSubSys;
     public static GearSubsystem gearSubSys;
+    public static ShooterSubsystem shooterSubSys;
     public static VisionSubsystem visionSubSys;
     public static OI oi;
 
@@ -43,20 +45,21 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-        gearSubSys = new GearSubsystem();
-        driveSubSys = new DrivetrainSubsystem();
         climbSubSys = new ClimberSubsystem();
-        visionSubSys = new VisionSubsystem();
         debugSubSys = new DebugSubsystem();
+        driveSubSys = new DrivetrainSubsystem();
+        gearSubSys = new GearSubsystem();
+        shooterSubSys = new ShooterSubsystem();
+        visionSubSys = new VisionSubsystem();
 
         oi = new OI();
 
         this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
         // this.autonChooser.addObject("Log", new LogDataCommand("LOGGED"));
         this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1.0, 2, true));
-        this.autonChooser.addObject("Vision Auton Right", new VisionAutonRight());
-        this.autonChooser.addObject("Vision Auton Center", new VisionAutonCenter());
-        this.autonChooser.addObject("Vision Auton Left", new VisionAutonLeft());
+        this.autonChooser.addObject("Vision Auton Right", new GearRightAuton());
+        this.autonChooser.addObject("Vision Auton Center", new GearCenterAuton());
+        this.autonChooser.addObject("Vision Auton Left", new GearLeftAuton());
         // this.autonChooser.addObject("Drive 100 inches", new
         // DriveDistanceCommand(100));
 
@@ -87,7 +90,7 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousInit() {
-        visionSubSys.refresh();
+        visionSubSys.refreshGear();
         this.autonomousCommand = this.autonChooser.getSelected();
 
         if (this.autonomousCommand != null) {

@@ -15,12 +15,12 @@ public class VisionProcessing extends Command {
 
     @Override
     protected void initialize() {
-        Robot.visionSubSys.refresh();
+        Robot.visionSubSys.refreshGear();
     }
 
     @Override
     protected void execute() {
-        Robot.visionSubSys.refresh();
+        Robot.visionSubSys.refreshGear();
     }
 
     @Override

@@ -30,8 +30,14 @@ public class RobotMap {
     /**
      * Ports for the talons that control the climbing motors.
      */
-    public static final int LEFT_CLIMB_PORT = 5;
-    public static final int RIGHT_CLIMB_PORT = 4;
+    public static final int LEFT_CLIMB_PORT = 9;
+    public static final int RIGHT_CLIMB_PORT = 0;
+
+    /**
+     * Ports for the shooter talon.
+     */
+    public static final int SHOOTER_PORT = 4;
+    public static final int INDEXER_PORT = 5;
 
     /**
      * Climber slider port numbers
@@ -76,12 +82,20 @@ public class RobotMap {
     /**
      * Settings and ports for GRIP and vision processing.
      */
-    public static final String CAMERA_IP = "10.19.23.15";
+    public static final String GEAR_CAMERA_IP = "10.19.23.15";
+    public static final String SHOOTER_CAMERA_IP = "10.19.23.16";
     public static final int IMG_WIDTH = 320;
     public static final int IMG_HEIGHT = 240;
     public static final double TURN_CONSTANT = 1000;
     public static final double MAX_WIDTH = 100;
     public static final double PEG_DIST = 12.5;
     public static final double FEEDER_DIST = 6;
+
+    /*
+     * Shooter Constants
+     */
+    // Setpoint for speed of shooter from center gear auton
+    public static final double SHOOTER_CENTER_SETPOINT_PEG = 2000;
+    public static final double SHOOTER_CENTER_SETPOINT_BASE = 2000;
 
 }

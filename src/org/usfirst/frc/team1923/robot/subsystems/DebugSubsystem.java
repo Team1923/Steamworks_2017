@@ -46,13 +46,13 @@ public class DebugSubsystem extends Subsystem {
     public void logData(String eventMessage) {
         if (logger == null) {
             try {
-                logger = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
+                logger = new PrintWriter(new BufferedWriter(new FileWriter(this.filePath, true)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        if (this.lastLog + REFRESH_INTERVAL > System.currentTimeMillis()) {
+        if (this.lastLog + this.REFRESH_INTERVAL > System.currentTimeMillis()) {
             return;
         }
 

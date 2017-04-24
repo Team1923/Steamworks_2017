@@ -10,7 +10,7 @@ public class ShiftCommand extends InstantCommand {
 
     /**
      * This command shifts the gearboxes to high or low gear
-     * 
+     *
      * @param up
      *            true if shifting to high gear
      */

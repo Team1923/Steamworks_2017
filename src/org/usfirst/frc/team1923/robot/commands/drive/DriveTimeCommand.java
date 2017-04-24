@@ -12,7 +12,7 @@ public class DriveTimeCommand extends Command {
 
     /**
      * Drives a set time at a set speed
-     * 
+     *
      * @param power
      *            PercentVBus value for both motors
      * @param timeOut

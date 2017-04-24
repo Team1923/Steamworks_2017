@@ -10,7 +10,7 @@ public class ShiftOmniCommand extends InstantCommand {
 
     /**
      * Shifts the back omni wheels up or down
-     * 
+     *
      * @param up
      *            true if omnis lifts off floor
      */

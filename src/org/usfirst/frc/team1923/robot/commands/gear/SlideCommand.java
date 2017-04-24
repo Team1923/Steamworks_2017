@@ -20,7 +20,7 @@ public class SlideCommand extends InstantCommand {
 
     /**
      * Sets the position of the superstructure to a known state
-     * 
+     *
      * @param out
      *            true if sliding outwards
      */

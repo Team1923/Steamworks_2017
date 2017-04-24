@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.gear;
 
 import org.usfirst.frc.team1923.robot.Robot;
+import org.usfirst.frc.team1923.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
@@ -27,7 +28,7 @@ public class AutonGearCommand extends InstantCommand {
     // Called once when the command executes
     @Override
     protected void initialize() {
-        if (Robot.visionSubSys.found) {
+        if (Robot.visionSubSys.isGearFound() && Robot.visionSubSys.getDistance() < RobotMap.PEG_DIST) {
             if (this.toggle) {
                 Robot.gearSubSys.gearShift();
             } else if (this.open) {

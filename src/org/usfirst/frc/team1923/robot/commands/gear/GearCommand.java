@@ -20,7 +20,7 @@ public class GearCommand extends InstantCommand {
 
     /**
      * This sets the mechanism to a specific position
-     * 
+     *
      * @param open
      *            true if want to eject
      */

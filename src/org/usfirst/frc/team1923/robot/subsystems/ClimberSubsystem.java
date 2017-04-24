@@ -34,11 +34,11 @@ public class ClimberSubsystem extends Subsystem {
         this.leftClimb.configPeakOutputVoltage(12, -12);
         this.leftClimb.configNominalOutputVoltage(0, 0);
 
-        this.leftClimb.setPID(P_CONSTANT, I_CONSTANT, D_CONSTANT);
+        this.leftClimb.setPID(this.P_CONSTANT, this.I_CONSTANT, this.D_CONSTANT);
     }
 
     public void set(double power) {
-        leftClimb.set(power);
+        this.leftClimb.set(power);
     }
 
     public double getCurrent() {

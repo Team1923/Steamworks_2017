@@ -12,8 +12,9 @@ public class ControllerRumbleCommand extends TimedCommand {
     /**
      * Command to rumble the controller of the operator for a certain amount of
      * time. Default power of 50%
-     * 
-     * @param timeout time to rumble
+     *
+     * @param timeout
+     *            time to rumble
      */
     public ControllerRumbleCommand(double timeout) {
         super(timeout);
@@ -23,9 +24,11 @@ public class ControllerRumbleCommand extends TimedCommand {
     /**
      * Command to rumble the controller of the operator for a certain amount of
      * time.
-     * 
-     * @param timeout time to rumble
-     * @param power 0-1 intensity of rumble
+     *
+     * @param timeout
+     *            time to rumble
+     * @param power
+     *            0-1 intensity of rumble
      */
     public ControllerRumbleCommand(double timeout, double power) {
         super(timeout);
@@ -34,8 +37,8 @@ public class ControllerRumbleCommand extends TimedCommand {
 
     @Override
     protected void initialize() {
-        Robot.oi.op.setRumble(RumbleType.kRightRumble, power);
-        Robot.oi.op.setRumble(RumbleType.kLeftRumble, power);
+        Robot.oi.op.setRumble(RumbleType.kRightRumble, this.power);
+        Robot.oi.op.setRumble(RumbleType.kLeftRumble, this.power);
     }
 
     @Override

@@ -44,15 +44,15 @@ public class GripPipeline implements VisionPipeline {
         double[] hslThresholdHue = { 73.07296622571327, 103.64699978877252 };
         double[] hslThresholdSaturation = { 145.45220809874775, 255.0 };
         double[] hslThresholdLuminance = { 104.83041950266994, 184.13213541076453 };
-        hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
+        hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, this.hslThresholdOutput);
 
         // Step Find_Contours0:
-        Mat findContoursInput = hslThresholdOutput;
+        Mat findContoursInput = this.hslThresholdOutput;
         boolean findContoursExternalOnly = false;
-        findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
+        findContours(findContoursInput, findContoursExternalOnly, this.findContoursOutput);
 
         // Step Filter_Contours0:
-        ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
+        ArrayList<MatOfPoint> filterContoursContours = this.findContoursOutput;
         double filterContoursMinArea = 50.0;
         double filterContoursMinPerimeter = 0.0;
         double filterContoursMinWidth = 0.0;
@@ -66,35 +66,35 @@ public class GripPipeline implements VisionPipeline {
         double filterContoursMaxRatio = 1000.0;
         filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth,
                 filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices,
-                filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
+                filterContoursMinRatio, filterContoursMaxRatio, this.filterContoursOutput);
 
     }
 
     /**
      * This method is a generated getter for the output of a HSL_Threshold.
-     * 
+     *
      * @return Mat output from HSL_Threshold.
      */
     public Mat hslThresholdOutput() {
-        return hslThresholdOutput;
+        return this.hslThresholdOutput;
     }
 
     /**
      * This method is a generated getter for the output of a Find_Contours.
-     * 
+     *
      * @return ArrayList<MatOfPoint> output from Find_Contours.
      */
     public ArrayList<MatOfPoint> findContoursOutput() {
-        return findContoursOutput;
+        return this.findContoursOutput;
     }
 
     /**
      * This method is a generated getter for the output of a Filter_Contours.
-     * 
+     *
      * @return ArrayList<MatOfPoint> output from Filter_Contours.
      */
     public ArrayList<MatOfPoint> filterContoursOutput() {
-        return filterContoursOutput;
+        return this.filterContoursOutput;
     }
 
     /**
@@ -119,7 +119,7 @@ public class GripPipeline implements VisionPipeline {
     /**
      * Sets the values of pixels in a binary image to their distance to the
      * nearest black pixel.
-     * 
+     *
      * @param input
      *            The image on which to perform the Distance Transform.
      * @param type
@@ -144,7 +144,7 @@ public class GripPipeline implements VisionPipeline {
 
     /**
      * Filters out contours that do not meet certain criteria.
-     * 
+     *
      * @param inputContours
      *            is the input list of contours
      * @param output
@@ -181,15 +181,19 @@ public class GripPipeline implements VisionPipeline {
         for (int i = 0; i < inputContours.size(); i++) {
             final MatOfPoint contour = inputContours.get(i);
             final Rect bb = Imgproc.boundingRect(contour);
-            if (bb.width < minWidth || bb.width > maxWidth)
+            if (bb.width < minWidth || bb.width > maxWidth) {
                 continue;
-            if (bb.height < minHeight || bb.height > maxHeight)
+            }
+            if (bb.height < minHeight || bb.height > maxHeight) {
                 continue;
+            }
             final double area = Imgproc.contourArea(contour);
-            if (area < minArea)
+            if (area < minArea) {
                 continue;
-            if (Imgproc.arcLength(new MatOfPoint2f(contour.toArray()), true) < minPerimeter)
+            }
+            if (Imgproc.arcLength(new MatOfPoint2f(contour.toArray()), true) < minPerimeter) {
                 continue;
+            }
             Imgproc.convexHull(contour, hull);
             MatOfPoint mopHull = new MatOfPoint();
             mopHull.create((int) hull.size().height, 1, CvType.CV_32SC2);
@@ -199,13 +203,16 @@ public class GripPipeline implements VisionPipeline {
                 mopHull.put(j, 0, point);
             }
             final double solid = 100 * area / Imgproc.contourArea(mopHull);
-            if (solid < solidity[0] || solid > solidity[1])
+            if (solid < solidity[0] || solid > solidity[1]) {
                 continue;
-            if (contour.rows() < minVertexCount || contour.rows() > maxVertexCount)
+            }
+            if (contour.rows() < minVertexCount || contour.rows() > maxVertexCount) {
                 continue;
+            }
             final double ratio = bb.width / (double) bb.height;
-            if (ratio < minRatio || ratio > maxRatio)
+            if (ratio < minRatio || ratio > maxRatio) {
                 continue;
+            }
             output.add(contour);
         }
     }

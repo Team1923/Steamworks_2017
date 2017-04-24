@@ -22,7 +22,7 @@ public class LogDataCommand extends Command {
 
     /**
      * This command will have a single shot logging event
-     * 
+     *
      * @param message
      */
     public LogDataCommand(String message) {
