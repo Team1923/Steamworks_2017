@@ -32,4 +32,5 @@ public class GearCenterShootAuton extends CommandGroup {
         // addSequential(new ShooterCommand(0));
         // addSequential(new DriveTimeCommand(-0.5, 1));
     }
+
 }

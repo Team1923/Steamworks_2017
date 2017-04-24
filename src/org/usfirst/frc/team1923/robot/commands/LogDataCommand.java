@@ -4,9 +4,6 @@ import org.usfirst.frc.team1923.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class LogDataCommand extends Command {
 
     private String message;

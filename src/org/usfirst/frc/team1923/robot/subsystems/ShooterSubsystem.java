@@ -9,20 +9,18 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *
- */
 public class ShooterSubsystem extends Subsystem {
+
+    public static final double ALLOWABLE_ERROR = 100;
 
     private final double P_CONSTANT = 0;
     private final double I_CONSTANT = 0;
     private final double D_CONSTANT = 0;
     private final double F_CONSTANT = 0.7 * 1023 / 18000 / 60 / 10 * 4096;
+
     private CANTalon shooter;
     private CANTalon indexer;
     private double speed;
-
-    public final double allowableError = 100;
 
     public ShooterSubsystem() {
         this.shooter = new CANTalon(RobotMap.SHOOTER_PORT);
@@ -76,4 +74,5 @@ public class ShooterSubsystem extends Subsystem {
     public double getError() {
         return this.shooter.getError();
     }
+
 }

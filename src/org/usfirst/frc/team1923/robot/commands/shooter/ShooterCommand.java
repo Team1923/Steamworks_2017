@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1923.robot.commands.shooter;
 
 import org.usfirst.frc.team1923.robot.Robot;
+import org.usfirst.frc.team1923.robot.subsystems.ShooterSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -41,7 +42,7 @@ public class ShooterCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return this.wait && Robot.shooterSubSys.getError() < Robot.shooterSubSys.allowableError;
+        return this.wait && Robot.shooterSubSys.getError() < ShooterSubsystem.ALLOWABLE_ERROR;
     }
 
     @Override

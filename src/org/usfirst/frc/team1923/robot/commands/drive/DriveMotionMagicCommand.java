@@ -72,4 +72,5 @@ public class DriveMotionMagicCommand extends Command {
     protected void interrupted() {
         this.end();
     }
+
 }

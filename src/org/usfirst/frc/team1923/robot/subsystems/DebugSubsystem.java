@@ -72,7 +72,7 @@ public class DebugSubsystem extends Subsystem {
         String message = String.format(
                 "[%f %s] Brown out: %s, Front Ultra: %f, CenterX: %f, Vision Found: %b, Target Wdith: %f, Calc Turn: %f, IMU Heading: %f, Left Enc: %f, Right Enc: %f\n",
                 DriverStation.getInstance().getMatchTime(), controlMode, driverStation.isBrownedOut(), Robot.visionSubSys.getDistance(),
-                Robot.visionSubSys.getCenterX(), Robot.visionSubSys.isFound(), Robot.visionSubSys.getWidth(), Robot.visionSubSys.getTurn(),
+                Robot.visionSubSys.getGearCenterX(), Robot.visionSubSys.isGearFound(), Robot.visionSubSys.getGearWidth(), Robot.visionSubSys.getGearTurn(),
                 Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()), Robot.driveSubSys.getLeftPosition(),
                 Robot.driveSubSys.getRightPosition());
         message += eventMessage;

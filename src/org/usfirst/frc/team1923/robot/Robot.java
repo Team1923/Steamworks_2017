@@ -6,6 +6,9 @@ import org.usfirst.frc.team1923.robot.commands.auton.GearCenterAuton;
 import org.usfirst.frc.team1923.robot.commands.auton.GearLeftAuton;
 import org.usfirst.frc.team1923.robot.commands.auton.GearRightAuton;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
+import org.usfirst.frc.team1923.robot.commands.shooter.IndexerCommand;
+import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCalibrateCommand;
+import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DebugSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
@@ -75,6 +78,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledInit() {
         debugSubSys.stopLog();
+
+        // Stop the shooter and indexer (backup)
+        shooterSubSys.index(0);
+        shooterSubSys.setSetpoint(0);
     }
 
     /**

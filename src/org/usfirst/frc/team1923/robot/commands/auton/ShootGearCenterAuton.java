@@ -35,4 +35,5 @@ public class ShootGearCenterAuton extends CommandGroup {
         addSequential(new WaitCommand(0.4));
         addSequential(new DriveTimeCommand(-0.5, 1));
     }
+
 }
