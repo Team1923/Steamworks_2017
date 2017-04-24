@@ -17,6 +17,7 @@ public class GearSubsystem extends Subsystem {
     public GearSubsystem() {
         this.slider = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.SLIDE_FORWARD_PORT, RobotMap.SLIDE_BACKWARD_PORT);
         this.gear = new DoubleSolenoid(RobotMap.PCM_MODULE_NUM, RobotMap.MECH_FORWARD_PORT, RobotMap.MECH_BACKWARD_PORT);
+
         goHome();
     }
 

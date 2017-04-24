@@ -56,6 +56,8 @@ public class VisionGearAlignCommand extends Command {
 
         Robot.driveSubSys.auto(power, turn);
 
+        System.out.println("Power: " + power + ", Turn: " + turn);
+
         SmartDashboard.putNumber("Gear Power", power);
         SmartDashboard.putBoolean("Gear Found: ", Robot.visionSubSys.isGearFound());
     }

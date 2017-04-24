@@ -13,7 +13,6 @@ public class LogDataCommand extends Command {
      * interrupted
      */
     public LogDataCommand() {
-        super();
         requires(Robot.debugSubSys);
     }
 
@@ -23,8 +22,8 @@ public class LogDataCommand extends Command {
      * @param message
      */
     public LogDataCommand(String message) {
-        super();
         requires(Robot.debugSubSys);
+
         this.message = message;
     }
 
@@ -42,12 +41,13 @@ public class LogDataCommand extends Command {
     }
 
     @Override
-    protected void end() { // Do nothing and wait for the next log event. File
-                           // closing is handled in Disabled Init
+    protected void end() {
+
     }
 
     @Override
     protected void interrupted() {
+
     }
 
     @Override

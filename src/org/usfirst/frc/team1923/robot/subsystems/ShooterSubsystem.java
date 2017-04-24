@@ -39,7 +39,6 @@ public class ShooterSubsystem extends Subsystem {
         // this.shooter.SetVelocityMeasurementPeriod(VelocityMeasurementPeriod.Period_1Ms);
         this.shooter.reverseSensor(false);
         this.shooter.reverseOutput(false);
-
     }
 
     public void set(double power) {

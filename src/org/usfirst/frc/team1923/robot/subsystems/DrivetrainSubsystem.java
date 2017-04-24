@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-    public final int ALLOWABLE_ERROR = 300;
+    public final int ALLOWABLE_ERROR = 50;
 
-    private final double P_CONSTANT = 0.4;
+    private final double P_CONSTANT = 0.4000;
     private final double I_CONSTANT = 0.0001;
-    private final double D_CONSTANT = 0;
-    private final double F_CONSTANT = 0;
+    private final double D_CONSTANT = 0.0000;
+    private final double F_CONSTANT = 0.0000;
     private final boolean LEFT_REVERSED = true;
     private final boolean RIGHT_REVERSED = false;
     private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
@@ -63,7 +63,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
         setToFollow();
         setReverse();
-        // configPID();
+        configPID();
     }
 
     private void setToFollow() {
@@ -279,6 +279,14 @@ public class DrivetrainSubsystem extends Subsystem {
 
     public PigeonImu getImu() {
         return this.imu;
+    }
+
+    public double getFusedHeading() {
+        try {
+            return this.imu.GetFusedHeading(new PigeonImu.FusionStatus());
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public void setLeft(double power, TalonControlMode controlMode) {

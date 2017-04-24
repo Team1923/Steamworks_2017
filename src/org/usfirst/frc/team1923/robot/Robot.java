@@ -6,9 +6,6 @@ import org.usfirst.frc.team1923.robot.commands.auton.GearCenterAuton;
 import org.usfirst.frc.team1923.robot.commands.auton.GearLeftAuton;
 import org.usfirst.frc.team1923.robot.commands.auton.GearRightAuton;
 import org.usfirst.frc.team1923.robot.commands.drive.DriveTimeCommand;
-import org.usfirst.frc.team1923.robot.commands.shooter.IndexerCommand;
-import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCalibrateCommand;
-import org.usfirst.frc.team1923.robot.commands.shooter.ShooterCommand;
 import org.usfirst.frc.team1923.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DebugSubsystem;
 import org.usfirst.frc.team1923.robot.subsystems.DrivetrainSubsystem;
@@ -58,13 +55,10 @@ public class Robot extends IterativeRobot {
         oi = new OI();
 
         this.autonChooser.addDefault("Do Nothing Auto", new DoNothingAuton());
-        // this.autonChooser.addObject("Log", new LogDataCommand("LOGGED"));
-        this.autonChooser.addObject("Drive 2 seconds", new DriveTimeCommand(1.0, 2, true));
-        this.autonChooser.addObject("Vision Auton Right", new GearRightAuton());
-        this.autonChooser.addObject("Vision Auton Center", new GearCenterAuton());
-        this.autonChooser.addObject("Vision Auton Left", new GearLeftAuton());
-        // this.autonChooser.addObject("Drive 100 inches", new
-        // DriveDistanceCommand(100));
+        this.autonChooser.addObject("Drive 2 Seconds", new DriveTimeCommand(1.0, 2, true));
+        this.autonChooser.addObject("Gear Right Auton", new GearRightAuton());
+        this.autonChooser.addObject("Gear Center Auton", new GearCenterAuton());
+        this.autonChooser.addObject("Gear Left Auton", new GearLeftAuton());
 
         // SmartDashboard.putData("Motion Magic SRX", new
         // DriveMotionMagicCommand(100));
