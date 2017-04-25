@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1923.robot.commands.drive;
 
 import org.usfirst.frc.team1923.robot.Robot;
-import org.usfirst.frc.team1923.robot.RobotMap;
 import org.usfirst.frc.team1923.robot.utils.PIDController;
 
 import com.ctre.CANTalon.TalonControlMode;
@@ -37,45 +36,50 @@ public class GyroTurnCommand extends Command {
         this.target = new ImuTarget();
         this.output = new Drivetrain();
 
-        this.controller = new PIDController(P_CONST, I_CONST, D_CONST, this.target, this.output);
+        this.controller = new PIDController(this.P_CONST, this.I_CONST, this.D_CONST, this.target, this.output);
         this.controller.setContinuous(true);
-        this.controller.setAbsoluteTolerance(TURN_TOLERANCE);
+        this.controller.setAbsoluteTolerance(this.TURN_TOLERANCE);
         this.controller.setOutputRange(-1, 1);
         this.controller.setInputRange(-360, 360);
         this.controller.setSetpoint(this.degrees);
-        this.controller.setIZone(I_ZONE);
+        this.controller.setIZone(this.I_ZONE);
 
         this.setTimeout(Math.abs(this.degrees) * 0.005 + 1);
     }
 
-    protected void initialize(){
+    @Override
+    protected void initialize() {
         this.target.resetHeading();
         System.out.println(this.target.getHeading());
         this.controller.setSetpoint(this.degrees);
         this.controller.enable();
     }
 
+    @Override
     protected void execute() {
         // Debug
         double currentAngle = this.target.pidGet();
         System.out.println("target = " + this.degrees + ", current = " + currentAngle + ", error = " + (this.degrees - currentAngle));
     }
 
+    @Override
     protected boolean isFinished() {
         return this.controller.onTarget() || this.isTimedOut();
     }
 
+    @Override
     protected void end() {
         System.out.println("On Target? " + this.controller.onTarget());
         System.out.println("Is Finished? " + this.isFinished());
         this.controller.disable();
 
         System.out.println("END END END");
-        if (this.isTimedOut()){
+        if (this.isTimedOut()) {
             System.out.println("TIMED OUT");
         }
     }
 
+    @Override
     protected void interrupted() {
         System.out.println("INTERRUPT");
         this.end();
@@ -115,7 +119,8 @@ public class GyroTurnCommand extends Command {
         }
 
         protected double getHeading() {
-            this.fusionStatus = new FusionStatus(); // TODO: Is this really needed?
+            this.fusionStatus = new FusionStatus(); // TODO: Is this really
+                                                    // needed?
             return this.imu.GetFusedHeading(this.fusionStatus);
         }
 
@@ -125,7 +130,8 @@ public class GyroTurnCommand extends Command {
 
         @Override
         public void pidWrite(double output) {
-            Robot.driveSubSys.drive(output * OUTPUT_POWER, -output * OUTPUT_POWER, TalonControlMode.Voltage);
+            Robot.driveSubSys.drive(output * GyroTurnCommand.this.OUTPUT_POWER, -output * GyroTurnCommand.this.OUTPUT_POWER,
+                    TalonControlMode.Voltage);
         }
 
     }

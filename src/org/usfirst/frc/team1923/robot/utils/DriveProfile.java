@@ -17,8 +17,9 @@ public class DriveProfile {
 
     /**
      * Creates a profile with the specified curve
-     * 
-     * @param curve Input ProfileCurve
+     *
+     * @param curve
+     *            Input ProfileCurve
      */
     public DriveProfile(ProfileCurve curve) {
         this.curve = curve;
@@ -30,8 +31,9 @@ public class DriveProfile {
 
     /**
      * Scales the input value from the joysticks
-     * 
-     * @param initial Input value from joysticks, assuming (-1, 1) domain
+     *
+     * @param initial
+     *            Input value from joysticks, assuming (-1, 1) domain
      * @return (-1, 1) output range
      */
     public double scale(double initial) {

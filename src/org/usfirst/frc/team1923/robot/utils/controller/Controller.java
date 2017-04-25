@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
- * Base controller class that provides a framework for XboxController and PS4Controller.
+ * Base controller class that provides a framework for XboxController and
+ * PS4Controller.
  *
  * @author AJ Granowski
  * @author 4624 Owatonna Robotics
@@ -87,9 +88,8 @@ public class Controller extends Joystick {
 
         @Override
         public boolean get() {
-            return getX() > sensitivity;
+            return getX() > this.sensitivity;
         }
-
 
         /**
          * 0 = Not pressed 1 = Completely pressed
@@ -97,8 +97,8 @@ public class Controller extends Joystick {
          * @return How far its pressed
          */
         public double getX() {
-            final double rawInput = parent.getRawAxis(axisId);
-            return createDeadZone(rawInput, deadZone);
+            final double rawInput = this.parent.getRawAxis(this.axisId);
+            return createDeadZone(rawInput, this.deadZone);
         }
 
         /**
@@ -153,6 +153,7 @@ public class Controller extends Joystick {
          * button.
          */
         public static class DPadButton extends Button {
+
             private final DPad direction;
             private final DirectionalPad parent;
 
@@ -163,12 +164,12 @@ public class Controller extends Joystick {
 
             @Override
             public boolean get() {
-                return parent.getAngle() == direction.value;
+                return this.parent.getAngle() == this.direction.value;
             }
         }
 
         private int angle() {
-            return parent.getPOV();
+            return this.parent.getPOV();
         }
 
         @Override
@@ -215,37 +216,40 @@ public class Controller extends Joystick {
 
         negative = input < 0 ? -1 : 1;
 
-        adjusted = Math.abs(input) - deadZoneSizeClamp; // Subtract the deadzone from the magnitude
-        adjusted = adjusted < 0 ? 0 : adjusted; // if the new input is negative, make it zero
-        adjusted = adjusted / (1 - deadZoneSizeClamp); // Adjust the adjustment so it can max at 1
+        adjusted = Math.abs(input) - deadZoneSizeClamp; // Subtract the deadzone
+                                                        // from the magnitude
+        adjusted = adjusted < 0 ? 0 : adjusted; // if the new input is negative,
+                                                // make it zero
+        adjusted = adjusted / (1 - deadZoneSizeClamp); // Adjust the adjustment
+                                                       // so it can max at 1
 
         return negative * adjusted;
     }
 
     @Override
     public int getPort() {
-        return port;
+        return this.port;
     }
 
     public Joystick getJoystick() {
-        return controller;
+        return this.controller;
     }
 
     public void setRumble(Hand hand, double intensity) {
         final float amount = new Float(intensity);
 
         if (hand == Hand.LEFT) {
-            controller.setRumble(RumbleType.kLeftRumble, amount);
+            this.controller.setRumble(RumbleType.kLeftRumble, amount);
         } else {
-            controller.setRumble(RumbleType.kRightRumble, amount);
+            this.controller.setRumble(RumbleType.kRightRumble, amount);
         }
     }
 
     public void setRumble(double intensity) {
         final float amount = new Float(intensity);
 
-        controller.setRumble(RumbleType.kLeftRumble, amount);
-        controller.setRumble(RumbleType.kRightRumble, amount);
+        this.controller.setRumble(RumbleType.kLeftRumble, amount);
+        this.controller.setRumble(RumbleType.kRightRumble, amount);
     }
 
 }

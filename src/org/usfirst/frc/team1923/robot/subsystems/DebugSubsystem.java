@@ -1,20 +1,19 @@
 package org.usfirst.frc.team1923.robot.subsystems;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
 import org.usfirst.frc.team1923.robot.Robot;
 import org.usfirst.frc.team1923.robot.commands.LogDataCommand;
 
-import com.ctre.PigeonImu;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DebugSubsystem extends Subsystem {
 
-    private final int REFRESH_INTERVAL = 100;
+    private final int REFRESH_INTERVAL = 250;
 
     private static PrintWriter logger;
 
@@ -45,14 +44,10 @@ public class DebugSubsystem extends Subsystem {
      */
     public void logData(String eventMessage) {
         if (logger == null) {
-            try {
-                logger = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            createLogger();
         }
 
-        if (this.lastLog + REFRESH_INTERVAL > System.currentTimeMillis()) {
+        if (this.lastLog + this.REFRESH_INTERVAL > System.currentTimeMillis()) {
             return;
         }
 
@@ -69,16 +64,16 @@ public class DebugSubsystem extends Subsystem {
             controlMode = "Disabled";
         }
 
+        double matchTime = driverStation.getMatchTime() == -1 ? System.currentTimeMillis() : driverStation.getMatchTime();
+
         String message = String.format(
-                "[%f %s] Brown out: %s, Front Ultra: %f, CenterX: %f, Vision Found: %b, Target Wdith: %f, Calc Turn: %f, IMU Heading: %f, Left Enc: %f, Right Enc: %f\n",
-                DriverStation.getInstance().getMatchTime(), controlMode, driverStation.isBrownedOut(), Robot.visionSubSys.getDistance(),
-                Robot.visionSubSys.getCenterX(), Robot.visionSubSys.isFound(), Robot.visionSubSys.getWidth(), Robot.visionSubSys.getTurn(),
-                Robot.driveSubSys.getImu().GetFusedHeading(new PigeonImu.FusionStatus()), Robot.driveSubSys.getLeftPosition(),
-                Robot.driveSubSys.getRightPosition());
-        message += eventMessage;
+                "[%f %s] Brown out: %s, Front Ultra: %f, CenterX: %f, Vision Found: %b, Target Width: %f, Calc Turn: %f, IMU Heading: %f, Left Enc: %f, Right Enc: %f",
+                matchTime, controlMode, driverStation.isBrownedOut(), Robot.visionSubSys.getDistance(), Robot.visionSubSys.getGearCenterX(),
+                Robot.visionSubSys.isGearFound(), Robot.visionSubSys.getGearWidth(), Robot.visionSubSys.getGearTurn(),
+                Robot.driveSubSys.getFusedHeading(), Robot.driveSubSys.getLeftPosition(), Robot.driveSubSys.getRightPosition());
+        message += eventMessage.equals("") ? "" : "\n" + eventMessage;
         if (logger != null) {
             logger.println(message);
-            System.out.println(message);
         } else {
             System.out.println("Logger is null");
         }
@@ -90,7 +85,25 @@ public class DebugSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        new LogDataCommand();
+        setDefaultCommand(new LogDataCommand());
+    }
+
+    protected void createLogger() {
+        try {
+            File loggingDirectory = new File("/home/lvuser/logs");
+
+            if (!loggingDirectory.exists()) {
+                loggingDirectory.mkdir();
+            }
+
+            if (!loggingDirectory.isDirectory()) {
+                throw new Exception("Logging directory is not a directory!");
+            }
+
+            logger = new PrintWriter(new BufferedWriter(new FileWriter("/home/lvuser/logs/" + (System.currentTimeMillis() / 1000) + ".log")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

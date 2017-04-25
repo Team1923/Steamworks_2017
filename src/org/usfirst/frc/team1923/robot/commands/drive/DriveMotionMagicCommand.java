@@ -36,10 +36,10 @@ public class DriveMotionMagicCommand extends Command {
             e.printStackTrace();
         }
 
-        target = DrivetrainSubsystem.distanceToRotation(this.dist);
-        this.targetEncoderTick = (int) (target * 4000);
-        System.out.println(target);
-        Robot.driveSubSys.drive(target, target, TalonControlMode.MotionMagic);
+        this.target = DrivetrainSubsystem.distanceToRotation(this.dist);
+        this.targetEncoderTick = (int) (this.target * 4000);
+        System.out.println(this.target);
+        Robot.driveSubSys.drive(this.target, this.target, TalonControlMode.MotionMagic);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -49,14 +49,14 @@ public class DriveMotionMagicCommand extends Command {
                 + this.targetEncoderTick + ", Left: " + Robot.driveSubSys.getLeftEncPosition() + ", Right: "
                 + Robot.driveSubSys.getRightEncPosition());
 
-        Robot.driveSubSys.drive(target, target, TalonControlMode.MotionMagic);
+        Robot.driveSubSys.drive(this.target, this.target, TalonControlMode.MotionMagic);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return (Math.abs(Robot.driveSubSys.getLeftEncPosition() - this.targetEncoderTick) < 300
-                && Math.abs(Robot.driveSubSys.getRightEncPosition() - this.targetEncoderTick) < 300);
+        return Math.abs(Robot.driveSubSys.getLeftEncPosition() - this.targetEncoderTick) < 300
+                && Math.abs(Robot.driveSubSys.getRightEncPosition() - this.targetEncoderTick) < 300;
     }
 
     // Called once after isFinished returns true
@@ -72,4 +72,5 @@ public class DriveMotionMagicCommand extends Command {
     protected void interrupted() {
         this.end();
     }
+
 }

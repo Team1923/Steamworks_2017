@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DrivetrainSubsystem extends Subsystem {
 
-    public final int ALLOWABLE_ERROR = 300;
+    public final int ALLOWABLE_ERROR = 50;
 
-    private final double P_CONSTANT = 0.4;
+    private final double P_CONSTANT = 0.4000;
     private final double I_CONSTANT = 0.0001;
-    private final double D_CONSTANT = 0;
-    private final double F_CONSTANT = 0;
+    private final double D_CONSTANT = 0.0000;
+    private final double F_CONSTANT = 0.0000;
     private final boolean LEFT_REVERSED = true;
     private final boolean RIGHT_REVERSED = false;
     private final int MAX_SAFE_SHIFT_SPEED = 100; // RPM
@@ -48,7 +48,7 @@ public class DrivetrainSubsystem extends Subsystem {
         this.leftTalons = new CANTalon[RobotMap.LEFT_DRIVE_PORTS.length];
         this.rightTalons = new CANTalon[RobotMap.RIGHT_DRIVE_PORTS.length];
 
-        this.imu = new PigeonImu(new CANTalon((RobotMap.IMU_PORT)));
+        this.imu = new PigeonImu(new CANTalon(RobotMap.IMU_PORT));
 
         for (int i = 0; i < RobotMap.LEFT_DRIVE_PORTS.length; i++) {
             this.leftTalons[i] = new CANTalon(RobotMap.LEFT_DRIVE_PORTS[i]);
@@ -63,7 +63,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
         setToFollow();
         setReverse();
-        // configPID();
+        configPID();
     }
 
     private void setToFollow() {
@@ -80,7 +80,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
     /**
      * Sets the two master talons to a certain mode
-     * 
+     *
      * @param controlMode
      *            TalonControlMode to be used
      */
@@ -95,30 +95,30 @@ public class DrivetrainSubsystem extends Subsystem {
      */
     private void configPID() {
         this.leftTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-        this.leftTalons[0].reverseSensor(LEFT_REVERSED);
+        this.leftTalons[0].reverseSensor(this.LEFT_REVERSED);
         this.leftTalons[0].configNominalOutputVoltage(0, 0);
         this.leftTalons[0].configPeakOutputVoltage(12, -12);
 
         this.rightTalons[0].setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-        this.rightTalons[0].reverseSensor(RIGHT_REVERSED);
+        this.rightTalons[0].reverseSensor(this.RIGHT_REVERSED);
         this.rightTalons[0].configNominalOutputVoltage(0, 0);
         this.rightTalons[0].configPeakOutputVoltage(12, -12);
 
         this.leftTalons[0].setProfile(0);
-        this.leftTalons[0].setF(F_CONSTANT);
-        this.leftTalons[0].setP(P_CONSTANT);
-        this.leftTalons[0].setI(I_CONSTANT);
-        this.leftTalons[0].setD(D_CONSTANT);
+        this.leftTalons[0].setF(this.F_CONSTANT);
+        this.leftTalons[0].setP(this.P_CONSTANT);
+        this.leftTalons[0].setI(this.I_CONSTANT);
+        this.leftTalons[0].setD(this.D_CONSTANT);
         this.leftTalons[0].setIZone(10000);
-        this.leftTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
+        this.leftTalons[0].setAllowableClosedLoopErr(this.ALLOWABLE_ERROR);
 
         this.rightTalons[0].setProfile(0);
-        this.rightTalons[0].setF(F_CONSTANT);
-        this.rightTalons[0].setP(P_CONSTANT);
-        this.rightTalons[0].setI(I_CONSTANT);
-        this.rightTalons[0].setD(D_CONSTANT);
+        this.rightTalons[0].setF(this.F_CONSTANT);
+        this.rightTalons[0].setP(this.P_CONSTANT);
+        this.rightTalons[0].setI(this.I_CONSTANT);
+        this.rightTalons[0].setD(this.D_CONSTANT);
         this.rightTalons[0].setIZone(10000);
-        this.rightTalons[0].setAllowableClosedLoopErr(ALLOWABLE_ERROR);
+        this.rightTalons[0].setAllowableClosedLoopErr(this.ALLOWABLE_ERROR);
 
         setMasterToMode(TalonControlMode.PercentVbus);
         setReverse();
@@ -126,18 +126,18 @@ public class DrivetrainSubsystem extends Subsystem {
 
     public void setReverse() {
         this.leftTalons[0].set(0.0);
-        this.leftTalons[0].reverseOutput(LEFT_REVERSED);
-        this.leftTalons[0].setInverted(LEFT_REVERSED);
+        this.leftTalons[0].reverseOutput(this.LEFT_REVERSED);
+        this.leftTalons[0].setInverted(this.LEFT_REVERSED);
 
         this.rightTalons[0].set(0.0);
-        this.rightTalons[0].reverseOutput(RIGHT_REVERSED);
-        this.rightTalons[0].setInverted(RIGHT_REVERSED);
+        this.rightTalons[0].reverseOutput(this.RIGHT_REVERSED);
+        this.rightTalons[0].setInverted(this.RIGHT_REVERSED);
     }
 
     /**
      * Directly sets the input value of the motors. Use with caution because it
      * doesn't automatically check the control mode
-     * 
+     *
      * @param left
      *            Left power
      * @param right
@@ -166,7 +166,7 @@ public class DrivetrainSubsystem extends Subsystem {
 
     /**
      * Sets talon powers with a specific mode
-     * 
+     *
      * @param left
      *            Left power
      * @param right
@@ -279,6 +279,14 @@ public class DrivetrainSubsystem extends Subsystem {
 
     public PigeonImu getImu() {
         return this.imu;
+    }
+
+    public double getFusedHeading() {
+        try {
+            return this.imu.GetFusedHeading(new PigeonImu.FusionStatus());
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public void setLeft(double power, TalonControlMode controlMode) {

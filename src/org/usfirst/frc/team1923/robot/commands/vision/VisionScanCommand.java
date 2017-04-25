@@ -32,8 +32,8 @@ public class VisionScanCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.visionSubSys.refresh();
-        Robot.driveSubSys.drive(power, -power, TalonControlMode.PercentVbus);
+        Robot.visionSubSys.refreshGear();
+        Robot.driveSubSys.drive(this.power, -this.power, TalonControlMode.PercentVbus);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class VisionScanCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || (Robot.visionSubSys.centerx > 30 && Robot.visionSubSys.centerx < 280);
+        return isTimedOut() || Robot.visionSubSys.getGearCenterX() > 30 && Robot.visionSubSys.getGearCenterX() < 280;
     }
 
 }

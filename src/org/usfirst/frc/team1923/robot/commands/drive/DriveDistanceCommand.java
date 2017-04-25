@@ -18,7 +18,7 @@ public class DriveDistanceCommand extends Command {
 
     /**
      * Drives distance with external PID with a set timeout
-     * 
+     *
      * @param left
      *            Left target in inches
      * @param right
@@ -36,7 +36,7 @@ public class DriveDistanceCommand extends Command {
 
     /**
      * Drives distance with a calculated timeout
-     * 
+     *
      * @param left
      *            Left target in inches
      * @param right
@@ -48,7 +48,7 @@ public class DriveDistanceCommand extends Command {
 
     /**
      * Drives straight with automatic timeout calculation
-     * 
+     *
      * @param distance
      *            Distance in inches
      */
@@ -65,8 +65,8 @@ public class DriveDistanceCommand extends Command {
         this.oldleft = Robot.driveSubSys.getLeftPosition();
         this.oldright = Robot.driveSubSys.getRightPosition();
 
-        this.leftTarget = DrivetrainSubsystem.distanceToRotation(left) + Robot.driveSubSys.getLeftPosition();
-        this.rightTarget = DrivetrainSubsystem.distanceToRotation(right) + Robot.driveSubSys.getRightPosition();
+        this.leftTarget = DrivetrainSubsystem.distanceToRotation(this.left) + Robot.driveSubSys.getLeftPosition();
+        this.rightTarget = DrivetrainSubsystem.distanceToRotation(this.right) + Robot.driveSubSys.getRightPosition();
 
         if (RobotMap.DEBUG) {
             SmartDashboard.putNumber("Left Target", this.leftTarget);
@@ -84,9 +84,9 @@ public class DriveDistanceCommand extends Command {
         if (RobotMap.DEBUG) {
             System.out.println("Left Error: " + Robot.driveSubSys.getLeftError() + ", Right Error: " + Robot.driveSubSys.getRightError());
         }
-        return isTimedOut() || ((Math.abs(Robot.driveSubSys.getLeftError()) < Robot.driveSubSys.ALLOWABLE_ERROR)
-                && (Math.abs(Robot.driveSubSys.getRightError()) < Robot.driveSubSys.ALLOWABLE_ERROR)
-                && Robot.driveSubSys.getLeftPosition() != this.oldleft && Robot.driveSubSys.getRightPosition() != this.oldright);
+        return isTimedOut() || Math.abs(Robot.driveSubSys.getLeftError()) < Robot.driveSubSys.ALLOWABLE_ERROR
+                && Math.abs(Robot.driveSubSys.getRightError()) < Robot.driveSubSys.ALLOWABLE_ERROR
+                && Robot.driveSubSys.getLeftPosition() != this.oldleft && Robot.driveSubSys.getRightPosition() != this.oldright;
     }
 
     @Override
